@@ -10,6 +10,9 @@ from Game import Game
 
 Point = namedtuple('Point', 'x y')
 class Snake(object):
+    def game_reset(self):
+        self.bodyLength = 3
+
     def reset(self):
         bodyGenerationTries = 0
         self.direction = Directions.Right
