@@ -36,23 +36,23 @@ if __name__ == '__main__':
     resolutionText.grid(row=0,column=0)
 
     def StartGame():
-        print("test")
 
         flag = False
+        root.quit()
 
 
     def StartLearning():
 
         flag = False
+        root.quit()
 
     buttonGame = tk.Button(root)
-    buttonGame.configure(font=textFont, justify="center",text="Start Game", command=StartGame())
+    buttonGame.configure(font=textFont, justify="center",text="Start Game", command=StartGame)
     buttonGame.grid(row=1,column=0)
 
     buttonLearn = tk.Button(root)
-    buttonLearn.configure(font=textFont, justify="center", text="Start Learn", command=StartLearning())
+    buttonLearn.configure(font=textFont, justify="center", text="Start Learn", command=StartLearning)
     buttonLearn.grid(row=1,column=2)
 
-    while flag:
-        root.mainloop()
+    root.mainloop()
 
