@@ -1,12 +1,16 @@
 import pygame
 
 class LearningScreen:
-    display = pygame.display.set_mode((960, 540))
-    pygame.display.set_caption('Learning Snake Game')
+    def __init__(self,w=640,h=480):
+        self.w = w
+        self.h = h
 
-    color = (150,150,150)
+        self.display = pygame.display.set_mode((self.w,self.h))
+        pygame.display.set_caption('Learning Snake Game')
 
-    display.fill(color)
+        color = (150,150,150)
+
+        self.display.fill(color)
 
 if __name__ == '__main__':
     LearningScreen()

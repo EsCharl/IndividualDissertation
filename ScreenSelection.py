@@ -4,7 +4,8 @@ import pygame
 import tkinter as tk
 import tkinter.font as tkFont
 
-flag = True
+import Game
+import Learning.Learning
 
 if __name__ == '__main__':
     pygame.init()
@@ -36,14 +37,16 @@ if __name__ == '__main__':
     resolutionText.grid(row=0,column=0)
 
     def StartGame():
-
-        flag = False
+        index = displayListBox.curselection()
+        print(displayListBox.get(index))
+        Learning.Learning.LearningScreen(displayListBox.get(index)[0], displayListBox.get(index)[1])
         root.quit()
 
 
     def StartLearning():
-
-        flag = False
+        index = displayListBox.curselection()
+        print(displayListBox.get(index))
+        Game.GameScreen(displayListBox.get(index)[0], displayListBox.get(index)[1])
         root.quit()
 
     buttonGame = tk.Button(root)
