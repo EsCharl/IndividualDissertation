@@ -1,12 +1,8 @@
-import random
 import pygame
-from collections import namedtuple
 
 pygame.init()
 
-Point = namedtuple('Point', 'x y')
-
-class Game:
+class GameScreen:
     display = pygame.display.set_mode((960, 540))
     pygame.display.set_caption('Snake Game')
 
@@ -15,7 +11,7 @@ class Game:
     display.fill(color)
 
 if __name__ == '__main__':
-    Game()
+    GameScreen()
     while True:
 
         pygame.display.flip()

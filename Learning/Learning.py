@@ -1,6 +1,6 @@
 import pygame
 
-class Learn:
+class LearningScreen:
     display = pygame.display.set_mode((960, 540))
     pygame.display.set_caption('Learning Snake Game')
 
@@ -9,7 +9,7 @@ class Learn:
     display.fill(color)
 
 if __name__ == '__main__':
-    Learn()
+    LearningScreen()
     while True:
 
         pygame.display.flip()
