@@ -13,7 +13,6 @@ if __name__ == '__main__':
 
     root = tk.Tk()
     root.title("Display Selection")
-    root.geometry('20x10')
     root.resizable(False,False)
 
     textFont = tkFont.Font(family='Times', size=10)
@@ -33,27 +32,66 @@ if __name__ == '__main__':
     resolutionText.configure(font=textFont, text="Resolution")
     resolutionText.grid(row=0,column=0)
 
-    def StartLearning():
+    def LearningOption():
         index = displayListBox.curselection()
         x_display_dim = displayListBox.get(index)[0]
         y_display_dim = displayListBox.get(index)[1]
         root.destroy()
+
+        options = tk.Tk()
+        options.title("Learning Options")
+
+        frame = tk.Frame(options)
+        frame.pack()
+
+        startLearningButton = tk.Button(frame)
+        startLearningButton.configure(font=textFont, justify="center", text="Learn Game", command=lambda: options.quit())
+        startLearningButton.pack(side="bottom")
+
+        options.mainloop()
+
+        options.destroy()
+
         Learning.Learning.LearningScreen(x_display_dim, y_display_dim)
 
-
-    def StartGame():
+    def GameOption():
         index = displayListBox.curselection()
         x_display_dim = displayListBox.get(index)[0]
         y_display_dim = displayListBox.get(index)[1]
         root.destroy()
-        Game.GameScreen(x_display_dim,y_display_dim)
+
+        options = tk.Tk()
+        options.title("Game Options")
+
+        frame = tk.Frame(options)
+        frame.pack()
+
+        time = (3, 5, 10)
+
+        timeListBox = tk.Listbox(frame)
+        for t in time: timeListBox.insert(END, t)
+
+        timeListBox.configure(selectmode="single")
+        timeListBox.pack(side="top")
+
+        startGameButton = tk.Button(frame)
+        startGameButton.configure(font=textFont, justify="center", text= "Start Game", command=lambda: options.quit())
+        startGameButton.pack(side="bottom")
+
+        options.mainloop()
+
+        timeAmount = timeListBox.get(timeListBox.curselection())
+        options.destroy()
+
+        Game.GameScreen(x_display_dim,y_display_dim, timeAmount)
+
 
     buttonGame = tk.Button(root)
-    buttonGame.configure(font=textFont, justify="center",text="Start Game", command=StartGame)
+    buttonGame.configure(font=textFont, justify="center",text="Game", command=GameOption)
     buttonGame.grid(row=1,column=0)
 
     buttonLearn = tk.Button(root)
-    buttonLearn.configure(font=textFont, justify="center", text="Start Learn", command=StartLearning)
+    buttonLearn.configure(font=textFont, justify="center", text="Learn", command=LearningOption)
     buttonLearn.grid(row=1,column=2)
 
     root.mainloop()
