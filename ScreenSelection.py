@@ -62,6 +62,7 @@ if __name__ == '__main__':
 
         options = tk.Tk()
         options.title("Game Options")
+        options.geometry("200x250")
 
         frame = tk.Frame(options)
         frame.pack()
