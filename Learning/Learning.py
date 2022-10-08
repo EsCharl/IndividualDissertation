@@ -11,9 +11,6 @@ class LearningScreen:
         color = (150,150,150)
 
         self.display.fill(color)
+        while True:
 
-if __name__ == '__main__':
-    LearningScreen()
-    while True:
-
-        pygame.display.flip()
+            pygame.display.flip()

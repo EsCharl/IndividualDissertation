@@ -10,20 +10,17 @@ import Learning.Learning
 if __name__ == '__main__':
     pygame.init()
     displayModes = pygame.display.list_modes()
-    print(displayModes)
-
-    print(type(displayModes[1]))
 
     root = tk.Tk()
     root.title("Display Selection")
     root.geometry('20x10')
+    root.resizable(False,False)
 
     textFont = tkFont.Font(family='Times', size=10)
 
     displayListBox = tk.Listbox(root)
 
     scrollbar = tk.Scrollbar(root)
-
 
     displayListBox.configure(justify="center", font=textFont, selectmode="single", setgrid=True,yscrollcommand=scrollbar.set)
     displayListBox.grid(row=0,column=1,sticky=tk.NS)
@@ -36,18 +33,20 @@ if __name__ == '__main__':
     resolutionText.configure(font=textFont, text="Resolution")
     resolutionText.grid(row=0,column=0)
 
-    def StartGame():
-        index = displayListBox.curselection()
-        print(displayListBox.get(index))
-        Learning.Learning.LearningScreen(displayListBox.get(index)[0], displayListBox.get(index)[1])
-        root.quit()
-
-
     def StartLearning():
         index = displayListBox.curselection()
-        print(displayListBox.get(index))
-        Game.GameScreen(displayListBox.get(index)[0], displayListBox.get(index)[1])
-        root.quit()
+        x_display_dim = displayListBox.get(index)[0]
+        y_display_dim = displayListBox.get(index)[1]
+        root.destroy()
+        Learning.Learning.LearningScreen(x_display_dim, y_display_dim)
+
+
+    def StartGame():
+        index = displayListBox.curselection()
+        x_display_dim = displayListBox.get(index)[0]
+        y_display_dim = displayListBox.get(index)[1]
+        root.destroy()
+        Game.GameScreen(x_display_dim,y_display_dim)
 
     buttonGame = tk.Button(root)
     buttonGame.configure(font=textFont, justify="center",text="Start Game", command=StartGame)
