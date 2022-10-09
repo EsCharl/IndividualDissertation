@@ -26,7 +26,10 @@ if __name__ == '__main__':
 
     scrollbar.configure(command=displayListBox.yview)
 
-    for i in displayModes:displayListBox.insert(END,i)
+    # reason why 1.6 is selected is because it looks better and the borders are viewable
+    for i in displayModes:
+        if i[0] / i[1] == 1.6:
+            displayListBox.insert(END,i)
 
     resolutionText = tk.Message(root)
     resolutionText.configure(font=textFont, text="Resolution")
