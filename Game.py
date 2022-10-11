@@ -2,8 +2,10 @@ import pygame as pg
 
 # A simple sprite, just to have something moving on the screen.
 import GameBoardSize
+import PixelSize
 
 gameBoardColour = (20, 50, 90)
+squareAmount = 15
 
 class GameScreen:
     def __init__(self, w=640, h=480, time=3):
@@ -18,6 +20,7 @@ class GameScreen:
         all_sprites = pg.sprite.Group()
 
         boardSideSize = GameBoardSize.get_size(self.w)
+        squareSizeSide = PixelSize.get_block_size(boardSideSize,squareAmount)
 
         AI1 = pg.Rect(10, 5, boardSideSize, boardSideSize)
         player = pg.Rect(boardSideSize+30, 5, boardSideSize, boardSideSize)
