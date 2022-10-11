@@ -7,6 +7,7 @@ class BestFirstSearch():
         self.face_direction = 0
 
     def move(self, position, food):
+        fixed_step = None
         potential_steps = []
         # cost_h is the cheapest path from the head to the food
 
@@ -39,4 +40,10 @@ class BestFirstSearch():
                 lowest_cost_h = manhattan_distance
                 fixed_step = x
 
-        position.append(fixed_step)
+        # this part is used return if the snake have successfully
+        # found a valid place
+        if fixed_step != None:
+            position.append(fixed_step)
+            return False, position
+        else:
+            return True, position
