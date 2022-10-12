@@ -1,7 +1,7 @@
 import pygame
 
 from Directions import Directions
-from Snake import Snake
+from DrawSnake import Snake
 
 class Player(Snake):
     def play_step(self):
