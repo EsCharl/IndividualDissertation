@@ -5,9 +5,12 @@ import pygame as pg
 import DrawSnake
 import GameBoardSize
 import PixelSize
+import Player
+from Directions import Directions
 
 gameBoardColour = (20, 50, 90)
 squareAmount = 15
+SPEED = 10
 
 class GameScreen:
     def __init__(self, w=640, h=480, time=3):
@@ -30,11 +33,6 @@ class GameScreen:
         SA4 = pygame.Surface((boardSideSize,boardSideSize))
         SA5 = pygame.Surface((boardSideSize,boardSideSize))
 
-        SA1.fill(gameBoardColour)
-        SAP.fill(gameBoardColour)
-        SA3.fill(gameBoardColour)
-        SA4.fill(gameBoardColour)
-        SA5.fill(gameBoardColour)
 
         # AI1 = pg.Rect(10, 5, boardSideSize, boardSideSize)
         # player = pg.Rect(boardSideSize+30, 5, boardSideSize, boardSideSize)
@@ -44,23 +42,50 @@ class GameScreen:
 
         # testing
         s = [[0,1],[1,2],[1,3]]
-        d = [[1,1],[1,2],[1,3]]
+        player_snake = [[1,1],[1,2],[1,3]]
+
+        # setup the player/AI objects
+        player = Player.Player()
 
         done = False
         while not done:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     done = True
+                    pygame.quit()
+                    quit()
+
+                direction = player.play_step(event)
+
+            if direction == Directions.LEFT:
+                player_snake.insert(0, [player_snake[0][0] - 1, player_snake[0][1]])
+            elif direction == Directions.RIGHT:
+                player_snake.insert(0, [player_snake[0][0] + 1, player_snake[0][1]])
+            elif direction == Directions.UP:
+                player_snake.insert(0, [player_snake[0][0], player_snake[0][1] - 1])
+            else:
+                player_snake.insert(0, [player_snake[0][0], player_snake[0][1] + 1])
+
+            player_snake.pop()
+
+            SA1.fill(gameBoardColour)
+            SAP.fill(gameBoardColour)
+            SA3.fill(gameBoardColour)
+            SA4.fill(gameBoardColour)
+            SA5.fill(gameBoardColour)
 
             all_sprites.update()
 
             all_sprites.draw(screen)
 
+
             for block in s:
                 DrawSnake.DrawSnake(SA1, block, squareSizeSide)
 
-            for block in d:
+            for block in player_snake:
                 DrawSnake.DrawSnake(SAP, block, squareSizeSide)
+
+
 
             screen.blit(SA1, (10,5))
             screen.blit(SAP, (boardSideSize+30, 5))
@@ -74,5 +99,4 @@ class GameScreen:
             # pg.display.update(AI4)
             # pg.display.update(AI5)
 
-            # add the snake algo and snake display here
-            clock.tick(60)
+            clock.tick(SPEED)
