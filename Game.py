@@ -1,3 +1,5 @@
+import random
+
 import pygame
 import pygame as pg
 
@@ -7,6 +9,7 @@ import GameBoardSize
 import PixelSize
 import Player
 from Directions import Directions
+from Food import Food
 
 gameBoardColour = (20, 50, 90)
 squareAmount = 15
@@ -41,11 +44,12 @@ class GameScreen:
         # AI5 = pg.Rect(50 + (boardSideSize * 2), boardSideSize + 10, boardSideSize, boardSideSize)
 
         # testing
-        s = [[0,1],[1,2],[1,3]]
+        s = [[0,1],[1,2],[14,14]]
         player_snake = [[1,1],[1,2],[1,3]]
 
         # setup the player/AI objects
         player = Player.Player()
+        player_food = Food()
 
         done = False
         while not done:
@@ -78,7 +82,6 @@ class GameScreen:
 
             all_sprites.draw(screen)
 
-
             for block in s:
                 DrawSnake.DrawSnake(SA1, block, squareSizeSide)
 
@@ -86,6 +89,12 @@ class GameScreen:
                 DrawSnake.DrawSnake(SAP, block, squareSizeSide)
 
 
+            if ((player_snake[0][0] == player_food.foodX) and (player_snake[0][1] == player_food.foodY)):
+                player_food.randomFood()
+
+            pg.draw.rect(SAP, (255, 0, 0),
+                         pg.Rect(player_food.foodX * squareSizeSide, player_food.foodY * squareSizeSide,
+                                 squareSizeSide, squareSizeSide))
 
             screen.blit(SA1, (10,5))
             screen.blit(SAP, (boardSideSize+30, 5))
