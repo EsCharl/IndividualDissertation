@@ -4,15 +4,16 @@ import pygame
 import pygame as pg
 
 # A simple sprite, just to have something moving on the screen.
+import Algorithms.BestFirstSearch
 import DrawSnake
 import GameBoardSize
 import PixelSize
 import Player
+from Constants import squareAmount
 from Directions import Directions
 from Food import Food
 
 gameBoardColour = (20, 50, 90)
-squareAmount = 15
 SPEED = 10
 
 class GameScreen:
@@ -44,12 +45,15 @@ class GameScreen:
         # AI5 = pg.Rect(50 + (boardSideSize * 2), boardSideSize + 10, boardSideSize, boardSideSize)
 
         # testing
-        s = [[0,1],[1,2],[14,14]]
         player_snake = [[1,1],[1,2],[1,3]]
+
 
         # setup the player/AI objects
         player = Player.Player()
         player_food = Food()
+
+        best_first_search = Algorithms.BestFirstSearch.BestFirstSearch()
+        best_first_search_food = Food()
 
         done = False
         while not done:
@@ -82,13 +86,26 @@ class GameScreen:
 
             all_sprites.draw(screen)
 
-            for block in s:
+            best_first_search.body = best_first_search.move(best_first_search.body, best_first_search_food)
+
+            if best_first_search.body[0][0] < 0 or best_first_search.body[0][1] > 14 or best_first_search.body[0][0] > 14 or best_first_search.body[0][1] < 0:
+                best_first_search.reset()
+
+            for block in best_first_search.body:
                 DrawSnake.DrawSnake(SA1, block, squareSizeSide)
+
+            if ((best_first_search.body[0][0] == best_first_search_food.foodX) and (best_first_search.body[0][1] == best_first_search_food.foodY)):
+                best_first_search_food.randomFood()
+                best_first_search.ate = True
+
+            pg.draw.rect(SA1, (255, 0, 0),
+                         pg.Rect(best_first_search_food.foodX * squareSizeSide, best_first_search_food.foodY * squareSizeSide,
+                                 squareSizeSide, squareSizeSide))
 
             for block in player_snake:
                 DrawSnake.DrawSnake(SAP, block, squareSizeSide)
 
-
+            # Might need to change when the food is spawn in the snake. (further development needed)
             if ((player_snake[0][0] == player_food.foodX) and (player_snake[0][1] == player_food.foodY)):
                 player_food.randomFood()
 

@@ -1,5 +1,5 @@
 from Algorithms.Agent import Agent
-from Game import squareAmount
+from Constants import squareAmount
 
 
 class AStar():
