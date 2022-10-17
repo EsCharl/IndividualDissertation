@@ -5,6 +5,7 @@ from Directions import Directions
 class Player:
     def __init__(self):
         self.direction = Directions.LEFT
+        self.body = [[1,1],[1,2],[1,3]]
 
     def play_step(self, event):
 
