@@ -1,7 +1,3 @@
-import random
-
-import Constants
-from Constants import squareAmount
 from SnakeLogic import SnakeLogic
 
 
@@ -9,15 +5,15 @@ class BestFirstSearch(SnakeLogic):
     def __init__(self):
         self.reset()
 
-    def move(self, snake_body, food):
+    def move(self, food):
         fixed_step = None
         potential_steps = []
         # cost_h is the cheapest path from the head to the food
 
-        potential_steps.append([snake_body[0][0] + 1, snake_body[0][1]])
-        potential_steps.append([snake_body[0][0] - 1, snake_body[0][1]])
-        potential_steps.append([snake_body[0][0], snake_body[0][1] + 1])
-        potential_steps.append([snake_body[0][0], snake_body[0][1] - 1])
+        potential_steps.append([self.body[0][0] + 1, self.body[0][1]])
+        potential_steps.append([self.body[0][0] - 1, self.body[0][1]])
+        potential_steps.append([self.body[0][0], self.body[0][1] + 1])
+        potential_steps.append([self.body[0][0], self.body[0][1] - 1])
 
         # this part is used to sort out the position where it doesn't reach the snake body
         steps = []
@@ -35,10 +31,8 @@ class BestFirstSearch(SnakeLogic):
         # this part is used return if the snake have successfully
         # found a valid place
         if fixed_step != None:
-            snake_body.insert(0, fixed_step)
+            self.body.insert(0, fixed_step)
             self.checkAte()
-            return snake_body
         else:
             self.reset()
-            snake_body = self.body
-            return snake_body
+        return self.body

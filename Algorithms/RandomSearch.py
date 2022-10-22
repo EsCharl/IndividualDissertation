@@ -1,20 +1,21 @@
-from random import random
+import random
 
-import torch
+from SnakeLogic import SnakeLogic
 
-from Algorithms.Agent import Agent
 
-class RandomSearch(Agent):
-    def moves(self,state):
-        self.epsilon = 80 - self.n_games
-        final_move = [0, 0, 0]
-        if random.randint(0, 200) < self.epsilon:
-            move = random.randint(0, 2)
-            final_move[move] = 1
-        else:
-            state0 = torch.tensor(state, dtype=torch.float)
-            prediction = self.model(state0)
-            move = torch.argmax(prediction).item()
-            final_move[move] = 1
+class RandomSearch(SnakeLogic):
+    def __init__(self):
+        self.reset()
 
-        return final_move
+    def move(self):
+        potential_steps = []
+
+        potential_steps.append([self.body[0][0] + 1, self.body[0][1]])
+        potential_steps.append([self.body[0][0] - 1, self.body[0][1]])
+        potential_steps.append([self.body[0][0], self.body[0][1] + 1])
+        potential_steps.append([self.body[0][0], self.body[0][1] - 1])
+
+        self.body.insert(0, potential_steps[random.randint(0,3)])
+
+        self.checkAte()
+        return self.body
