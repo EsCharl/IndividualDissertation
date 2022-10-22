@@ -1,14 +1,21 @@
+import random
+
 import pygame
 
 from Directions import Directions
+from SnakeLogic import SnakeLogic
 
-class Player:
+
+class Player(SnakeLogic):
     def __init__(self):
-        self.direction = Directions.LEFT
-        self.body = [[1,1],[1,2],[1,3]]
+        self.direction = Directions.RIGHT
+        self.reset()
+
+    def reset(self):
+        super().reset()
+        self.direction = Directions.RIGHT
 
     def play_step(self, event):
-
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 self.direction = Directions.LEFT
@@ -19,4 +26,12 @@ class Player:
             elif event.key == pygame.K_DOWN:
                 self.direction = Directions.DOWN
 
-        return self.direction
+    def move(self):
+        if self.direction == Directions.LEFT:
+            self.body.insert(0, [self.body[0][0] - 1, self.body[0][1]])
+        elif self.direction == Directions.RIGHT:
+            self.body.insert(0, [self.body[0][0] + 1, self.body[0][1]])
+        elif self.direction == Directions.UP:
+            self.body.insert(0, [self.body[0][0], self.body[0][1] - 1])
+        else:
+            self.body.insert(0, [self.body[0][0], self.body[0][1] + 1])

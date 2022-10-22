@@ -1,16 +1,12 @@
-import random
-
 import pygame
 import pygame as pg
 
 # A simple sprite, just to have something moving on the screen.
 import Algorithms.BestFirstSearch
-import Constants
 import DrawSnake
 import GameBoardSize
 import PixelSize
 import Player
-from Algorithms.SnakeLogic import checkSnake
 from Constants import squareAmount
 from Directions import Directions
 from Food import Food
@@ -63,18 +59,9 @@ class GameScreen:
                     pygame.quit()
                     quit()
 
-                direction = player.play_step(event)
+                player.play_step(event)
 
-            if direction == Directions.LEFT:
-                player.body.insert(0, [player.body[0][0] - 1, player.body[0][1]])
-            elif direction == Directions.RIGHT:
-                player.body.insert(0, [player.body[0][0] + 1, player.body[0][1]])
-            elif direction == Directions.UP:
-                player.body.insert(0, [player.body[0][0], player.body[0][1] - 1])
-            else:
-                player.body.insert(0, [player.body[0][0], player.body[0][1] + 1])
-
-            player.body.pop()
+            player.move()
 
             SA1.fill(gameBoardColour)
             SAP.fill(gameBoardColour)
@@ -88,13 +75,15 @@ class GameScreen:
 
             best_first_search.body = best_first_search.move(best_first_search.body, best_first_search_food)
 
-            # most likely unused due to the implementation of the best_first_search (advanced)
-            checkSnake(best_first_search)
+            player.checkAte()
+
+            player.checkSnake()
+            best_first_search.checkSnake()
 
             for block in best_first_search.body:
                 DrawSnake.DrawSnake(SA1, block, squareSizeSide)
 
-            if ((best_first_search.body[0][0] == best_first_search_food.foodX) and (best_first_search.body[0][1] == best_first_search_food.foodY)):
+            if (best_first_search.body[0][0] == best_first_search_food.foodX) and (best_first_search.body[0][1] == best_first_search_food.foodY):
                 best_first_search_food.randomFood(best_first_search.body)
                 best_first_search.ate = True
 
@@ -105,8 +94,9 @@ class GameScreen:
             for block in player.body:
                 DrawSnake.DrawSnake(SAP, block, squareSizeSide)
 
-            if ((player.body[0][0] == player_food.foodX) and (player.body[0][1] == player_food.foodY)):
+            if (player.body[0][0] == player_food.foodX) and (player.body[0][1] == player_food.foodY):
                 player_food.randomFood(player.body)
+                player.ate = True
 
             pg.draw.rect(SAP, (255, 0, 0),
                          pg.Rect(player_food.foodX * squareSizeSide, player_food.foodY * squareSizeSide,
@@ -118,10 +108,5 @@ class GameScreen:
             screen.blit(SA4, (10, boardSideSize + 10))
             screen.blit(SA5, (50 + (boardSideSize * 2), boardSideSize + 10))
             pg.display.update()
-            # pg.display.update(AI1)
-            # pg.display.update(player)
-            # pg.display.update(AI3)
-            # pg.display.update(AI4)
-            # pg.display.update(AI5)
 
             clock.tick(SPEED)

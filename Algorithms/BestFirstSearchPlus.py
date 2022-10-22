@@ -1,13 +1,13 @@
+import random
+
+import Constants
 from Constants import squareAmount
+from SnakeLogic import SnakeLogic
 
-class BestFirstSearchPlus():
+
+class BestFirstSearchPlus(SnakeLogic):
     def __init__(self):
-        self.face_direction = 0
         self.reset()
-
-    def reset(self):
-        self.body = [[1,1],[1,2],[1,3]]
-        self.ate = False
 
     def move(self, snake_body, food):
         fixed_step = None
@@ -46,12 +46,8 @@ class BestFirstSearchPlus():
         # this part is used return if the snake have successfully
         # found a valid place
         if fixed_step != None:
-            print(snake_body)
             snake_body.insert(0, fixed_step)
-            if self.ate:
-                self.ate = False
-            else:
-                snake_body.pop()
+            self.checkAte()
             return snake_body
         else:
             self.reset()
