@@ -5,10 +5,12 @@ import pygame as pg
 
 # A simple sprite, just to have something moving on the screen.
 import Algorithms.BestFirstSearch
+import Constants
 import DrawSnake
 import GameBoardSize
 import PixelSize
 import Player
+from Algorithms.SnakeLogic import checkSnake
 from Constants import squareAmount
 from Directions import Directions
 from Food import Food
@@ -87,8 +89,7 @@ class GameScreen:
             best_first_search.body = best_first_search.move(best_first_search.body, best_first_search_food)
 
             # most likely unused due to the implementation of the best_first_search (advanced)
-            if best_first_search.body[0][0] < 0 or best_first_search.body[0][1] > 14 or best_first_search.body[0][0] > 14 or best_first_search.body[0][1] < 0:
-                best_first_search.reset()
+            checkSnake(best_first_search)
 
             for block in best_first_search.body:
                 DrawSnake.DrawSnake(SA1, block, squareSizeSide)
@@ -104,7 +105,6 @@ class GameScreen:
             for block in player.body:
                 DrawSnake.DrawSnake(SAP, block, squareSizeSide)
 
-            # Might need to change when the food is spawn in the snake. (further development needed)
             if ((player.body[0][0] == player_food.foodX) and (player.body[0][1] == player_food.foodY)):
                 player_food.randomFood(player.body)
 

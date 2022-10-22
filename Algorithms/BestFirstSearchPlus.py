@@ -1,6 +1,6 @@
 from Constants import squareAmount
 
-class BestFirstSearch():
+class BestFirstSearchPlus():
     def __init__(self):
         self.face_direction = 0
         self.reset()
@@ -14,15 +14,26 @@ class BestFirstSearch():
         potential_steps = []
         # cost_h is the cheapest path from the head to the food
 
-        potential_steps.append([snake_body[0][0] + 1, snake_body[0][1]])
-        potential_steps.append([snake_body[0][0] - 1, snake_body[0][1]])
-        potential_steps.append([snake_body[0][0], snake_body[0][1] + 1])
-        potential_steps.append([snake_body[0][0], snake_body[0][1] - 1])
+        # this ensures that the snake could go to all position
+        # than the borders
+        if snake_body[0][0] + 1 < squareAmount:
+            potential_steps.append([snake_body[0][0] + 1, snake_body[0][1]])
+        if snake_body[0][0] - 1 >= 0:
+            potential_steps.append([snake_body[0][0] - 1, snake_body[0][1]])
+        if snake_body[0][1] + 1 < squareAmount:
+            potential_steps.append([snake_body[0][0], snake_body[0][1] + 1])
+        if snake_body[0][1] - 1 >= 0:
+            potential_steps.append([snake_body[0][0], snake_body[0][1] -1])
 
         # this part is used to sort out the position where it doesn't reach the snake body
         steps = []
         for u in potential_steps:
-            steps.append(u)
+            flag = 1
+            for d in snake_body:
+                if d == u:
+                    flag = 0
+            if flag:
+                steps.append(u)
 
         # this part gets the lowest cost which is able to get to the food
         lowest_cost_h = 999999
