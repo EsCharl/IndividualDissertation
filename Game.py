@@ -80,8 +80,7 @@ class GameScreen:
             player.checkSnake()
             best_first_search.checkSnake()
 
-            for block in best_first_search.body:
-                DrawSnake.DrawSnake(SA1, block, squareSizeSide)
+            DrawSnake.DrawSnake(SA1, best_first_search.body, squareSizeSide)
 
             if (best_first_search.body[0][0] == best_first_search_food.foodX) and (best_first_search.body[0][1] == best_first_search_food.foodY):
                 best_first_search_food.randomFood(best_first_search.body)
@@ -91,8 +90,7 @@ class GameScreen:
                          pg.Rect(best_first_search_food.foodX * squareSizeSide, best_first_search_food.foodY * squareSizeSide,
                                  squareSizeSide, squareSizeSide))
 
-            for block in player.body:
-                DrawSnake.DrawSnake(SAP, block, squareSizeSide)
+            DrawSnake.DrawSnake(SAP, player.body, squareSizeSide)
 
             if (player.body[0][0] == player_food.foodX) and (player.body[0][1] == player_food.foodY):
                 player_food.randomFood(player.body)
