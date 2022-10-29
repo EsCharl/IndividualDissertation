@@ -6,9 +6,9 @@ import DrawSnake
 import GameBoardSize
 import PixelSize
 import Player
-from Algorithms.BestFirstSearch import BestFirstSearch
+from Algorithms.BestFirstSearchPlus import BestFirstSearchPlus
 from Algorithms.RandomSearchPlus import RandomSearchPlus
-from Constants import squareAmount
+from Constants import SQUARE_AMOUNT
 from Food import Food
 
 gameBoardColour = (20, 50, 90)
@@ -28,7 +28,7 @@ class GameScreen:
         all_sprites = pg.sprite.Group()
 
         boardSideSize = GameBoardSize.get_size(self.w)
-        squareSizeSide = PixelSize.get_block_size(boardSideSize, squareAmount)
+        squareSizeSide = PixelSize.get_block_size(boardSideSize, SQUARE_AMOUNT)
 
         SA1 = pygame.Surface((boardSideSize, boardSideSize))
         SAP = pygame.Surface((boardSideSize, boardSideSize))
@@ -42,7 +42,7 @@ class GameScreen:
         player = Player.Player()
         player_food = Food(player.body)
 
-        best_first_search = BestFirstSearch()
+        best_first_search = BestFirstSearchPlus()
         best_first_search_food = Food(best_first_search.body)
 
         random_search_plus = RandomSearchPlus()

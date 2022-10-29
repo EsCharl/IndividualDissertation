@@ -1,3 +1,3 @@
 BLOCK_PIXEL_SIZE = 20
 SPEED = 20
-squareAmount = 15
+SQUARE_AMOUNT = 15

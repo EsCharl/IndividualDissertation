@@ -1,4 +1,4 @@
-from Constants import squareAmount
+from Constants import SQUARE_AMOUNT
 from SnakeLogic import SnakeLogic
 
 
@@ -13,11 +13,11 @@ class BestFirstSearchPlus(SnakeLogic):
 
         # this ensures that the snake could go to all position
         # than the borders
-        if self.body[0][0] + 1 < squareAmount:
+        if self.body[0][0] + 1 < SQUARE_AMOUNT:
             potential_steps.append([self.body[0][0] + 1, self.body[0][1]])
         if self.body[0][0] - 1 >= 0:
             potential_steps.append([self.body[0][0] - 1, self.body[0][1]])
-        if self.body[0][1] + 1 < squareAmount:
+        if self.body[0][1] + 1 < SQUARE_AMOUNT:
             potential_steps.append([self.body[0][0], self.body[0][1] + 1])
         if self.body[0][1] - 1 >= 0:
             potential_steps.append([self.body[0][0], self.body[0][1] -1])
@@ -34,11 +34,11 @@ class BestFirstSearchPlus(SnakeLogic):
 
         # this part gets the lowest cost which is able to get to the food
         lowest_cost_h = 999999
-        for x in steps:
-            manhattan_distance = (abs(food.foodX - x[0]) + abs(food.foodY - x[1]))
+        for step in steps:
+            manhattan_distance = (abs(food.foodX - step[0]) + abs(food.foodY - step[1]))
             if manhattan_distance < lowest_cost_h:
                 lowest_cost_h = manhattan_distance
-                fixed_step = x
+                fixed_step = step
 
         # this part is used return if the snake have successfully
         # found a valid place
