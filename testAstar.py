@@ -1,19 +1,6 @@
-from copy import copy
-from queue import PriorityQueue
-
 from Constants import SQUARE_AMOUNT
 
-# test = PriorityQueue()
-#
-# test.put((4.5, [1,6]))
-# test.put((2.1, [1,5]))
-# test.put((5, [1,3]))
-# test.put((1.5, [1,2]))
-# test.put((0, [1,1]))
-
-# while not test.empty():
-#     print(test.get())
-def search(body, possible_steps, check):
+def search(body, check):
     neighbours = []
 
     neighbours.append([check[0] + 1, check[1]])
@@ -56,7 +43,7 @@ if __name__ == '__main__':
     checked = []
     path = []
 
-    soft_checked = search(body, posible_steps, body[0])
+    soft_checked = search(body, body[0])
     soft_checked.sort()
 
     for x in soft_checked:
@@ -75,7 +62,7 @@ if __name__ == '__main__':
             else:
                 index = 0
                 checked.append(soft_checked[index])
-                unfiltered_completely = search(body, soft_checked, soft_checked[index][1])
+                unfiltered_completely = search(body, soft_checked[index][1])
                 for x in unfiltered_completely:
                     if x not in soft_checked:
                         soft_checked.append(x)
