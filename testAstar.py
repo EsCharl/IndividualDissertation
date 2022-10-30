@@ -16,50 +16,81 @@ from Constants import SQUARE_AMOUNT
 def search(body, possible_steps, check):
     neighbours = []
 
-    neighbours.append([check[0]+1, check[1]])
-    neighbours.append([check[0]-1, check[1]])
-    neighbours.append([check[0], check[1]+1])
-    neighbours.append([check[0], check[1]-1])
+    neighbours.append([check[0] + 1, check[1]])
+    neighbours.append([check[0] - 1, check[1]])
+    neighbours.append([check[0], check[1] + 1])
+    neighbours.append([check[0], check[1] - 1])
 
     unfulfilled_filtering = []
 
     for x in neighbours:
         # this part filters the location where the snake can't go
         if not (x in body or x[0] < 0 or x[0] > SQUARE_AMOUNT - 1 or x[1] < 0 or x[1] > SQUARE_AMOUNT - 1):
-            unfulfilled_filtering.append((abs(x[0] - foodX) + abs(x[1] - foodY),x))
+            unfulfilled_filtering.append((abs(x[0] - foodX) + abs(x[1] - foodY), x))
 
     return unfulfilled_filtering
 
+# this part needs further testing. but based on current checking it should work.
+def findPath(checked):
+    path = []
+    index = 0
+    for i in checked:
+        if path == []:
+            cost = i[0]
+            path.append(i[1])
+        else:
+            if i[0] < cost and (abs(path[index][0] - i[1][0]) + abs(path[index][1] - i[1][1]) == 1):
+                path.append(i[1])
+                cost = i[0]
+                index += 1
+    return path
+
 if __name__ == '__main__':
-    body = [[1,2],[1,3],[1,4]]
+    body = [[1, 2], [1, 3], [1, 4]]
     foodX = 6
     foodY = 6
     soft_checked = []
     found_food = False
     posible_steps = []
     index = 0
-
+    checked = []
+    path = []
 
     soft_checked = search(body, posible_steps, body[0])
     soft_checked.sort()
 
-
     for x in soft_checked:
-        if x[1] in [foodX,foodY]:
+        if x[1] in [foodX, foodY]:
             found_food = True
 
-    # this part is used to search the area (circular)
+    lowest_cost = 999999
+    index = 0
+    # this is just like greedy search with extra steps (need further changing)
+    # if can't find the path the algo will move like the best first search (need checking if work)
     while not found_food:
-        unfiltered_completely = search(body, soft_checked, soft_checked[0][1])
-        for x in unfiltered_completely:
-            if x not in soft_checked:
-                soft_checked.append(x)
-                if x[1] == [foodX, foodY]:
-                    found_food = True
-        soft_checked.sort()
+        try:
+            # this part is used to move the index so it doesn't loop when there is no new addition of location
+            if soft_checked[index] in checked:
+                index += 1
+            else:
+                index = 0
+                checked.append(soft_checked[index])
+                unfiltered_completely = search(body, soft_checked, soft_checked[index][1])
+                for x in unfiltered_completely:
+                    if x not in soft_checked:
+                        soft_checked.append(x)
+                        if x[1] == [foodX, foodY]:
+                            checked.append(x)
+                            found_food = True
+                            path = findPath(checked)
+                            break
 
-    print(soft_checked)
+            soft_checked.sort()
+        except:
+            path.append([checked[0][1]])
+            break
 
+    print(path)
     # # this part is used to get all the available spaces
     # for x in range(SQUARE_AMOUNT):
     #     for y in range(SQUARE_AMOUNT):
