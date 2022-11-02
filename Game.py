@@ -6,6 +6,7 @@ import DrawSnake
 import GameBoardSize
 import PixelSize
 import Player
+from Algorithms.AStar import AStar
 from Algorithms.BestFirstSearchPlus import BestFirstSearchPlus
 from Algorithms.RandomSearchPlus import RandomSearchPlus
 from Constants import SQUARE_AMOUNT
@@ -13,6 +14,18 @@ from Food import Food
 
 gameBoardColour = (20, 50, 90)
 SPEED = 10
+
+
+def drawing(canvas, snake, snake_food, square_size_side):
+    DrawSnake.DrawSnake(canvas, snake.body, square_size_side)
+
+    if (snake.body[0][0] == snake_food.foodX) and (snake.body[0][1] == snake_food.foodY):
+        snake_food.randomFood(snake.body)
+        snake.ate = True
+
+    pg.draw.rect(canvas, (255, 0, 0),
+                 pg.Rect(snake_food.foodX * square_size_side, snake_food.foodY * square_size_side,
+                         square_size_side, square_size_side))
 
 
 class GameScreen:
@@ -42,6 +55,9 @@ class GameScreen:
         player = Player.Player()
         player_food = Food(player.body)
 
+        a_star = AStar()
+        a_star_food = Food(a_star.body)
+
         best_first_search = BestFirstSearchPlus()
         best_first_search_food = Food(best_first_search.body)
 
@@ -70,48 +86,25 @@ class GameScreen:
 
             all_sprites.draw(screen)
 
+            if not a_star.path:
+                a_star.getPath(a_star_food)
+
+            player.checkAte()
+            player.checkSnake()
+
+            # best_first_search.checkSnake()
+            # random_search_plus.checkSnake()
+            # a_star.checkSnake()
+
+            a_star.move()
+
             best_first_search.move(best_first_search_food)
             random_search_plus.move()
 
-            player.checkAte()
-
-            player.checkSnake()
-            best_first_search.checkSnake()
-            random_search_plus.checkSnake()
-
-            DrawSnake.DrawSnake(SA5, random_search_plus.body, squareSizeSide)
-
-            if (random_search_plus.body[0][0] == random_search_plus_food.foodX) and (
-                    random_search_plus.body[0][1] == random_search_plus_food.foodY):
-                random_search_plus_food.randomFood(random_search_plus.body)
-                random_search_plus.ate = True
-
-            pg.draw.rect(SA5, (255, 0, 0),
-                         pg.Rect(random_search_plus_food.foodX * squareSizeSide,
-                                 random_search_plus_food.foodY * squareSizeSide,
-                                 squareSizeSide, squareSizeSide))
-
-            DrawSnake.DrawSnake(SA1, best_first_search.body, squareSizeSide)
-
-            if (best_first_search.body[0][0] == best_first_search_food.foodX) and (
-                    best_first_search.body[0][1] == best_first_search_food.foodY):
-                best_first_search_food.randomFood(best_first_search.body)
-                best_first_search.ate = True
-
-            pg.draw.rect(SA1, (255, 0, 0),
-                         pg.Rect(best_first_search_food.foodX * squareSizeSide,
-                                 best_first_search_food.foodY * squareSizeSide,
-                                 squareSizeSide, squareSizeSide))
-
-            DrawSnake.DrawSnake(SAP, player.body, squareSizeSide)
-
-            if (player.body[0][0] == player_food.foodX) and (player.body[0][1] == player_food.foodY):
-                player_food.randomFood(player.body)
-                player.ate = True
-
-            pg.draw.rect(SAP, (255, 0, 0),
-                         pg.Rect(player_food.foodX * squareSizeSide, player_food.foodY * squareSizeSide,
-                                 squareSizeSide, squareSizeSide))
+            drawing(SA3, a_star, a_star_food, squareSizeSide)
+            drawing(SA5, random_search_plus, random_search_plus_food, squareSizeSide)
+            drawing(SA1, best_first_search, best_first_search_food, squareSizeSide)
+            drawing(SAP, player, player_food, squareSizeSide)
 
             screen.blit(SA1, (10, 5))
             screen.blit(SAP, (boardSideSize + 30, 5))

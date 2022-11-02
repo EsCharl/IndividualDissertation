@@ -1,5 +1,3 @@
-import random
-
 import pygame
 
 from Directions import Directions
@@ -8,7 +6,6 @@ from SnakeLogic import SnakeLogic
 
 class Player(SnakeLogic):
     def __init__(self):
-        self.direction = Directions.RIGHT
         self.reset()
 
     def reset(self):

@@ -5,8 +5,8 @@ import Constants
 
 class SnakeLogic:
     def checkSnake(self):
-        if self.body[0][0] < 0 or self.body[0][1] > Constants.SQUARE_AMOUNT - 1 or self.body[0][
-            0] > Constants.SQUARE_AMOUNT - 1 or self.body[0][1] < 0:
+        if self.body[0][0] < 0 or self.body[0][1] > Constants.SQUARE_AMOUNT - 1 or self.body[0][0] \
+                > Constants.SQUARE_AMOUNT - 1 or self.body[0][1] < 0:
             self.reset()
         for x in self.body[1:]:
             if self.body[0] == x:
