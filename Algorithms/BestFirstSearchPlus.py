@@ -9,10 +9,8 @@ class BestFirstSearchPlus(SnakeLogic):
     def move(self, food):
         fixed_step = None
         potential_steps = []
-        # cost_h is the cheapest path from the head to the food
 
-        # this ensures that the snake could go to all position
-        # than the borders
+        # this ensures that the snake could go to all position other than the borders
         if self.body[0][0] + 1 < SQUARE_AMOUNT:
             potential_steps.append([self.body[0][0] + 1, self.body[0][1]])
         if self.body[0][0] - 1 >= 0:
