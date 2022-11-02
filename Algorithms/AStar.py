@@ -27,17 +27,17 @@ class AStar(SnakeLogic):
 
     # This is wrong as there is some part where it have the answer but it doesn't pass in
     def findPath(self, checked, food):
-        path = []
-        index = 0
 
         while True:
             last_added_index = 0
+            path = []
+            index = 0
             for i in checked:
                 if not path:
                     cost = i[0]
                     path.append(i[1])
                 else:
-                    if i[0] < cost and (abs(path[index][0] - i[1][0]) + abs(path[index][1] - i[1][1]) == 1):
+                    if abs(path[index][0] - i[1][0]) + abs(path[index][1] - i[1][1]) == 1:
                         path.append(i[1])
                         cost = i[0]
                         index += 1
