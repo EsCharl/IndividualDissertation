@@ -3,12 +3,12 @@ from Directions import Directions
 from SnakeLogic import SnakeLogic
 
 
-class DepthFirstSearch(SnakeLogic):
+class AlmightyMove(SnakeLogic):
     def __init__(self):
         self.reset()
 
     def reset(self):
-        super(DepthFirstSearch, self).reset()
+        super(AlmightyMove, self).reset()
         self.moved_horizontal = False
         if self.body[0][1] / 2 < SQUARE_AMOUNT / 2:
             self.vertical_direction = Directions.DOWN

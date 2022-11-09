@@ -6,6 +6,7 @@ import DrawSnake
 import GameBoardSize
 import PixelSize
 import Player
+from Algorithms.AlmightyMove import AlmightyMove
 from Algorithms.AStar import AStar
 from Algorithms.BestFirstSearchPlus import BestFirstSearchPlus
 from Algorithms.RandomSearchPlus import RandomSearchPlus
@@ -64,6 +65,9 @@ class GameScreen:
         random_search_plus = RandomSearchPlus()
         random_search_plus_food = Food(random_search_plus.body)
 
+        almighty_move = AlmightyMove()
+        almighty_move_food = Food(almighty_move.body)
+
         done = False
         while not done:
             for event in pg.event.get():
@@ -100,9 +104,11 @@ class GameScreen:
 
             best_first_search.move(best_first_search_food)
             random_search_plus.move()
+            almighty_move.move()
 
             drawing(SA3, a_star, a_star_food, squareSizeSide)
             drawing(SA5, random_search_plus, random_search_plus_food, squareSizeSide)
+            drawing(SA4, almighty_move, almighty_move_food, squareSizeSide)
             drawing(SA1, best_first_search, best_first_search_food, squareSizeSide)
             drawing(SAP, player, player_food, squareSizeSide)
 
