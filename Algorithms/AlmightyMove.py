@@ -10,14 +10,11 @@ class AlmightyMove(SnakeLogic):
     def reset(self):
         super(AlmightyMove, self).reset()
         self.moved_horizontal = False
-        if self.body[0][1] / 2 < SQUARE_AMOUNT / 2:
-            self.vertical_direction = Directions.DOWN
-        else:
+        if self.body[0][1] % 2:
             self.vertical_direction = Directions.UP
-        if self.body[0][0] / 2 < SQUARE_AMOUNT / 2:
-            self.horizontal_direction = Directions.RIGHT
         else:
-            self.horizontal_direction = Directions.LEFT
+            self.vertical_direction = Directions.DOWN
+        self.horizontal_direction = Directions.RIGHT
 
     # def move(self):
     #     step = None
@@ -84,7 +81,16 @@ class AlmightyMove(SnakeLogic):
             if self.body[0][0] == 0 and self.horizontal_direction == Directions.LEFT:
                 self.horizontal_direction = Directions.RIGHT
 
-            if (self.body[0][1] + 1 in self.body or ((self.body[0][1] == SQUARE_AMOUNT - 2 or self.body[0][1] == 0) and not self.moved_horizontal)) and self.horizontal_direction == Directions.RIGHT:
+            # this part moves decide the moves for the snake
+            if self.body[0][1] == SQUARE_AMOUNT - 1 and not self.body[0][0] == 0:
+                step = self.decide_horizontal(self.horizontal_direction)
+            elif self.body[0] == [SQUARE_AMOUNT - 1, SQUARE_AMOUNT - 2]:
+                self.vertical_direction = Directions.DOWN
+                step = self.decide_vertical(self.vertical_direction)
+            elif self.body[0] == [0, SQUARE_AMOUNT - 1]:
+                step = self.decide_vertical(self.vertical_direction)
+            elif (self.body[0][1] + 1 in self.body or ((self.body[0][1] == SQUARE_AMOUNT - 2 or self.body[0][
+                1] == 0) and not self.moved_horizontal)) and self.horizontal_direction == Directions.RIGHT:
                 step = self.decide_horizontal(self.horizontal_direction)
                 self.moved_horizontal = True
             else:
@@ -92,7 +98,8 @@ class AlmightyMove(SnakeLogic):
                 self.moved_horizontal = False
 
         # this part checks if the step being made is it require a reset.
-        if step[0] > SQUARE_AMOUNT - 1 or step[1] > SQUARE_AMOUNT - 1 or step[0] < 0 or step[1] < 0 or step in self.body:
+        if step[0] > SQUARE_AMOUNT - 1 or step[1] > SQUARE_AMOUNT - 1 or step[0] < 0 or step[
+            1] < 0 or step in self.body:
             print("t", self.body, step)
             self.reset()
         else:
@@ -104,12 +111,11 @@ class AlmightyMove(SnakeLogic):
         self.moved_horizontal = True
         if direction == Directions.LEFT:
             return [self.body[0][0] - 1, self.body[0][1]]
-        else:
+        elif direction == Directions.RIGHT:
             return [self.body[0][0] + 1, self.body[0][1]]
-
 
     def decide_vertical(self, direction):
         if direction == Directions.UP:
             return [self.body[0][0], self.body[0][1] - 1]
-        else:
+        elif direction == Directions.DOWN:
             return [self.body[0][0], self.body[0][1] + 1]
