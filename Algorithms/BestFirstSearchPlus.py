@@ -8,17 +8,9 @@ class BestFirstSearchPlus(SnakeLogic):
 
     def move(self, food):
         fixed_step = None
-        potential_steps = []
 
         # this ensures that the snake could go to all position other than the borders
-        if self.body[0][0] + 1 < SQUARE_AMOUNT:
-            potential_steps.append([self.body[0][0] + 1, self.body[0][1]])
-        if self.body[0][0] - 1 >= 0:
-            potential_steps.append([self.body[0][0] - 1, self.body[0][1]])
-        if self.body[0][1] + 1 < SQUARE_AMOUNT:
-            potential_steps.append([self.body[0][0], self.body[0][1] + 1])
-        if self.body[0][1] - 1 >= 0:
-            potential_steps.append([self.body[0][0], self.body[0][1] -1])
+        potential_steps = self.generate_all_potential_steps()
 
         # this part is used to sort out the position where it doesn't reach the snake body
         steps = []

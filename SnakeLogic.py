@@ -4,6 +4,18 @@ import Constants
 
 
 class SnakeLogic:
+    def generate_all_potential_steps(self):
+        steps = []
+        if self.body[0][0] + 1 < Constants.SQUARE_AMOUNT:
+            steps.append([self.body[0][0] + 1, self.body[0][1]])
+        if self.body[0][0] - 1 >= 0:
+            steps.append([self.body[0][0] - 1, self.body[0][1]])
+        if self.body[0][1] + 1 < Constants.SQUARE_AMOUNT:
+            steps.append([self.body[0][0], self.body[0][1] + 1])
+        if self.body[0][1] - 1 >= 0:
+            steps.append([self.body[0][0], self.body[0][1] - 1])
+        return steps
+
     def checkSnake(self):
         if self.body[0][0] < 0 or self.body[0][1] > Constants.SQUARE_AMOUNT - 1 or self.body[0][0] \
                 > Constants.SQUARE_AMOUNT - 1 or self.body[0][1] < 0:

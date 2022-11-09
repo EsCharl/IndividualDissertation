@@ -9,16 +9,7 @@ class RandomSearchPlus(SnakeLogic):
         self.reset()
 
     def move(self):
-        potential_steps = []
-
-        if self.body[0][0] + 1 < SQUARE_AMOUNT:
-            potential_steps.append([self.body[0][0] + 1, self.body[0][1]])
-        if self.body[0][0] - 1 >= 0:
-            potential_steps.append([self.body[0][0] - 1, self.body[0][1]])
-        if self.body[0][1] + 1 < SQUARE_AMOUNT:
-            potential_steps.append([self.body[0][0], self.body[0][1] + 1])
-        if self.body[0][1] - 1 >= 0:
-            potential_steps.append([self.body[0][0], self.body[0][1] -1])
+        potential_steps = self.generate_all_potential_steps()
 
         steps = []
         for u in potential_steps:

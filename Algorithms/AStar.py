@@ -34,21 +34,20 @@ class AStar(SnakeLogic):
             index = 0
             for i in checked:
                 if not path:
-                    cost = i[0]
                     path.append(i[1])
                 else:
                     if abs(path[index][0] - i[1][0]) + abs(path[index][1] - i[1][1]) == 1:
                         path.append(i[1])
-                        cost = i[0]
                         index += 1
                         last_added_index = checked.index(i)
             if [food.foodX, food.foodY] in path:
-                print("FP",path)
+                # print("FP",path)
                 return path
             else:
-                print(checked)
-                print(path)
-                print(checked.pop(last_added_index))
+                #     print(checked)
+                #     print(path)
+                #     print(checked.pop(last_added_index))
+                checked.pop(last_added_index)
 
     def getPath(self, food):
         found_food = False
@@ -81,21 +80,21 @@ class AStar(SnakeLogic):
                             if x[1] == [food.foodX, food.foodY]:
                                 checked.append(x)
                                 found_food = True
-                                print("F",[food.foodX, food.foodY])
+                                # print("F", [food.foodX, food.foodY])
                                 self.path = self.findPath(checked, food)
                                 break
 
                 soft_checked.sort()
             except IndexError:
-                print(checked)
+                # print(checked)
                 if not checked == []:
                     self.path.append(checked[0][1])
-                    print("t",self.path)
+                    # print("t", self.path)
                 else:
                     self.reset()
                     self.getPath(food)
                 break
 
     def move(self):
-        self.body.insert(0,self.path.pop(0))
+        self.body.insert(0, self.path.pop(0))
         self.checkAte()
