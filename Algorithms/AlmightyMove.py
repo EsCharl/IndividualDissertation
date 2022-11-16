@@ -12,13 +12,32 @@ class AlmightyMove(SnakeLogic):
         self.template_path_1 = []
         self.generate_template_path()
 
+    def reset(self):
+        super(AlmightyMove, self).reset()
+        self.template = 1
+
     def generate_template_path(self):
         # this is odd number game-board
         if SQUARE_AMOUNT % 2:
-            # left template first
+            # left template
             for y in range(SQUARE_AMOUNT):
-                for x in range(SQUARE_AMOUNT):
-                    break
+                for x in range(SQUARE_AMOUNT - 1):
+                    if x % 2:
+                        self.template_path_0.append([[x, y], Directions.DOWN])
+                    else:
+                        self.template_path_0.append([[x, y], Directions.UP])
+
+            for i in range(len(self.template_path_0)):
+                if self.template_path_0[i][0][1] == SQUARE_AMOUNT - 1:
+                    self.template_path_0[i][1] = Directions.LEFT
+
+            # right template
+            for y in range(SQUARE_AMOUNT):
+                for x in range(1, SQUARE_AMOUNT):
+                    if x % 2:
+                        self.template_path_0.append([[x, y], Directions.DOWN])
+                    else:
+                        self.template_path_0.append([[x, y], Directions.UP])
 
         else:
             # this is for even number game-board
@@ -26,23 +45,19 @@ class AlmightyMove(SnakeLogic):
                 for y in range(SQUARE_AMOUNT):
                     # odd
                     if x % 2:
-                        self.template_path_0.append([[x,y],Directions.DOWN])
+                        self.template_path_0.append([[x, y], Directions.DOWN])
                     # even
                     else:
-                        self.template_path_0.append([[x,y],Directions.UP])
+                        self.template_path_0.append([[x, y], Directions.UP])
 
             # this part changes the direction
-            for i in range(len(self.template_path_0)):
-                if self.template_path_0[i][0][1] == SQUARE_AMOUNT - 1:
-                    self.template_path_0[i][1] = Directions.LEFT
-                elif self.template_path_0[i][0][1] == 0 and not self.template_path_0[i][0][0] % 2:
-                    self.template_path_0[i][1] = Directions.RIGHT
-                elif self.template_path_0[i][0][0] % 2 and self.template_path_0[i][0][1] == SQUARE_AMOUNT - 2 and not self.template_path_0[i][0][0] == SQUARE_AMOUNT - 1:
-                    self.template_path_0[i][1] = Directions.RIGHT
-
-    def reset(self):
-        super(AlmightyMove, self).reset()
-        self.template = 1
+            for i in self.template_path_0:
+                if i[0][1] == SQUARE_AMOUNT - 1:
+                    i[1] = Directions.LEFT
+                elif i[0][1] == 0 and not i[0][0] % 2:
+                    i[1] = Directions.RIGHT
+                elif i[0][0] % 2 and i[0][1] == SQUARE_AMOUNT - 2 and not i[0][0] == SQUARE_AMOUNT - 1:
+                    i[1] = Directions.RIGHT
 
     def move(self):
         filtered_steps = []
