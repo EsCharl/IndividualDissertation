@@ -1,3 +1,5 @@
+import random
+
 from Constants import SQUARE_AMOUNT
 from Directions import Directions
 from SnakeLogic import SnakeLogic
@@ -17,6 +19,7 @@ class AlmightyMove(SnakeLogic):
             for y in range(SQUARE_AMOUNT):
                 for x in range(SQUARE_AMOUNT):
                     break
+
         else:
             # this is for even number game-board
             for x in range(SQUARE_AMOUNT):
@@ -86,6 +89,10 @@ class AlmightyMove(SnakeLogic):
                 elif preferred_direction == Directions.RIGHT:
                     preferred_direction = Directions.LEFT
                 preferred_step = self.check_direction_possible(filtered_steps, preferred_direction)
+
+            # this is just in case it can't find any steps
+            if not preferred_step:
+                preferred_step = random.choice(filtered_steps)
 
             # # this parts changes the direction when it is on the bottom edges
             # if self.body[0] == [SQUARE_AMOUNT - 1, SQUARE_AMOUNT - 1] or self.body[0] == [0, SQUARE_AMOUNT - 1]:
