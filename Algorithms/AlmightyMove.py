@@ -77,11 +77,11 @@ class AlmightyMove(SnakeLogic):
 
             # this part changes the direction
             for i in self.template_path_0:
-                if i[0][1] == SQUARE_AMOUNT - 1:
+                if i[0][1] == SQUARE_AMOUNT - 1 and not i[0] == [0, SQUARE_AMOUNT - 1]:
                     i[1] = Directions.LEFT
                 elif i[0][1] == 0 and not i[0][0] % 2:
                     i[1] = Directions.RIGHT
-                elif i[0][0] % 2 and i[0][1] == SQUARE_AMOUNT - 2 and not i[0][0] == SQUARE_AMOUNT - 1:
+                elif i[0][0] % 2 and i[0][1] == SQUARE_AMOUNT - 2 and not i[0] == [SQUARE_AMOUNT - 1, SQUARE_AMOUNT - 2]:
                     i[1] = Directions.RIGHT
 
     def move(self):
@@ -111,14 +111,10 @@ class AlmightyMove(SnakeLogic):
                         break
 
             else:
-                print("t", self.body[0])
-                print(self.template_path_0)
                 for i in self.template_path_0:
                     if i[0] == self.body[0]:
                         preferred_direction = i[1]
                         break
-                print(filtered_steps)
-                print(self.check_direction_possible(filtered_steps, preferred_direction))
 
             preferred_step = self.check_direction_possible(filtered_steps, preferred_direction)
 
@@ -144,10 +140,9 @@ class AlmightyMove(SnakeLogic):
             #         preferred_direction = Directions.LEFT
             #     preferred_step = self.check_direction_possible(filtered_steps, preferred_direction)
             #
-            # # this is just in case it can't find any steps
-            # if not preferred_step:
-            #     preferred_step = random.choice(filtered_steps)
-
+            # this is just in case it can't find any steps
+            if not preferred_step:
+                preferred_step = random.choice(filtered_steps)
 
         else:
             for i in self.template_path_0:
