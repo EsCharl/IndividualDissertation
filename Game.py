@@ -44,7 +44,7 @@ def drawGame(canvas, snake, snake_food, square_size_side):
 
 
 class GameScreen:
-    def drawUI(self, canvas, S1, S2, S3, S4, S5, game_board_size):
+    def drawUI(self, canvas, S1, S2, S3, S4, S5, game_board_size, time):
 
         score_rect_1 = self.gamer1Font.render('Score: ' + str(S1), True, (255, 0, 0))
         score_rect_2 = self.gamer2Font.render('Score: ' + str(S2), True, (255, 0, 0))
@@ -52,20 +52,25 @@ class GameScreen:
         score_rect_4 = self.gamer4Font.render('Score: ' + str(S4), True, (255, 0, 0))
         score_rect_5 = self.gamer5Font.render('Score: ' + str(S5), True, (255, 0, 0))
 
+        time = self.gamer5Font.render(str(int(time * 60 - (datetime.now() - self.game_start).total_seconds())), True, (255, 255, 255))
+
         canvas.blit(score_rect_1, (0, 0))
         canvas.blit(score_rect_2, (game_board_size / 2 - 20, 0))
         canvas.blit(score_rect_3, (game_board_size - 50, 0))
         canvas.blit(score_rect_4, (0, game_board_size - 20))
         canvas.blit(score_rect_5, (game_board_size - 50, game_board_size - 20))
 
+        canvas.blit(time, (game_board_size/2, game_board_size/2))
+
     def __init__(self, w=640, h=480, time=3):
         pg.init()
 
-        self.gamer1Font = pygame.font.SysFont('Arial', int(25*h/768), bold=True)
-        self.gamer2Font = pygame.font.SysFont('Arial', int(25*h/768), bold=True)
-        self.gamer3Font = pygame.font.SysFont('Arial', int(25*h/768), bold=True)
-        self.gamer4Font = pygame.font.SysFont('Arial', int(25*h/768), bold=True)
-        self.gamer5Font = pygame.font.SysFont('Arial', int(25*h/768), bold=True)
+        self.gamer1Font = pygame.font.SysFont('Arial', int(25 * h / 768), bold=True)
+        self.gamer2Font = pygame.font.SysFont('Arial', int(25 * h / 768), bold=True)
+        self.gamer3Font = pygame.font.SysFont('Arial', int(25 * h / 768), bold=True)
+        self.gamer4Font = pygame.font.SysFont('Arial', int(25 * h / 768), bold=True)
+        self.gamer5Font = pygame.font.SysFont('Arial', int(25 * h / 768), bold=True)
+        self.timerFont = pygame.font.SysFont('Arial', int(30 * h / 768), bold=True)
 
         self.w = w
         self.h = h
@@ -117,6 +122,8 @@ class GameScreen:
 
         t = Timer(time * 60, gameEnd)
         t.start()
+
+        self.game_start = datetime.now()
 
         while not self.done:
             try:
@@ -172,7 +179,7 @@ class GameScreen:
                 screen.blit(SA5, (50 + (boardSideSize * 2), boardSideSize + 10))
 
                 # this is for the User interface (score, time)
-                self.drawUI(UI, A1Score, PScore, A3Score, A4Score, A5Score, boardSideSize)
+                self.drawUI(UI, A1Score, PScore, A3Score, A4Score, A5Score, boardSideSize, time)
 
                 screen.blit(UI, (boardSideSize + 30, boardSideSize + 10))
 
