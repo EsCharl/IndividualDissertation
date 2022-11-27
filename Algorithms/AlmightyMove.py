@@ -120,28 +120,33 @@ class AlmightyMove(SnakeLogic):
 
             ## needs adding changing
 
-            # # if can't get a preferred_step
-            # if not preferred_step and filtered_steps:
-            #     if self.body[0][1] < SQUARE_AMOUNT - 1 and [self.body[0][0] + 1, self.body[0][1]] in filtered_steps:
-            #         preferred_step = [self.body[0][0] + 1, self.body[0][1]]
-            #     elif self.body[0][1] == SQUARE_AMOUNT - 1 and [self.body[0][0], self.body[0][1] - 1] in filtered_steps:
-            #         preferred_step = [self.body[0][0], self.body[0][1] - 1]
-            #
-            # if not preferred_step and len(filtered_steps) == 1:
-            #     preferred_step = filtered_steps[0]
-            # elif not preferred_step and filtered_steps:
-            #     if preferred_direction == Directions.DOWN:
-            #         preferred_direction = Directions.UP
-            #     elif preferred_direction == Directions.UP:
-            #         preferred_direction = Directions.DOWN
-            #     elif preferred_direction == Directions.LEFT:
-            #         preferred_direction = Directions.RIGHT
-            #     elif preferred_direction == Directions.RIGHT:
-            #         preferred_direction = Directions.LEFT
-            #     preferred_step = self.check_direction_possible(filtered_steps, preferred_direction)
-            #
-            # this is just in case it can't find any steps
-            if not preferred_step:
+            # if can't get a preferred_step (might need to consider changing the template if the snake gone to another template path.)
+            if not preferred_step and filtered_steps:
+                # if self.body[0][1] > 0 and [self.body[0][0] - 1, self.body[0][1]] in filtered_steps and self.template == 0:
+                #     preferred_step = [self.body[0][0] - 1, self.body[0][1]]
+                if self.body[0][1] < SQUARE_AMOUNT - 1 and [self.body[0][0] + 1, self.body[0][1]] in filtered_steps:
+                    preferred_step = [self.body[0][0] + 1, self.body[0][1]]
+                # this is for if the snake is supposed to go right, but it is blocked it will go down
+                elif preferred_direction == Directions.RIGHT and [self.body[0][0], self.body[0][1] + 1] in filtered_steps:
+                    preferred_step = [self.body[0][0], self.body[0][1] + 1]
+
+            # if there is only 1 choice left.
+            if not preferred_step and len(filtered_steps) == 1:
+                preferred_step = filtered_steps[0]
+            # this part is used to get the opposite direction where it is preferred (worse case)
+            elif not preferred_step and filtered_steps:
+                if preferred_direction == Directions.DOWN:
+                    preferred_direction = Directions.UP
+                elif preferred_direction == Directions.UP:
+                    preferred_direction = Directions.DOWN
+                elif preferred_direction == Directions.LEFT:
+                    preferred_direction = Directions.RIGHT
+                elif preferred_direction == Directions.RIGHT:
+                    preferred_direction = Directions.LEFT
+                preferred_step = self.check_direction_possible(filtered_steps, preferred_direction)
+
+            # this is just in case it can't find any steps (catcher)
+            if not preferred_step and filtered_steps:
                 preferred_step = random.choice(filtered_steps)
 
         else:
@@ -156,8 +161,6 @@ class AlmightyMove(SnakeLogic):
             if not preferred_step and filtered_steps:
                 if self.body[0][1] < SQUARE_AMOUNT - 1 and [self.body[0][0] + 1, self.body[0][1]] in filtered_steps:
                     preferred_step = [self.body[0][0] + 1, self.body[0][1]]
-                elif self.body[0][1] == SQUARE_AMOUNT - 1 and [self.body[0][0], self.body[0][1] - 1] in filtered_steps:
-                    preferred_step = [self.body[0][0], self.body[0][1] - 1]
 
             if not preferred_step and len(filtered_steps) == 1:
                 preferred_step = filtered_steps[0]
@@ -173,16 +176,16 @@ class AlmightyMove(SnakeLogic):
                 preferred_step = self.check_direction_possible(filtered_steps, preferred_direction)
 
             # this is just in case it can't find any steps
-            if not preferred_step:
+            if not preferred_step and filtered_steps:
                 preferred_step = random.choice(filtered_steps)
 
         # this part checks if the step being made is it require a reset.
         if preferred_step:
-            print(self.body, preferred_step)
+            # print(self.body, preferred_step)
             self.body.insert(0, preferred_step)
             self.checkAte()
         else:
-            print("t", self.body, preferred_step)
+            # print("t", self.body, preferred_step)
             self.reset()
 
     def check_direction_possible(self, filtered_steps, preferred_direction):

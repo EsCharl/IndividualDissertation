@@ -7,13 +7,13 @@ import tkinter.font as tkFont
 import Game
 import Learning.Learning
 
-if __name__ == '__main__':
+def main():
     pygame.init()
     displayModes = pygame.display.list_modes()
 
     root = tk.Tk()
     root.title("Display Selection")
-    root.resizable(False,False)
+    root.resizable(False, False)
 
     textFont = tkFont.Font(family='Times', size=10)
 
@@ -21,19 +21,20 @@ if __name__ == '__main__':
 
     scrollbar = tk.Scrollbar(root)
 
-    displayListBox.configure(justify="center", font=textFont, selectmode="single", setgrid=True,yscrollcommand=scrollbar.set)
-    displayListBox.grid(row=0,column=1,sticky=tk.NS)
+    displayListBox.configure(justify="center", font=textFont, selectmode="single", setgrid=True,
+                             yscrollcommand=scrollbar.set)
+    displayListBox.grid(row=0, column=1, sticky=tk.NS)
 
     scrollbar.configure(command=displayListBox.yview)
 
     # reason why 1.6 is selected is because it looks better and the borders are viewable
     for i in displayModes:
         if i[0] / i[1] == 1.6:
-            displayListBox.insert(END,i)
+            displayListBox.insert(END, i)
 
     resolutionText = tk.Message(root)
     resolutionText.configure(font=textFont, text="Resolution")
-    resolutionText.grid(row=0,column=0)
+    resolutionText.grid(row=0, column=0)
 
     def LearningOption():
         index = displayListBox.curselection()
@@ -48,7 +49,8 @@ if __name__ == '__main__':
         frame.pack()
 
         startLearningButton = tk.Button(frame)
-        startLearningButton.configure(font=textFont, justify="center", text="Learn Game", command=lambda: options.quit())
+        startLearningButton.configure(font=textFont, justify="center", text="Learn Game",
+                                      command=lambda: options.quit())
         startLearningButton.pack(side="bottom")
 
         options.mainloop()
@@ -79,7 +81,7 @@ if __name__ == '__main__':
         timeListBox.pack(side="top")
 
         startGameButton = tk.Button(frame)
-        startGameButton.configure(font=textFont, justify="center", text= "Start Game", command=lambda: options.quit())
+        startGameButton.configure(font=textFont, justify="center", text="Start Game", command=lambda: options.quit())
         startGameButton.pack(side="bottom")
 
         options.mainloop()
@@ -87,16 +89,18 @@ if __name__ == '__main__':
         timeAmount = timeListBox.get(timeListBox.curselection())
         options.destroy()
 
-        Game.GameScreen(x_display_dim,y_display_dim, timeAmount)
-
+        Game.GameScreen(x_display_dim, y_display_dim, timeAmount)
 
     buttonGame = tk.Button(root)
-    buttonGame.configure(font=textFont, justify="center",text="Game", command=GameOption)
-    buttonGame.grid(row=1,column=0)
+    buttonGame.configure(font=textFont, justify="center", text="Game", command=GameOption)
+    buttonGame.grid(row=1, column=0)
 
     buttonLearn = tk.Button(root)
     buttonLearn.configure(font=textFont, justify="center", text="Learn", command=LearningOption)
-    buttonLearn.grid(row=1,column=2)
+    buttonLearn.grid(row=1, column=2)
 
     root.mainloop()
+
+if __name__ == '__main__':
+    main()
 
