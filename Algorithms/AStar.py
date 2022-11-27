@@ -6,6 +6,7 @@ class AStar(SnakeLogic):
     def __init__(self):
         self.face_direction = 0
         self.reset()
+        self.defeated = False
 
     def reset(self):
         super(AStar, self).reset()
@@ -92,7 +93,8 @@ class AStar(SnakeLogic):
                     # print("t", self.path)
                 else:
                     self.reset()
-                    self.getPath(food)
+                    # self.getPath(food)
+                    self.defeated = True
                 break
 
     def move(self):

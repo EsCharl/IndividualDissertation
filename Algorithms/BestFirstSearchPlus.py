@@ -5,6 +5,7 @@ from SnakeLogic import SnakeLogic
 class BestFirstSearchPlus(SnakeLogic):
     def __init__(self):
         self.reset()
+        self.defeated = False
 
     def move(self, food):
         fixed_step = None
@@ -37,4 +38,5 @@ class BestFirstSearchPlus(SnakeLogic):
             self.checkAte()
         else:
             self.reset()
+            self.defeated = True
         return self.body

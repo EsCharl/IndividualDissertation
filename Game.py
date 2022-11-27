@@ -159,7 +159,8 @@ class GameScreen:
                 # random_search_plus.checkSnake()
                 # a_star.checkSnake()
 
-                a_star.move()
+                if a_star.path:
+                    a_star.move()
 
                 best_first_search.move(best_first_search_food)
                 random_search_plus.move()

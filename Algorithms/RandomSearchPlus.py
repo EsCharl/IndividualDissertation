@@ -7,6 +7,7 @@ from SnakeLogic import SnakeLogic
 class RandomSearchPlus(SnakeLogic):
     def __init__(self):
         self.reset()
+        self.defeated = False
 
     def move(self):
         potential_steps = self.generate_all_potential_steps()
@@ -25,4 +26,5 @@ class RandomSearchPlus(SnakeLogic):
             self.checkAte()
         else:
             self.reset()
+            self.defeated = True
         return self.body

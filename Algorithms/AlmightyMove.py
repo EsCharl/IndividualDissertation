@@ -11,6 +11,7 @@ class AlmightyMove(SnakeLogic):
         self.template_path_0 = []
         self.template_path_1 = []
         self.generate_template_path()
+        self.defeated = False
 
     def reset(self):
         super(AlmightyMove, self).reset()
@@ -187,6 +188,7 @@ class AlmightyMove(SnakeLogic):
         else:
             # print("t", self.body, preferred_step)
             self.reset()
+            self.defeated = True
 
     def check_direction_possible(self, filtered_steps, preferred_direction):
         preferred_step = None
