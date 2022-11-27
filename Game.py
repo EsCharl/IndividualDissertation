@@ -2,7 +2,6 @@ import os.path
 
 import pygame as pg
 
-# A simple sprite, just to have something moving on the screen.
 import pygame.font
 
 import DrawSnake
@@ -46,11 +45,11 @@ def drawGame(canvas, snake, snake_food, square_size_side):
 class GameScreen:
     def drawUI(self, canvas, S1, S2, S3, S4, S5, game_board_size, time):
 
-        score_rect_1 = self.gamer1Font.render('Score: ' + str(S1), True, (255, 0, 0))
-        score_rect_2 = self.gamer2Font.render('Score: ' + str(S2), True, (255, 0, 0))
-        score_rect_3 = self.gamer3Font.render('Score: ' + str(S3), True, (255, 0, 0))
-        score_rect_4 = self.gamer4Font.render('Score: ' + str(S4), True, (255, 0, 0))
-        score_rect_5 = self.gamer5Font.render('Score: ' + str(S5), True, (255, 0, 0))
+        score_rect_1 = self.gamer1Font.render(str(S1), True, (255, 0, 0))
+        score_rect_2 = self.gamer2Font.render(str(S2), True, (255, 0, 0))
+        score_rect_3 = self.gamer3Font.render(str(S3), True, (255, 0, 0))
+        score_rect_4 = self.gamer4Font.render(str(S4), True, (255, 0, 0))
+        score_rect_5 = self.gamer5Font.render(str(S5), True, (255, 0, 0))
 
         time = self.gamer5Font.render(str(int(time * 60 - (datetime.now() - self.game_start).total_seconds())), True, (255, 255, 255))
 
