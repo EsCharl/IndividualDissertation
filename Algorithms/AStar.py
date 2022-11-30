@@ -97,6 +97,6 @@ class AStar(SnakeLogic):
                     self.defeated = True
                 break
 
-    def move(self):
+    def move(self, food):
         self.body.insert(0, self.path.pop(0))
-        self.checkAte()
+        self.checkAte(food, self.body)

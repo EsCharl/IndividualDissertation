@@ -33,8 +33,6 @@ class SnakeLogic:
                 self.body.append([self.body[x][0], self.body[x][1] + 1])
         self.ate = False
 
-    def checkAte(self):
-        if self.ate:
-            self.ate = False
-        else:
+    def checkAte(self, food, body):
+        if not body[0] == [food.foodX, food.foodY]:
             self.body.pop()

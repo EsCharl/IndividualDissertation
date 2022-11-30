@@ -9,7 +9,7 @@ class RandomSearchPlus(SnakeLogic):
         self.reset()
         self.defeated = False
 
-    def move(self):
+    def move(self, food):
         potential_steps = self.generate_all_potential_steps()
 
         steps = []
@@ -23,7 +23,7 @@ class RandomSearchPlus(SnakeLogic):
 
         if steps:
             self.body.insert(0, steps[random.randint(0,len(steps)-1)])
-            self.checkAte()
+            self.checkAte(food, self.body)
         else:
             self.reset()
             self.defeated = True

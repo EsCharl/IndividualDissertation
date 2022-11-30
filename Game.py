@@ -31,7 +31,6 @@ def drawGame(canvas, snake, snake_food, square_size_side):
     if (snake.body[0][0] == snake_food.foodX) and (snake.body[0][1] == snake_food.foodY):
         score = 1
         snake_food.randomFood(snake.body)
-        snake.ate = True
 
     # draws the food
     pg.draw.rect(canvas, (255, 0, 0),
@@ -152,7 +151,7 @@ class GameScreen:
                 if not a_star.path:
                     a_star.getPath(a_star_food)
 
-                player.checkAte()
+                player.checkAte(player_food, player.body)
                 player.checkSnake()
 
                 # best_first_search.checkSnake()
@@ -160,11 +159,11 @@ class GameScreen:
                 # a_star.checkSnake()
 
                 if a_star.path:
-                    a_star.move()
+                    a_star.move(a_star_food)
 
                 best_first_search.move(best_first_search_food)
-                random_search_plus.move()
-                almighty_move.move()
+                random_search_plus.move(random_search_plus_food)
+                almighty_move.move(almighty_move_food)
 
                 A1Score += drawGame(SA1, best_first_search, best_first_search_food, squareSizeSide)
                 PScore += drawGame(SAP, player, player_food, squareSizeSide)

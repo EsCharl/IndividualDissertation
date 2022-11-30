@@ -85,7 +85,7 @@ class AlmightyMove(SnakeLogic):
                 elif i[0][0] % 2 and i[0][1] == SQUARE_AMOUNT - 2 and not i[0] == [SQUARE_AMOUNT - 1, SQUARE_AMOUNT - 2]:
                     i[1] = Directions.RIGHT
 
-    def move(self):
+    def move(self, food):
         preferred_direction = None
         filtered_steps = []
         potential_steps = self.generate_all_potential_steps()
@@ -184,7 +184,7 @@ class AlmightyMove(SnakeLogic):
         if preferred_step:
             # print(self.body, preferred_step)
             self.body.insert(0, preferred_step)
-            self.checkAte()
+            self.checkAte(food, self.body)
         else:
             # print("t", self.body, preferred_step)
             self.reset()

@@ -17,29 +17,32 @@ SPEED = 20
 
 def drawing(canvas, snake, snake_food, square_size_side):
     DrawSnake.DrawSnake(canvas, snake.body, square_size_side)
+    ate = False
 
     if (snake.body[0][0] == snake_food.foodX) and (snake.body[0][1] == snake_food.foodY):
         snake_food.randomFood(snake.body)
-        snake.ate = True
+        ate = True
 
     pg.draw.rect(canvas, (255, 0, 0),
                  pg.Rect(snake_food.foodX * square_size_side, snake_food.foodY * square_size_side,
                          square_size_side, square_size_side))
 
-    if snake.ate:
+    if ate:
         return True
     else:
         return False
 
+
 class LearningScreen:
     def update_other_algo(self, main_algo, algo1, algo2, algo3):
-        algo1.body = copy.deepcopy(main_algo.body)
-        algo2.body = copy.deepcopy(main_algo.body)
-        algo3.body = copy.deepcopy(main_algo.body)
+        algo1.body = copy.copy(main_algo.body)
+        algo2.body = copy.copy(main_algo.body)
+        algo3.body = copy.copy(main_algo.body)
 
         algo1.defeated = False
         algo2.defeated = False
         algo3.defeated = False
+        main_algo.defeated = False
 
     def update_other_food(self, main_food, algo1food, algo2food, algo3food):
         algo1food.foodX = main_food.foodX
@@ -91,6 +94,7 @@ class LearningScreen:
         done = False
         while not done:
             try:
+                found_solution = False
                 for event in pg.event.get():
                     if event.type == pg.QUIT:
                         done = True
@@ -106,46 +110,64 @@ class LearningScreen:
 
                 all_sprites.draw(screen)
 
-                if not a_star.defeated:
+                if not a_star.defeated and not found_solution:
                     if not a_star.path:
                         a_star.getPath(a_star_food)
 
                     if a_star.path:
-                        a_star.move()
+                        a_star.move(a_star_food)
                     if drawing(SA3, a_star, a_star_food, squareSizeSide):
                         print("a-star")
+                        found_solution = True
                         self.update_other_algo(a_star, best_first_search_plus, random_search_plus, almighty_move)
-                        self.update_other_food(a_star_food, best_first_search_plus_food, random_search_plus_food, almighty_move_food)
+                        self.update_other_food(a_star_food, best_first_search_plus_food, random_search_plus_food,
+                                               almighty_move_food)
+                        print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
+                              len(random_search_plus.body))
+                        a_star.path = []
 
-                if not best_first_search_plus.defeated:
+                if not best_first_search_plus.defeated and not found_solution:
                     best_first_search_plus.move(best_first_search_plus_food)
                     if drawing(SA1, best_first_search_plus, best_first_search_plus_food, squareSizeSide):
                         print("best first search")
+                        found_solution = True
                         self.update_other_algo(best_first_search_plus, a_star, random_search_plus, almighty_move)
-                        self.update_other_food(best_first_search_plus_food, a_star_food, random_search_plus_food, almighty_move_food)
+                        self.update_other_food(best_first_search_plus_food, a_star_food, random_search_plus_food,
+                                               almighty_move_food)
+                        print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
+                              len(random_search_plus.body))
+                        a_star.path = []
 
-                if not random_search_plus.defeated:
-                    random_search_plus.move()
+                if not random_search_plus.defeated and not found_solution:
+                    random_search_plus.move(random_search_plus_food)
                     if drawing(SA5, random_search_plus, random_search_plus_food, squareSizeSide):
                         print("random search")
+                        found_solution = True
                         self.update_other_algo(random_search_plus, best_first_search_plus, a_star, almighty_move)
-                        self.update_other_food(random_search_plus_food, best_first_search_plus_food, a_star_food, almighty_move_food)
+                        self.update_other_food(random_search_plus_food, best_first_search_plus_food, a_star_food,
+                                               almighty_move_food)
+                        print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
+                              len(random_search_plus.body))
+                        a_star.path = []
 
-                if not almighty_move.defeated:
-                    almighty_move.move()
+                if not almighty_move.defeated and not found_solution:
+                    almighty_move.move(almighty_move_food)
                     if drawing(SA4, almighty_move, almighty_move_food, squareSizeSide):
+                        print("almight")
                         self.update_other_algo(almighty_move, best_first_search_plus, random_search_plus, a_star)
-                        self.update_other_food(almighty_move_food, best_first_search_plus_food, random_search_plus_food, a_star_food)
+                        self.update_other_food(almighty_move_food, best_first_search_plus_food, random_search_plus_food,
+                                               a_star_food)
+                        print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
+                              len(random_search_plus.body))
+                        a_star.path = []
 
-                if (almighty_move.defeated and random_search_plus.defeated and a_star.defeated and best_first_search_plus.defeated):
+                if almighty_move.defeated and random_search_plus.defeated and a_star.defeated and best_first_search_plus.defeated:
                     print("g")
                     self.update_other_algo(a_star, best_first_search_plus, random_search_plus, almighty_move)
-                    self.update_other_food(a_star_food, best_first_search_plus_food, random_search_plus_food, almighty_move_food)
-
-                    almighty_move.defeated = False
-                    random_search_plus.defeated = False
-                    a_star.defeated = False
-                    best_first_search_plus.defeated = False
+                    self.update_other_food(a_star_food, best_first_search_plus_food, random_search_plus_food,
+                                           almighty_move_food)
+                    print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
+                          len(random_search_plus.body))
 
                 screen.blit(SA1, (10, 5))
                 screen.blit(SA3, (50 + (boardSideSize * 2), 5))
