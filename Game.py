@@ -20,7 +20,7 @@ from datetime import datetime
 gameBoardColour = (20, 50, 90)
 backgroundColour = (20, 40, 70)
 scoreColour = (20, 40, 70)
-SPEED = 10
+SPEED = 15
 
 
 def drawGame(canvas, snake, snake_food, square_size_side):

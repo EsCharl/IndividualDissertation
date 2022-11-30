@@ -12,7 +12,7 @@ from Food import Food
 import copy
 
 gameBoardColour = (100, 50, 90)
-SPEED = 20
+SPEED = 50
 
 
 def drawing(canvas, snake, snake_food, square_size_side):
