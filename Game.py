@@ -102,6 +102,10 @@ class GameScreen:
         a_star = AStar()
         a_star_food = Food(a_star.body)
 
+        a_star.body = [[1,1], [1,2],[1,3]]
+        a_star_food.foodX = 0
+        a_star_food.foodY = 1
+
         best_first_search = BestFirstSearchPlus()
         best_first_search_food = Food(best_first_search.body)
 

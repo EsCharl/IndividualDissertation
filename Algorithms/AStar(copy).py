@@ -26,6 +26,20 @@ class AStar(SnakeLogic):
 
         return unfulfilled_filtering
 
+    def checkShortPath(self, path):
+        efficient_route = []
+        complete = False
+        while not complete:
+            for index, position in enumerate(path):
+                sub_list = path[index:-1]
+                # used to remove the first element
+                sub_list.pop(0)
+                # check if the there is a shortcut
+                if ([position[0] + 1, position[1]] in sub_list or [position[0] - 1, position[1]] in sub_list or [position[0], position[1] + 1] in sub_list or [position[0], position[1] - 1] in sub_list):
+
+
+        return efficient_route
+    # this function is used to get the path from the head to the food
     def findPath(self, checked, food):
 
         while True:
@@ -40,19 +54,23 @@ class AStar(SnakeLogic):
                         path.append(i[1])
                         index += 1
                         last_added_index = checked.index(i)
+
+            # if the food is found
             if [food.foodX, food.foodY] in path:
                 # print("FP",path)
-                return path
+                return self.checkShortPath(path)
             else:
                 #     print(checked)
                 #     print(path)
                 #     print(checked.pop(last_added_index))
                 checked.pop(last_added_index)
 
+    # used to generate a path from start to end
     def getPath(self, food):
         found_food = False
         checked = []
 
+        # the sorting is to ensure the cost is from lowest to highest.
         soft_checked = self.search(self.body, self.body[0], food)
         soft_checked.sort()
 
@@ -91,5 +109,7 @@ class AStar(SnakeLogic):
                 break
 
     def move(self, food):
+        print(self.path)
+        print(self.body)
         self.body.insert(0, self.path.pop(0))
         self.checkAte(food, self.body)
