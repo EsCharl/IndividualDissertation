@@ -9,7 +9,7 @@ import GameBoardSize
 import PixelSize
 import Player
 from Algorithms.AlmightyMove import AlmightyMove
-from Algorithms.AStar import AStar
+from Algorithms.AStar_copy import AStar
 from Algorithms.BestFirstSearchPlus import BestFirstSearchPlus
 from Algorithms.RandomSearchPlus import RandomSearchPlus
 from Constants import SQUARE_AMOUNT
@@ -102,9 +102,9 @@ class GameScreen:
         a_star = AStar()
         a_star_food = Food(a_star.body)
 
-        a_star.body = [[1,1], [1,2],[1,3]]
-        a_star_food.foodX = 0
-        a_star_food.foodY = 1
+        a_star.body = [[0,3], [0,2],[0,1],[1,1],[2,1],[3,1],[4,1],[4,2],[4,3]]
+        a_star_food.foodX = 3
+        a_star_food.foodY = 0
 
         best_first_search = BestFirstSearchPlus()
         best_first_search_food = Food(best_first_search.body)
