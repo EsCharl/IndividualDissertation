@@ -1,6 +1,7 @@
 from Constants import SQUARE_AMOUNT
 from SnakeLogic import SnakeLogic
 
+
 class Node():
     def __init__(self, parent=None, position=None):
         self.parent = parent
@@ -12,6 +13,7 @@ class Node():
 
     def __eq__(self, other):
         return self.position == other.position
+
 
 class AStar(SnakeLogic):
     def __init__(self):
@@ -33,7 +35,8 @@ class AStar(SnakeLogic):
             for closed in closed_list:
                 if closed.position == x:
                     found = True
-            if not (x in self.body or x[0] < 0 or x[0] > SQUARE_AMOUNT - 1 or x[1] < 0 or x[1] > SQUARE_AMOUNT - 1) and not found:
+            if not (x in self.body or x[0] < 0 or x[0] > SQUARE_AMOUNT - 1 or x[1] < 0 or x[
+                1] > SQUARE_AMOUNT - 1) and not found:
                 for N in open_list:
                     if N.position == x:
                         g = parent.g + 1
@@ -90,6 +93,24 @@ class AStar(SnakeLogic):
                 open_list.extend(self.search_new_node(current_node, food, open_list, closed_list))
 
         if not path:
+            neighbours = self.generate_all_potential_steps()
+            lowest_cost_h = 999999
+            fixed_step = None
+
+            for step in neighbours:
+                print(step, self.body)
+                print(step not in self.body)
+                if step not in self.body:
+                    manhattan_distance = (abs(food.foodX - step[0]) + abs(food.foodY - step[1]))
+                    if manhattan_distance < lowest_cost_h:
+                        lowest_cost_h = manhattan_distance
+                        fixed_step = step
+
+            if fixed_step:
+                self.path.append(fixed_step)
+
+
+        if not self.path:
             self.reset()
             self.defeated = True
             # except IndexError:
