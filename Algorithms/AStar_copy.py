@@ -88,6 +88,7 @@ class AStar(SnakeLogic):
                     path.append(current.position)
                     current = current.parent
                 self.path = path[::-1]
+                self.path.pop(0)
                 open_list = []
             else:
                 open_list.extend(self.search_new_node(current_node, food, open_list, closed_list))
@@ -98,8 +99,6 @@ class AStar(SnakeLogic):
             fixed_step = None
 
             for step in neighbours:
-                print(step, self.body)
-                print(step not in self.body)
                 if step not in self.body:
                     manhattan_distance = (abs(food.foodX - step[0]) + abs(food.foodY - step[1]))
                     if manhattan_distance < lowest_cost_h:
