@@ -14,7 +14,6 @@ class Node():
     def __eq__(self, other):
         return self.position == other.position
 
-
 class AStar(SnakeLogic):
     def __init__(self):
         self.face_direction = 0

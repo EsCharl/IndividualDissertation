@@ -148,8 +148,11 @@ class GameScreen:
 
                 all_sprites.draw(screen)
 
-                if not a_star.path:
-                    a_star.getPath(a_star_food)
+                # uncomment this to make it static
+                # if not a_star.path:
+                #     a_star.getPath(a_star_food)
+
+                a_star.getPath(a_star_food)
 
                 player.checkAte(player_food, player.body)
                 player.checkSnake()
