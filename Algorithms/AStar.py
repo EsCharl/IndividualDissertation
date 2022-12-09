@@ -2,6 +2,18 @@ from Constants import SQUARE_AMOUNT
 from SnakeLogic import SnakeLogic
 
 
+class Node():
+    def __init__(self, parent=None, position=None):
+        self.parent = parent
+        self.position = position
+
+        self.g = 0
+        self.h = 0
+        self.f = 0
+
+    def __eq__(self, other):
+        return self.position == other.position
+
 class AStar(SnakeLogic):
     def __init__(self):
         self.face_direction = 0
@@ -12,83 +24,103 @@ class AStar(SnakeLogic):
         super(AStar, self).reset()
         self.path = []
 
-    # gives all the available tiles that are neighbours of check
-    def search(self, body, check, food):
-        neighbours = [[check[0] + 1, check[1]], [check[0] - 1, check[1]], [check[0], check[1] + 1],
-                      [check[0], check[1] - 1]]
+    def search_new_node(self, parent, food, open_list, closed_list):
+        lists = []
 
-        unfulfilled_filtering = []
+        adjacent = [[parent.position[0] + 1, parent.position[1]], [parent.position[0] - 1, parent.position[1]],
+                    [parent.position[0], parent.position[1] + 1], [parent.position[0], parent.position[1] - 1]]
+        for x in adjacent:
+            found = False
+            for closed in closed_list:
+                if closed.position == x:
+                    found = True
+            if not (x in self.body or x[0] < 0 or x[0] > SQUARE_AMOUNT - 1 or x[1] < 0 or x[
+                1] > SQUARE_AMOUNT - 1) and not found:
+                for N in open_list:
+                    if N.position == x:
+                        g = parent.g + 1
+                        h = abs(x[0] - food.foodX) + abs(x[1] - food.foodY)
+                        f = g + h
+                        found = True
+                        if f < N.f:
+                            N.f = f
+                            N.parent = parent
+                        continue
+                if not found:
+                    node = Node(parent, x)
+                    node.g = parent.g + 1
+                    node.h = abs(x[0] - food.foodX) + abs(x[1] - food.foodY)
+                    node.f = node.g + node.h
+                    lists.append(node)
 
-        for x in neighbours:
-            # this part filters the location where the snake can't go
-            if not (x in body or x[0] < 0 or x[0] > SQUARE_AMOUNT - 1 or x[1] < 0 or x[1] > SQUARE_AMOUNT - 1):
-                unfulfilled_filtering.append((abs(x[0] - food.foodX) + abs(x[1] - food.foodY), x))
-
-        return unfulfilled_filtering
-
-    def findPath(self, checked, food):
-
-        while True:
-            last_added_index = 0
-            path = []
-            index = 0
-            for i in checked:
-                if not path:
-                    path.append(i[1])
-                else:
-                    if abs(path[index][0] - i[1][0]) + abs(path[index][1] - i[1][1]) == 1:
-                        path.append(i[1])
-                        index += 1
-                        last_added_index = checked.index(i)
-            if [food.foodX, food.foodY] in path:
-                # print("FP",path)
-                return path
-            else:
-                #     print(checked)
-                #     print(path)
-                #     print(checked.pop(last_added_index))
-                checked.pop(last_added_index)
+        return lists
 
     def getPath(self, food):
-        found_food = False
-        checked = []
+        path = []
+        start_node = Node(None, self.body[0])
+        start_node.g = start_node.h = start_node.f = 0
+        end_node = Node(None, [food.foodX, food.foodY])
+        end_node.g = end_node.h = end_node.f = 0
 
-        soft_checked = self.search(self.body, self.body[0], food)
-        soft_checked.sort()
+        open_list = []
+        closed_list = []
 
-        index = 0
-        while not found_food:
-            try:
-                # this part is used to move the index, so it doesn't loop when there is no new addition of location
-                if soft_checked[index] in checked:
-                    index += 1
-                else:
-                    checked.append(soft_checked[index])
-                    unfiltered_completely = self.search(self.body, soft_checked[index][1], food)
-                    index = 0
+        open_list.append(start_node)
 
-                    for x in unfiltered_completely:
-                        if x not in soft_checked:
-                            soft_checked.append(x)
+        while len(open_list):
+            current_node = open_list[0]
+            current_index = 0
+            for index, item in enumerate(open_list):
+                # get the lowest f cost
+                if item.f < current_node.f:
+                    current_node = item
+                    current_index = index
 
-                            if x[1] == [food.foodX, food.foodY]:
-                                checked.append(x)
-                                found_food = True
-                                # print("F", [food.foodX, food.foodY])
-                                self.path = self.findPath(checked, food)
-                                break
+            open_list.pop(current_index)
+            closed_list.append(current_node)
 
-                soft_checked.sort()
-            except IndexError:
-                # print(checked)
-                if not checked == []:
-                    self.path.append(checked[0][1])
-                    # print("t", self.path)
-                else:
-                    self.reset()
-                    # self.getPath(food)
-                    self.defeated = True
-                break
+            # if the end node is found
+            if current_node.position == end_node.position:
+                found = True
+                current = current_node
+                while current is not None:
+                    path.append(current.position)
+                    current = current.parent
+                self.path = path[::-1]
+                self.path.pop(0)
+                open_list = []
+            else:
+                open_list.extend(self.search_new_node(current_node, food, open_list, closed_list))
+
+        if not path:
+            neighbours = self.generate_all_potential_steps()
+            lowest_cost_h = 999999
+            fixed_step = None
+
+            for step in neighbours:
+                if step not in self.body:
+                    manhattan_distance = (abs(food.foodX - step[0]) + abs(food.foodY - step[1]))
+                    if manhattan_distance < lowest_cost_h:
+                        lowest_cost_h = manhattan_distance
+                        fixed_step = step
+
+            if fixed_step:
+                self.path.append(fixed_step)
+
+
+        if not self.path:
+            self.reset()
+            self.defeated = True
+            # except IndexError:
+            #     # print(checked)
+            #     if not checked == []:
+            #         self.path.append(checked[0][1])
+            #         # print("t", self.path)
+            #     else:
+            #         self.reset()
+            #         # self.getPath(food)
+            #         self.defeated = True
+            #     break
 
     def move(self, food):
         self.body.insert(0, self.path.pop(0))

@@ -9,7 +9,7 @@ import GameBoardSize
 import PixelSize
 import Player
 from Algorithms.AlmightyMove import AlmightyMove
-from Algorithms.AStar_copy import AStar
+from Algorithms.AStar import AStar
 from Algorithms.BestFirstSearchPlus import BestFirstSearchPlus
 from Algorithms.RandomSearchPlus import RandomSearchPlus
 from Constants import SQUARE_AMOUNT
