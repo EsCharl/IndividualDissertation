@@ -7,6 +7,7 @@ import tkinter.font as tkFont
 import Game
 import Learning.Learning
 
+
 def main():
     pygame.init()
     displayModes = pygame.display.list_modes()
@@ -101,6 +102,6 @@ def main():
 
     root.mainloop()
 
+
 if __name__ == '__main__':
     main()
-
