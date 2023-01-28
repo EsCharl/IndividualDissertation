@@ -183,6 +183,7 @@ class AlmightyMove(SnakeLogic):
         # this part checks if the step being made is it require a reset.
         if preferred_step:
             # print(self.body, preferred_step)
+            print(self.getAISnakeDirection(self.body, preferred_step))
             self.body.insert(0, preferred_step)
             self.checkAte(food, self.body)
         else:
