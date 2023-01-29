@@ -30,6 +30,7 @@ def drawGame(canvas, snake, snake_food, square_size_side):
 
     if (snake.body[0][0] == snake_food.foodX) and (snake.body[0][1] == snake_food.foodY):
         score = 1
+        snake.checkSnake()
         snake_food.randomFood(snake.body)
 
     # draws the food
@@ -156,10 +157,6 @@ class GameScreen:
 
                 player.checkAte(player_food, player.body)
                 player.checkSnake()
-
-                # best_first_search.checkSnake()
-                # random_search_plus.checkSnake()
-                # a_star.checkSnake()
 
                 if a_star.path:
                     a_star.move(a_star_food)

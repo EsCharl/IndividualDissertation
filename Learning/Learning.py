@@ -20,6 +20,7 @@ def drawing(canvas, snake, snake_food, square_size_side):
     ate = False
 
     if (snake.body[0][0] == snake_food.foodX) and (snake.body[0][1] == snake_food.foodY):
+        snake.checkSnake()
         snake_food.randomFood(snake.body)
         ate = True
 

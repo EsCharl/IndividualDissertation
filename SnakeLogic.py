@@ -4,6 +4,7 @@ import Constants
 
 
 class SnakeLogic:
+
     def generateAllPotentialSteps(self, check=None):
         steps = []
         if check:
@@ -27,9 +28,13 @@ class SnakeLogic:
         return steps
 
     def checkSnake(self):
+        if len(self.body) == Constants.SQUARE_AMOUNT * Constants.SQUARE_AMOUNT:
+            self.reset()
+
         if self.body[0][0] < 0 or self.body[0][1] > Constants.SQUARE_AMOUNT - 1 or self.body[0][0] \
                 > Constants.SQUARE_AMOUNT - 1 or self.body[0][1] < 0:
             self.reset()
+
         for x in self.body[1:]:
             if self.body[0] == x:
                 self.reset()
@@ -117,7 +122,7 @@ class SnakeLogic:
                     if i not in checked_step_list:
                         if i not in self.body or (i in self.body and (
                                 completed_all_possible_step[checked_index][0] + 1 + self.body.index(
-                                i) + 1) > body_length):
+                            i) + 1) > body_length):
                             checked_step_list.append(i)
                             completed_all_possible_step.append([completed_all_possible_step[checked_index][0] + 1, i])
 
@@ -146,7 +151,8 @@ class SnakeLogic:
                 final_list.append([[], 0])
 
             # forward
-            if forward_coordinate[0] < 0 or forward_coordinate[0] >= Constants.SQUARE_AMOUNT or forward_coordinate[1] < 0 or forward_coordinate[1] >= Constants.SQUARE_AMOUNT:
+            if forward_coordinate[0] < 0 or forward_coordinate[0] >= Constants.SQUARE_AMOUNT or forward_coordinate[
+                1] < 0 or forward_coordinate[1] >= Constants.SQUARE_AMOUNT:
                 final_list.append([[], 0])
             elif forward_coordinate not in self.body:
                 forward_list = self.getAllPossibleSteps(forward_coordinate)
@@ -171,7 +177,8 @@ class SnakeLogic:
                 final_list.append([[], 0])
 
             # forward
-            if forward_coordinate[0] < 0 or forward_coordinate[0] >= Constants.SQUARE_AMOUNT or forward_coordinate[1] < 0 or forward_coordinate[1] >= Constants.SQUARE_AMOUNT:
+            if forward_coordinate[0] < 0 or forward_coordinate[0] >= Constants.SQUARE_AMOUNT or forward_coordinate[
+                1] < 0 or forward_coordinate[1] >= Constants.SQUARE_AMOUNT:
                 final_list.append([[], 0])
             elif forward_coordinate not in self.body:
                 forward_list = self.getAllPossibleSteps(forward_coordinate)
@@ -197,8 +204,9 @@ class SnakeLogic:
                 final_list.append([[], 0])
 
             # forward
-            if forward_coordinate[0] < 0 or forward_coordinate[0] >= Constants.SQUARE_AMOUNT or forward_coordinate[1] < 0 or forward_coordinate[1] >= Constants.SQUARE_AMOUNT:
-                 final_list.append([[], 0])
+            if forward_coordinate[0] < 0 or forward_coordinate[0] >= Constants.SQUARE_AMOUNT or forward_coordinate[
+                1] < 0 or forward_coordinate[1] >= Constants.SQUARE_AMOUNT:
+                final_list.append([[], 0])
             elif forward_coordinate not in self.body:
                 forward_list = self.getAllPossibleSteps(forward_coordinate)
                 final_list.append([forward_list, len(forward_list)])
@@ -224,7 +232,8 @@ class SnakeLogic:
                 final_list.append([[], 0])
 
             # forward
-            if forward_coordinate[0] < 0 or forward_coordinate[0] >= Constants.SQUARE_AMOUNT or forward_coordinate[1] < 0 or forward_coordinate[1] >= Constants.SQUARE_AMOUNT:
+            if forward_coordinate[0] < 0 or forward_coordinate[0] >= Constants.SQUARE_AMOUNT or forward_coordinate[
+                1] < 0 or forward_coordinate[1] >= Constants.SQUARE_AMOUNT:
                 final_list.append([[], 0])
             elif forward_coordinate not in self.body:
                 forward_list = self.getAllPossibleSteps(forward_coordinate)

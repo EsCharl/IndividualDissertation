@@ -184,8 +184,8 @@ class AlmightyMove(SnakeLogic):
         if preferred_step:
             # print(self.body, preferred_step)
             # print(self.getAISnakeDirection(self.body, preferred_step))
-            print(self.generateSpaceListBasedOnAvailableMoves())
-            print()
+            # print(self.generateSpaceListBasedOnAvailableMoves())
+            # print()
             self.body.insert(0, preferred_step)
             self.checkAte(food, self.body)
         else:
