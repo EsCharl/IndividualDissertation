@@ -96,69 +96,147 @@ class SnakeLogic:
 
         return direction
 
+    # this function used to check all the possible subsequent steps available and index them based on the move index
+    # formula bodyIndex + moveStep > snakeLength (taken from the paper).
+    def getAllPossibleSteps(self, check_coordinate):
+        body_length = len(self.body)
+        checked_index = 0
+
+        # used to check the checked coordinates and store them
+        checked_step_list = [check_coordinate]
+        completed_all_possible_step = [[1, check_coordinate]]
+
+        # gets all the possible moves (excluding the body)
+        # Need checking
+        while True:
+            try:
+                holder_list = self.generateAllPotentialSteps(checked_step_list[checked_index])
+
+                # check the values in the possible moves
+                for i in holder_list:
+                    if i not in checked_step_list:
+                        if i not in self.body or (i in self.body and (
+                                completed_all_possible_step[checked_index][0] + 1 + self.body.index(
+                                i) + 1) > body_length):
+                            checked_step_list.append(i)
+                            completed_all_possible_step.append([completed_all_possible_step[checked_index][0] + 1, i])
+
+                checked_index += 1
+            except IndexError:
+                break
+        return completed_all_possible_step
+
     # implement of a check space checking algorithm based on available moves.
     # (note to self: store into an array, further brainstorming on how to store it will be needed).
     # this will be used for evaluation (a possibility of new algorithm might be implemented).
-    def generateSpaceListBasedOnAvailableMoves(self, set_body):
-        body_length = len(self.body)
+    def generateSpaceListBasedOnAvailableMoves(self):
         final_list = []
-
-        # issue: computationally expensive (need to compare two list to check for coordinates checked). can't use set.
-        # can't add list into sets
-        def getAllPossibleSteps(check_coordinate):
-
-            return
 
         forward_holder = [self.body[0][0] - self.body[1][0], self.body[0][1] - self.body[1][1]]
         forward_coordinate = [forward_holder[0] + self.body[0][0], self.body[0][1] + forward_holder[1]]
 
-        set_body = set(self.body)
         # if the forward is downwards
         if forward_holder == [0, 1]:
             # left
-            if not [self.body[0][0] + 1, self.body[0][1]] in set_body:
-                final_list.append(getAllPossibleSteps([self.body[0][0] + 1, self.body[0][1]]))
-            # forward
-            if not (forward_coordinate in set_body):
-                final_list.append(getAllPossibleSteps(forward_coordinate))
-            # right
-            if not [self.body[0][0] - 1, self.body[0][1]] in set_body:
-                final_list.append(getAllPossibleSteps([self.body[0][0] - 1, self.body[0][1]]))
+            if not [self.body[0][0] + 1, self.body[0][1]] in self.body and self.body[0][
+                0] + 1 < Constants.SQUARE_AMOUNT:
+                left_list = self.getAllPossibleSteps([self.body[0][0] + 1, self.body[0][1]])
+                final_list.append([left_list, len(left_list)])
+            else:
+                final_list.append([[], 0])
 
-        # if the forward is rightwards.
-        elif forward_holder == [1, 0]:
-            # left
-            if not [self.body[0][0], self.body[0][1] - 1] in set_body:
-                final_list.append(getAllPossibleSteps([self.body[0][0], self.body[0][1] - 1]))
             # forward
-            if not (forward_coordinate in set_body):
-                final_list.append(getAllPossibleSteps(forward_coordinate))
-            # right
-            if not [self.body[0][0], self.body[0][1] + 1] in set_body:
-                final_list.append(getAllPossibleSteps([self.body[0][0], self.body[0][1] + 1]))
+            if forward_coordinate[0] < 0 or forward_coordinate[0] >= Constants.SQUARE_AMOUNT or forward_coordinate[1] < 0 or forward_coordinate[1] >= Constants.SQUARE_AMOUNT:
+                final_list.append([[], 0])
+            elif forward_coordinate not in self.body:
+                forward_list = self.getAllPossibleSteps(forward_coordinate)
+                final_list.append([forward_list, len(forward_list)])
+            else:
+                final_list.append([[], 0])
 
-        # if the forward is leftwards.
-        elif forward_holder == [-1, 0]:
-            # left
-            if not [self.body[0][0], self.body[0][1] + 1] in set_body:
-                final_list.append(getAllPossibleSteps([self.body[0][0], self.body[0][1] + 1]))
-            # forward
-            if not (forward_coordinate in set_body):
-                final_list.append(getAllPossibleSteps(forward_coordinate))
             # right
-            if not [self.body[0][0], self.body[0][1] - 1] in set_body:
-                final_list.append(getAllPossibleSteps([self.body[0][0], self.body[0][1] - 1]))
+            if not [self.body[0][0] - 1, self.body[0][1]] in self.body and self.body[0][0] - 1 >= 0:
+                right_list = self.getAllPossibleSteps([self.body[0][0] - 1, self.body[0][1]])
+                final_list.append([right_list, len(right_list)])
+            else:
+                final_list.append([[], 0])
 
         # if the forward is upwards.
         elif forward_holder == [0, -1]:
             # left
-            if not [self.body[0][0] - 1, self.body[0][1]] in set_body:
-                final_list.append(getAllPossibleSteps([self.body[0][0] - 1, self.body[0][1]]))
+            if not [self.body[0][0] - 1, self.body[0][1]] in self.body and self.body[0][0] - 1 >= 0:
+                left_list = self.getAllPossibleSteps([self.body[0][0] - 1, self.body[0][1]])
+                final_list.append([left_list, len(left_list)])
+            else:
+                final_list.append([[], 0])
+
             # forward
-            if not (forward_coordinate in set_body):
-                final_list.append(getAllPossibleSteps(forward_coordinate))
+            if forward_coordinate[0] < 0 or forward_coordinate[0] >= Constants.SQUARE_AMOUNT or forward_coordinate[1] < 0 or forward_coordinate[1] >= Constants.SQUARE_AMOUNT:
+                final_list.append([[], 0])
+            elif forward_coordinate not in self.body:
+                forward_list = self.getAllPossibleSteps(forward_coordinate)
+                final_list.append([forward_list, len(forward_list)])
+            else:
+                final_list.append([[], 0])
+
             # right
-            if not [self.body[0][0] + 1, self.body[0][1]] in set_body:
-                final_list.append(getAllPossibleSteps([self.body[0][0] + 1, self.body[0][1]]))
+            if not [self.body[0][0] + 1, self.body[0][1]] in self.body and self.body[0][
+                0] + 1 < Constants.SQUARE_AMOUNT:
+                right_list = self.getAllPossibleSteps([self.body[0][0] + 1, self.body[0][1]])
+                final_list.append([right_list, len(right_list)])
+            else:
+                final_list.append([[], 0])
+
+        # if the forward is rightwards.
+        elif forward_holder == [1, 0]:
+            # left
+            if not [self.body[0][0], self.body[0][1] - 1] in self.body and self.body[0][1] - 1 >= 0:
+                left_list = self.getAllPossibleSteps([self.body[0][0], self.body[0][1] - 1])
+                final_list.append([left_list, len(left_list)])
+            else:
+                final_list.append([[], 0])
+
+            # forward
+            if forward_coordinate[0] < 0 or forward_coordinate[0] >= Constants.SQUARE_AMOUNT or forward_coordinate[1] < 0 or forward_coordinate[1] >= Constants.SQUARE_AMOUNT:
+                 final_list.append([[], 0])
+            elif forward_coordinate not in self.body:
+                forward_list = self.getAllPossibleSteps(forward_coordinate)
+                final_list.append([forward_list, len(forward_list)])
+            else:
+                final_list.append([[], 0])
+
+            # right
+            if not [self.body[0][0], self.body[0][1] + 1] in self.body and self.body[0][
+                1] + 1 < Constants.SQUARE_AMOUNT:
+                right_list = self.getAllPossibleSteps([self.body[0][0], self.body[0][1] + 1])
+                final_list.append([right_list, len(right_list)])
+            else:
+                final_list.append([[], 0])
+
+        # if the forward is leftwards.
+        elif forward_holder == [-1, 0]:
+            # left
+            if not [self.body[0][0], self.body[0][1] + 1] in self.body and self.body[0][
+                1] + 1 < Constants.SQUARE_AMOUNT:
+                left_list = self.getAllPossibleSteps([self.body[0][0], self.body[0][1] + 1])
+                final_list.append([left_list, len(left_list)])
+            else:
+                final_list.append([[], 0])
+
+            # forward
+            if forward_coordinate[0] < 0 or forward_coordinate[0] >= Constants.SQUARE_AMOUNT or forward_coordinate[1] < 0 or forward_coordinate[1] >= Constants.SQUARE_AMOUNT:
+                final_list.append([[], 0])
+            elif forward_coordinate not in self.body:
+                forward_list = self.getAllPossibleSteps(forward_coordinate)
+                final_list.append([forward_list, len(forward_list)])
+            else:
+                final_list.append([[], 0])
+
+            # right
+            if not [self.body[0][0], self.body[0][1] - 1] in self.body and self.body[0][1] - 1 >= 0:
+                right_list = self.getAllPossibleSteps([self.body[0][0], self.body[0][1] - 1])
+                final_list.append([right_list, len(right_list)])
+            else:
+                final_list.append([[], 0])
 
         return final_list
