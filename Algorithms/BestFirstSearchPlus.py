@@ -11,7 +11,7 @@ class BestFirstSearchPlus(SnakeLogic):
         fixed_step = None
 
         # this ensures that the snake could go to all position other than the borders
-        potential_steps = self.generate_all_potential_steps()
+        potential_steps = self.generateAllPotentialSteps()
 
         # this part is used to sort out the position where it doesn't reach the snake body
         steps = []

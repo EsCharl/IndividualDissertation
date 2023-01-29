@@ -93,7 +93,7 @@ class AStar(SnakeLogic):
                 open_list.extend(self.search_new_node(current_node, food, open_list, closed_list))
 
         if not path:
-            neighbours = self.generate_all_potential_steps()
+            neighbours = self.generateAllPotentialSteps()
             lowest_cost_h = 999999
             fixed_step = None
 

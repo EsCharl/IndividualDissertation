@@ -88,7 +88,7 @@ class AlmightyMove(SnakeLogic):
     def move(self, food):
         preferred_direction = None
         filtered_steps = []
-        potential_steps = self.generate_all_potential_steps()
+        potential_steps = self.generateAllPotentialSteps()
 
         # this filters all possible moves that the snake can make
         for x in potential_steps:

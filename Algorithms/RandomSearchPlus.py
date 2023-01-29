@@ -10,7 +10,7 @@ class RandomSearchPlus(SnakeLogic):
         self.defeated = False
 
     def move(self, food):
-        potential_steps = self.generate_all_potential_steps()
+        potential_steps = self.generateAllPotentialSteps()
 
         steps = []
         for u in potential_steps:
