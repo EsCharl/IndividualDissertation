@@ -1,4 +1,3 @@
-from Constants import SQUARE_AMOUNT
 from SnakeLogic import SnakeLogic
 
 

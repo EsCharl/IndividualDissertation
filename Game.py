@@ -22,7 +22,6 @@ backgroundColour = (20, 40, 70)
 scoreColour = (20, 40, 70)
 SPEED = 15
 
-
 def drawGame(canvas, snake, snake_food, square_size_side):
     score = 0
     # draw the snake on the board

@@ -14,6 +14,8 @@ import copy
 gameBoardColour = (100, 50, 90)
 SPEED = 50
 
+# this is the weight for the training (might have different implementation down the line)
+training_weight = [0,0,0,0,0,0]
 
 def drawing(canvas, snake, snake_food, square_size_side):
     DrawSnake.DrawSnake(canvas, snake.body, square_size_side)
@@ -54,6 +56,56 @@ class LearningScreen:
 
         algo3food.foodX = main_food.foodX
         algo3food.foodY = main_food.foodY
+
+    # this function is used for evaluation of the move.
+    # If the move made can reach the food then it will be considered (score > 0 else score = 0).
+    # from "Snake game AI: Movement rating functions and evolutionary algorithm-based optimization"
+    def foodMoveEvaluation(self,space_value, space_list, food, possible_head):
+        # the distance is the distance if the snake makes the move to there
+        if food in space_list:
+            distance = abs(possible_head[0] - food[0])+abs(possible_head[1] - food[1])
+            score = space_value / distance
+        else:
+            score = 0
+        return score
+
+    # this will generate and select the best evaluation based on the available move (Left, Forward, Right)
+    def accumulationEvaluation(self, snake, food):
+
+        final_scores = []
+
+        # the move_list is a list with 3 array inside. (Left, Forward, Right moves)
+        move_list = snake.generateSpaceListBasedOnAvailableMoves(True)
+        space_score_list = snake.generateSpaceListBasedOnAvailableMoves(False)
+
+
+        for index, move in enumerate(move_list):
+            final_score_list = []
+            extract_space_list = []
+
+            for i in space_score_list[index]:
+                extract_space_list.append(i[1])
+
+            if move:
+                # this is to get the highest value (might bne used for smoothness, need to consider if it is supposed
+                # to find the highest value or the amount of places it can go. (need consideration))
+                maximum = 0
+                for i in move:
+                    if i[0] > maximum:
+                        maximum = i[0]
+
+                # first will be smoothness (need further thinking)
+                # second will be space
+                # third will be foodMoveEval
+                final_score_list.append()
+                final_score_list.append(len(space_score_list[index]))
+                final_score_list.append(self.foodMoveEvaluation(space_score_list[index][0][1], extract_space_list, food, move[0][1]))
+            else:
+                final_score_list.append(0)
+            final_scores.append(final_score_list)
+
+        final_score = max(final_scores)
+        return final_scores.index(final_score), final_score
 
     def __init__(self, w=640, h=480):
         pg.init()
