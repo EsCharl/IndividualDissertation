@@ -6,6 +6,7 @@ from SnakeLogic import SnakeLogic
 
 class Player(SnakeLogic):
     def __init__(self):
+        super().__init__("Player")
         self.reset()
 
     def reset(self):

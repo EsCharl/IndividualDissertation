@@ -1,0 +1,5 @@
+Best First Search: 249
+Player: 3
+A-Star: 250
+Almighty Move: 28
+Random Search: 10

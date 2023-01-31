@@ -1,11 +1,11 @@
 import random
 
-from Constants import SQUARE_AMOUNT
 from SnakeLogic import SnakeLogic
 
 
 class RandomSearchPlus(SnakeLogic):
     def __init__(self):
+        super().__init__("Random Search")
         self.reset()
         self.defeated = False
 

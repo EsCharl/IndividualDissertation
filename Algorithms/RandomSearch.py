@@ -5,6 +5,7 @@ from SnakeLogic import SnakeLogic
 
 class RandomSearch(SnakeLogic):
     def __init__(self):
+        super().__init__("Random Search")
         self.reset()
 
     def move(self):

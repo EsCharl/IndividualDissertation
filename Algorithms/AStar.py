@@ -16,6 +16,7 @@ class Node():
 
 class AStar(SnakeLogic):
     def __init__(self):
+        super().__init__("A-Star")
         self.face_direction = 0
         self.reset()
         self.defeated = False

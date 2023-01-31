@@ -87,17 +87,16 @@ class LearningScreen:
                 extract_space_list.append(i[1])
 
             if move:
-                # this is to get the highest value (might bne used for smoothness, need to consider if it is supposed
-                # to find the highest value or the amount of places it can go. (need consideration))
+                # this is to get the smoothness value
                 maximum = 0
                 for i in move:
                     if i[0] > maximum:
                         maximum = i[0]
 
-                # first will be smoothness (need further thinking)
+                # first will be smoothness
                 # second will be space
                 # third will be foodMoveEval
-                final_score_list.append()
+                final_score_list.append(maximum)
                 final_score_list.append(len(space_score_list[index]))
                 final_score_list.append(self.foodMoveEvaluation(space_score_list[index][0][1], extract_space_list, food, move[0][1]))
             else:

@@ -7,6 +7,7 @@ from SnakeLogic import SnakeLogic
 
 class AlmightyMove(SnakeLogic):
     def __init__(self):
+        super().__init__("Almighty Move")
         self.reset()
         self.template_path_0 = []
         self.template_path_1 = []

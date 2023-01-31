@@ -3,6 +3,7 @@ from SnakeLogic import SnakeLogic
 
 class BestFirstSearch(SnakeLogic):
     def __init__(self):
+        super().__init__("Best First Search")
         self.reset()
 
     def move(self, food):

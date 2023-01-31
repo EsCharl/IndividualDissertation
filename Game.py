@@ -99,17 +99,17 @@ class GameScreen:
         player = Player.Player()
         player_food = Food(player.body)
 
-        a_star = AStar()
-        a_star_food = Food(a_star.body)
-
         best_first_search = BestFirstSearchPlus()
         best_first_search_food = Food(best_first_search.body)
 
-        random_search_plus = RandomSearchPlus()
-        random_search_plus_food = Food(random_search_plus.body)
+        a_star = AStar()
+        a_star_food = Food(a_star.body)
 
         almighty_move = AlmightyMove()
         almighty_move_food = Food(almighty_move.body)
+
+        random_search_plus = RandomSearchPlus()
+        random_search_plus_food = Food(random_search_plus.body)
 
         self.done = False
 
@@ -148,7 +148,7 @@ class GameScreen:
 
                 all_sprites.draw(screen)
 
-                # uncomment this to make it static
+                # uncomment this and comment the next one to make it static (A-star)
                 # if not a_star.path:
                 #     a_star.getPath(a_star_food)
 
@@ -194,11 +194,12 @@ class GameScreen:
             if not os.path.exists(game_score_saving):
                 os.makedirs(game_score_saving)
             file_name = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+
             with open(game_score_saving + "/" + file_name+".txt", 'w') as f:
-                f.write("Gamer 1: " + str(A1Score) + "\n")
-                f.write("Gamer 2: " + str(PScore) + "\n")
-                f.write("Gamer 3: " + str(A3Score) + "\n")
-                f.write("Gamer 4: " + str(A4Score) + "\n")
-                f.write("Gamer 5: " + str(A5Score) + "\n")
+                f.write(best_first_search.name+": " + str(A1Score) + "\n")
+                f.write(player.name+": " + str(PScore) + "\n")
+                f.write(a_star.name+": " + str(A3Score) + "\n")
+                f.write(almighty_move.name+": " + str(A4Score) + "\n")
+                f.write(random_search_plus.name+": " + str(A5Score) + "\n")
 
 
