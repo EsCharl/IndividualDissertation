@@ -1,5 +1,6 @@
 import pygame as pg
 
+import Constants
 import DrawSnake
 import GameBoardSize
 import PixelSize
@@ -15,7 +16,8 @@ gameBoardColour = (100, 50, 90)
 SPEED = 50
 
 # this is the weight for the training (might have different implementation down the line)
-training_weight = [0,0,0,0,0,0]
+training_weight = [4, 2, 4, 2, 4, 2]
+
 
 def drawing(canvas, snake, snake_food, square_size_side):
     DrawSnake.DrawSnake(canvas, snake.body, square_size_side)
@@ -60,10 +62,12 @@ class LearningScreen:
     # this function is used for evaluation of the move.
     # If the move made can reach the food then it will be considered (score > 0 else score = 0).
     # from "Snake game AI: Movement rating functions and evolutionary algorithm-based optimization"
-    def foodMoveEvaluation(self,space_value, space_list, food, possible_head):
+    def foodMoveEvaluation(self, space_value, space_list, food, possible_head):
         # the distance is the distance if the snake makes the move to there
-        if food in space_list:
-            distance = abs(possible_head[0] - food[0])+abs(possible_head[1] - food[1])
+        # print(space_value, space_list, [food.foodX, food.foodY], possible_head)
+        if [food.foodX, food.foodY] in space_list:
+            # the plus 1 is to ensure not divided by 0 (if the possible head is the food)
+            distance = abs(possible_head[0] - food.foodX) + abs(possible_head[1] - food.foodY) + 1
             score = space_value / distance
         else:
             score = 0
@@ -77,19 +81,22 @@ class LearningScreen:
         # the move_list is a list with 3 array inside. (Left, Forward, Right moves)
         move_list = snake.generateSpaceListBasedOnAvailableMoves(True)
         space_score_list = snake.generateSpaceListBasedOnAvailableMoves(False)
-
+        # print(space_score_list)
 
         for index, move in enumerate(move_list):
             final_score_list = []
             extract_space_list = []
 
-            for i in space_score_list[index]:
+            for i in space_score_list[index][0]:
                 extract_space_list.append(i[1])
 
-            if move:
+            # this print is used to get the coordinates that it could go.
+            # print(move)
+
+            if move[0]:
                 # this is to get the smoothness value
                 maximum = 0
-                for i in move:
+                for i in move[0]:
                     if i[0] > maximum:
                         maximum = i[0]
 
@@ -98,10 +105,20 @@ class LearningScreen:
                 # third will be foodMoveEval
                 final_score_list.append(maximum)
                 final_score_list.append(len(space_score_list[index]))
-                final_score_list.append(self.foodMoveEvaluation(space_score_list[index][0][1], extract_space_list, food, move[0][1]))
+                final_score_list.append(
+                    self.foodMoveEvaluation(len(space_score_list[index]), extract_space_list, food, move[0][0][1]))
+
             else:
                 final_score_list.append(0)
-            final_scores.append(final_score_list)
+
+            # this section is used to multiply and finalise the score for each direction.
+            sum = 0
+            for index, score in enumerate(final_score_list):
+                sum += score * (training_weight[(index + 1) * 2 - 2] + (
+                            training_weight[(index + 1) * 2 - 1] * len(snake.body) / (
+                                Constants.SQUARE_AMOUNT * Constants.SQUARE_AMOUNT)))
+
+            final_scores.append(sum)
 
         final_score = max(final_scores)
         return final_scores.index(final_score), final_score
@@ -169,57 +186,61 @@ class LearningScreen:
                     if a_star.path:
                         a_star.move(a_star_food)
                     if drawing(SA3, a_star, a_star_food, squareSizeSide):
-                        print("a-star")
                         found_solution = True
                         self.update_other_algo(a_star, best_first_search_plus, random_search_plus, almighty_move)
                         self.update_other_food(a_star_food, best_first_search_plus_food, random_search_plus_food,
                                                almighty_move_food)
-                        print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
-                              len(random_search_plus.body))
+
+                        print(a_star.name, self.accumulationEvaluation(a_star, a_star_food))
+                        # print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
+                        #       len(random_search_plus.body))
                         a_star.path = []
 
                 if not best_first_search_plus.defeated and not found_solution:
                     best_first_search_plus.move(best_first_search_plus_food)
                     if drawing(SA1, best_first_search_plus, best_first_search_plus_food, squareSizeSide):
-                        print("best first search")
                         found_solution = True
                         self.update_other_algo(best_first_search_plus, a_star, random_search_plus, almighty_move)
                         self.update_other_food(best_first_search_plus_food, a_star_food, random_search_plus_food,
                                                almighty_move_food)
-                        print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
-                              len(random_search_plus.body))
+                        # print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
+                        #       len(random_search_plus.body))
+                        print(best_first_search_plus.name, self.accumulationEvaluation(best_first_search_plus, best_first_search_plus_food))
                         a_star.path = []
 
                 if not random_search_plus.defeated and not found_solution:
                     random_search_plus.move(random_search_plus_food)
                     if drawing(SA5, random_search_plus, random_search_plus_food, squareSizeSide):
-                        print("random search")
+                        # print("random search")
                         found_solution = True
                         self.update_other_algo(random_search_plus, best_first_search_plus, a_star, almighty_move)
                         self.update_other_food(random_search_plus_food, best_first_search_plus_food, a_star_food,
                                                almighty_move_food)
-                        print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
-                              len(random_search_plus.body))
+                        # print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
+                        #       len(random_search_plus.body))
+                        print(random_search_plus.name,
+                              self.accumulationEvaluation(random_search_plus, random_search_plus_food))
+
                         a_star.path = []
 
                 if not almighty_move.defeated and not found_solution:
                     almighty_move.move(almighty_move_food)
                     if drawing(SA4, almighty_move, almighty_move_food, squareSizeSide):
-                        print("almight")
                         self.update_other_algo(almighty_move, best_first_search_plus, random_search_plus, a_star)
                         self.update_other_food(almighty_move_food, best_first_search_plus_food, random_search_plus_food,
                                                a_star_food)
-                        print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
-                              len(random_search_plus.body))
+                        # print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
+                        #       len(random_search_plus.body))
+                        print(almighty_move.name, self.accumulationEvaluation(random_search_plus, random_search_plus_food))
                         a_star.path = []
 
                 if almighty_move.defeated and random_search_plus.defeated and a_star.defeated and best_first_search_plus.defeated:
-                    print("g")
                     self.update_other_algo(a_star, best_first_search_plus, random_search_plus, almighty_move)
                     self.update_other_food(a_star_food, best_first_search_plus_food, random_search_plus_food,
                                            almighty_move_food)
-                    print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
-                          len(random_search_plus.body))
+                    # print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
+                    #       len(random_search_plus.body))
+                    print("no victor")
 
                 screen.blit(SA1, (10, 5))
                 screen.blit(SA3, (50 + (boardSideSize * 2), 5))
