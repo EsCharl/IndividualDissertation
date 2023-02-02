@@ -34,6 +34,7 @@ class BestFirstSearch(SnakeLogic):
         if fixed_step != None:
             self.body.insert(0, fixed_step)
             self.checkAte()
+            return fixed_step
         else:
             self.reset()
         return self.body

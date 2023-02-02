@@ -22,8 +22,10 @@ class RandomSearchPlus(SnakeLogic):
                 steps.append(u)
 
         if steps:
-            self.body.insert(0, steps[random.randint(0,len(steps)-1)])
+            step = steps[random.randint(0,len(steps)-1)]
+            self.body.insert(0, step)
             self.checkAte(food, self.body)
+            return step
         else:
             self.reset()
             self.defeated = True

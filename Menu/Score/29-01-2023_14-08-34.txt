@@ -1,5 +1,0 @@
-Gamer 1: 240
-Gamer 2: 0
-Gamer 3: 236
-Gamer 4: 33
-Gamer 5: 7

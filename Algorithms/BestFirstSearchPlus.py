@@ -36,6 +36,7 @@ class BestFirstSearchPlus(SnakeLogic):
         if fixed_step != None:
             self.body.insert(0, fixed_step)
             self.checkAte(food, self.body)
+            return fixed_step
         else:
             self.reset()
             self.defeated = True

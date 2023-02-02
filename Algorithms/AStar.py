@@ -124,5 +124,7 @@ class AStar(SnakeLogic):
             #     break
 
     def move(self, food):
-        self.body.insert(0, self.path.pop(0))
+        step = self.path.pop(0)
+        self.body.insert(0, step)
         self.checkAte(food, self.body)
+        return step

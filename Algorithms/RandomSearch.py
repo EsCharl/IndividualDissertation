@@ -12,7 +12,8 @@ class RandomSearch(SnakeLogic):
         potential_steps = [[self.body[0][0] + 1, self.body[0][1]], [self.body[0][0] - 1, self.body[0][1]],
                            [self.body[0][0], self.body[0][1] + 1], [self.body[0][0], self.body[0][1] - 1]]
 
-        self.body.insert(0, potential_steps[random.randint(0,3)])
+        step = potential_steps[random.randint(0,3)]
+        self.body.insert(0, step)
 
         self.checkAte()
-        return self.body
+        return step
