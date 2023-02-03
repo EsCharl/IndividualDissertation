@@ -5,7 +5,7 @@ import tkinter as tk
 import tkinter.font as tkFont
 
 import Game
-import Learning.Learning
+import Learning.LearningComponent
 
 
 def main():
@@ -58,7 +58,7 @@ def main():
 
         options.destroy()
 
-        Learning.Learning.LearningScreen(x_display_dim, y_display_dim)
+        Learning.LearningComponent.LearningScreen(x_display_dim, y_display_dim)
 
     def GameOption():
         index = displayListBox.curselection()
