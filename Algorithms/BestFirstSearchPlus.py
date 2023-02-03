@@ -40,4 +40,4 @@ class BestFirstSearchPlus(SnakeLogic):
         else:
             self.reset()
             self.defeated = True
-        return self.body
+        # return self.body

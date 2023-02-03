@@ -37,4 +37,4 @@ class BestFirstSearch(SnakeLogic):
             return fixed_step
         else:
             self.reset()
-        return self.body
+        # return self.body
