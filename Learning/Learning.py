@@ -1,5 +1,9 @@
+import os
+from datetime import datetime
+
 import pygame as pg
 
+import tensorflow
 import DrawSnake
 import GameBoardSize
 import PixelSize
@@ -15,9 +19,13 @@ from Learning.Evaluation import accumulationEvaluation
 
 gameBoardColour = (100, 50, 90)
 SPEED = 50
+now = datetime.now()
 
+IMAGE_SAVE_FOLDER = "../Images/"+now.strftime("%d_%m_%Y %H_%M_%S")
+STEPS_SAVE_FOLDER = "../Steps/"+now.strftime("%d_%m_%Y %H_%M_%S")
 
-
+os.mkdir(IMAGE_SAVE_FOLDER)
+os.mkdir(STEPS_SAVE_FOLDER)
 def drawing(canvas, snake, snake_food, square_size_side):
     DrawSnake.DrawSnake(canvas, snake.body, square_size_side)
     ate = False
@@ -57,14 +65,33 @@ class LearningScreen:
         algo3food.foodX = main_food.foodX
         algo3food.foodY = main_food.foodY
 
-    def clear_steps(self, algo1steps, algo2steps, algo3steps, algo4steps):
-        algo1steps = []
-        algo2steps = []
-        algo3steps = []
-        algo4steps = []
+    def clear_steps(self):
+        return [], [], [], []
+
+    def updateDirectory(self, dir1, dir2, dir3, dir4, num):
+        D1 = os.path.join(dir1, str(num))
+        D2 = os.path.join(dir2, str(num))
+        D3 = os.path.join(dir3, str(num))
+        D4 = os.path.join(dir4, str(num))
+
+        os.mkdir(D1)
+        os.mkdir(D2)
+        os.mkdir(D3)
+        os.mkdir(D4)
+
+        return D1, D2, D3, D4
+
+    def globalDraw(self, SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_plus, best_first_search_plus_food, SA5, random_search_plus, random_search_plus_food, SA4, almighty_move, almighty_move_food):
+        drawing(SA3, a_star, a_star_food, squareSizeSide)
+        drawing(SA1, best_first_search_plus, best_first_search_plus_food, squareSizeSide)
+        drawing(SA5, random_search_plus, random_search_plus_food, squareSizeSide)
+        drawing(SA4, almighty_move, almighty_move_food, squareSizeSide)
 
     def __init__(self, w=640, h=480):
         pg.init()
+
+        num_game = 0
+        step = 0
 
         self.w = w
         self.h = h
@@ -81,8 +108,6 @@ class LearningScreen:
         SA3 = pg.Surface((boardSideSize, boardSideSize))
         SA4 = pg.Surface((boardSideSize, boardSideSize))
         SA5 = pg.Surface((boardSideSize, boardSideSize))
-
-        # testing
 
         # setup the player/AI objects (all takes the first part of the algorithm to have the same body and food position)
         a_star = AStar()
@@ -105,6 +130,19 @@ class LearningScreen:
         random_search_plus_moves = []
         almighty_move_moves = []
 
+        # this is to store the images
+        a_star_file_dir = os.path.join(IMAGE_SAVE_FOLDER, a_star.name)
+        best_first_search_plus_dir = os.path.join(IMAGE_SAVE_FOLDER, best_first_search_plus.name)
+        random_search_plus_dir = os.path.join(IMAGE_SAVE_FOLDER, random_search_plus.name)
+        almighty_move_dir = os.path.join(IMAGE_SAVE_FOLDER, almighty_move.name)
+
+        os.mkdir(a_star_file_dir)
+        os.mkdir(best_first_search_plus_dir)
+        os.mkdir(random_search_plus_dir)
+        os.mkdir(almighty_move_dir)
+
+        a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW = self.updateDirectory(a_star_file_dir, best_first_search_plus_dir, random_search_plus_dir, almighty_move_dir, num_game)
+
         done = False
         while not done:
             try:
@@ -124,6 +162,8 @@ class LearningScreen:
 
                 all_sprites.draw(screen)
 
+                step += 1
+
                 if not a_star.defeated and not found_solution:
                     if not a_star.path:
                         a_star.getPath(a_star_food)
@@ -136,11 +176,18 @@ class LearningScreen:
                         self.update_other_algo(a_star, best_first_search_plus, random_search_plus, almighty_move)
                         self.update_other_food(a_star_food, best_first_search_plus_food, random_search_plus_food,
                                                almighty_move_food)
-                        self.clear_steps(best_first_search_plus_moves, almighty_move_moves, random_search_plus_moves, a_star_moves)
-
+                        best_first_search_plus_moves, almighty_move_moves, random_search_plus_moves, a_star_moves = self.clear_steps()
                         print(a_star.name, accumulationEvaluation(a_star, a_star_food))
+                        self.globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_plus,
+                                       best_first_search_plus_food, SA5, random_search_plus, random_search_plus_food, SA4,
+                                       almighty_move, almighty_move_food)
                         # print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
                         #       len(random_search_plus.body))
+                        num_game += 1
+                        step = 0
+                        a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW = self.updateDirectory(
+                            a_star_file_dir, best_first_search_plus_dir, random_search_plus_dir, almighty_move_dir,
+                            num_game)
                         a_star.path = []
 
                 if not best_first_search_plus.defeated and not found_solution:
@@ -150,10 +197,18 @@ class LearningScreen:
                         self.update_other_algo(best_first_search_plus, a_star, random_search_plus, almighty_move)
                         self.update_other_food(best_first_search_plus_food, a_star_food, random_search_plus_food,
                                                almighty_move_food)
-                        self.clear_steps(best_first_search_plus_moves, almighty_move_moves, random_search_plus_moves, a_star_moves)
+                        best_first_search_plus_moves, almighty_move_moves, random_search_plus_moves, a_star_moves = self.clear_steps()
                         # print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
                         #       len(random_search_plus.body))
                         print(best_first_search_plus.name, accumulationEvaluation(best_first_search_plus, best_first_search_plus_food))
+                        self.globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_plus,
+                                       best_first_search_plus_food, SA5, random_search_plus, random_search_plus_food, SA4,
+                                       almighty_move, almighty_move_food)
+                        num_game += 1
+                        step = 0
+                        a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW = self.updateDirectory(
+                            a_star_file_dir, best_first_search_plus_dir, random_search_plus_dir, almighty_move_dir,
+                            num_game)
                         a_star.path = []
 
                 if not random_search_plus.defeated and not found_solution:
@@ -164,12 +219,19 @@ class LearningScreen:
                         self.update_other_algo(random_search_plus, best_first_search_plus, a_star, almighty_move)
                         self.update_other_food(random_search_plus_food, best_first_search_plus_food, a_star_food,
                                                almighty_move_food)
-                        self.clear_steps(best_first_search_plus_moves, almighty_move_moves, random_search_plus_moves, a_star_moves)
+                        best_first_search_plus_moves, almighty_move_moves, random_search_plus_moves, a_star_moves = self.clear_steps()
                         # print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
                         #       len(random_search_plus.body))
                         print(random_search_plus.name,
                               accumulationEvaluation(random_search_plus, random_search_plus_food))
-
+                        self.globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_plus,
+                                       best_first_search_plus_food, SA5, random_search_plus, random_search_plus_food, SA4,
+                                       almighty_move, almighty_move_food)
+                        num_game += 1
+                        step = 0
+                        a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW = self.updateDirectory(
+                            a_star_file_dir, best_first_search_plus_dir, random_search_plus_dir, almighty_move_dir,
+                            num_game)
                         a_star.path = []
 
                 if not almighty_move.defeated and not found_solution:
@@ -178,20 +240,37 @@ class LearningScreen:
                         self.update_other_algo(almighty_move, best_first_search_plus, random_search_plus, a_star)
                         self.update_other_food(almighty_move_food, best_first_search_plus_food, random_search_plus_food,
                                                a_star_food)
-                        self.clear_steps(best_first_search_plus_moves, almighty_move_moves, random_search_plus_moves, a_star_moves)
+                        best_first_search_plus_moves, almighty_move_moves, random_search_plus_moves, a_star_moves = self.clear_steps()
                         # print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
                         #       len(random_search_plus.body))
                         print(almighty_move.name, accumulationEvaluation(random_search_plus, random_search_plus_food))
+                        self.globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_plus,
+                                       best_first_search_plus_food, SA5, random_search_plus, random_search_plus_food, SA4,
+                                       almighty_move, almighty_move_food)
+                        num_game += 1
+                        step = 0
+                        a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW = self.updateDirectory(
+                            a_star_file_dir, best_first_search_plus_dir, random_search_plus_dir, almighty_move_dir,
+                            num_game)
                         a_star.path = []
 
                 if almighty_move.defeated and random_search_plus.defeated and a_star.defeated and best_first_search_plus.defeated:
                     self.update_other_algo(a_star, best_first_search_plus, random_search_plus, almighty_move)
                     self.update_other_food(a_star_food, best_first_search_plus_food, random_search_plus_food,
                                            almighty_move_food)
-                    self.clear_steps(best_first_search_plus_moves, almighty_move_moves, random_search_plus_moves, a_star_moves)
+                    best_first_search_plus_moves, almighty_move_moves, random_search_plus_moves, a_star_moves = self.clear_steps()
                     # print(len(a_star.body), len(best_first_search_plus.body), len(almighty_move.body),
                     #       len(random_search_plus.body))
                     print("no victor")
+
+                    self.globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_plus,
+                                   best_first_search_plus_food, SA5, random_search_plus, random_search_plus_food, SA4,
+                                   almighty_move, almighty_move_food)
+                    step = 0
+                    num_game += 1
+                    a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW = self.updateDirectory(
+                        a_star_file_dir, best_first_search_plus_dir, random_search_plus_dir, almighty_move_dir,
+                        num_game)
 
                 screen.blit(SA1, (10, 5))
                 screen.blit(SA3, (50 + (boardSideSize * 2), 5))
@@ -199,6 +278,12 @@ class LearningScreen:
                 screen.blit(SA5, (50 + (boardSideSize * 2), boardSideSize + 10))
                 pg.display.update()
 
+                pg.image.save(SA1, os.path.join(best_first_search_plus_dirW, str(num_game) + "_" + str(step)+".jpeg"))
+                pg.image.save(SA3, os.path.join(a_star_file_dirW, str(num_game) + "_" + str(step)+".jpeg"))
+                pg.image.save(SA4, os.path.join(almighty_move_dirW, str(num_game) + "_" + str(step)+".jpeg"))
+                pg.image.save(SA5, os.path.join(random_search_plus_dirW, str(num_game) + "_" + str(step)+".jpeg"))
+
                 clock.tick(SPEED)
+
             except KeyboardInterrupt:
                 quit()
