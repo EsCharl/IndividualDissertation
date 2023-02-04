@@ -372,6 +372,11 @@ class LearningScreen:
                         almighty_move_dir_image,
                         num_game)
 
+                random_defeat = random_search_plus.defeated
+                almighty_defeat = almighty_move.defeated
+                a_star_defeat = a_star.defeated
+                best_first_defeat = best_first_search_plus.defeated
+
                 if not best_first_defeat:
                     drawFood(SA1, False, best_first_search_plus, best_first_search_plus_food, squareSizeSide)
                     screen.blit(SA1, (10, 5))
@@ -392,11 +397,6 @@ class LearningScreen:
                     drawFood(SA5, False, random_search_plus, random_search_plus_food, squareSizeSide)
                     screen.blit(SA5, (50 + (boardSideSize * 2), boardSideSize + 10))
                     pg.image.save(SA5, os.path.join(random_search_plus_dirW, str(num_game) + "_" + str(step) + ".jpeg"))
-
-                random_defeat = random_search_plus.defeated
-                almighty_defeat = almighty_move.defeated
-                a_star_defeat = a_star.defeated
-                best_first_defeat = best_first_search_plus.defeated
 
                 pg.display.update()
 
