@@ -350,6 +350,7 @@ class LearningScreen:
                         almighty_move_body_moves.append([body, move])
 
                     if updateSnake(SA4, almighty_move, almighty_move_food, squareSizeSide):
+                        found_solution = True
                         updateOtherAlgo(almighty_move, best_first_search_plus, random_search_plus, a_star,
                                         a_star_dynamic)
                         recordSteps(a_star_body_dynamic_moves, best_first_search_plus_body_moves,
