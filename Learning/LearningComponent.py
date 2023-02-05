@@ -21,9 +21,6 @@ gameBoardColour = (100, 50, 90)
 SPEED = 50
 now = datetime.now()
 
-# IMAGE_SAVE_FOLDER = "../Images/"+now.strftime("%d_%m_%Y %H_%M_%S")
-# STEPS_SAVE_FOLDER = "../Steps/"+now.strftime("%d_%m_%Y %H_%M_%S")
-
 FOLDER = "F:/test/" + now.strftime("%d_%m_%Y %H_%M_%S")
 
 os.mkdir(FOLDER)
@@ -55,24 +52,29 @@ def drawFood(canvas, ate, snake, snake_food, square_size_side):
                  pg.Rect(snake_food.foodX * square_size_side, snake_food.foodY * square_size_side,
                          square_size_side, square_size_side))
 
+
 def recordWinner(algo_name):
     with open(FOLDER + "/winners.txt", 'a') as f:
         f.write(algo_name + "\n")
 
-def updateDirectory(dir1, dir2, dir3, dir4, num):
+
+def updateDirectory(dir1, dir2, dir3, dir4, dir5, num):
     D1 = os.path.join(dir1, str(num))
     D2 = os.path.join(dir2, str(num))
     D3 = os.path.join(dir3, str(num))
     D4 = os.path.join(dir4, str(num))
+    D5 = os.path.join(dir5, str(num))
 
     os.mkdir(D1)
     os.mkdir(D2)
     os.mkdir(D3)
     os.mkdir(D4)
+    os.mkdir(D5)
 
-    return D1, D2, D3, D4
+    return D1, D2, D3, D4, D5
 
-def recordSteps(algo1, algo2, algo3, algo4, dir1, dir2, dir3, dir4, game_num):
+
+def recordSteps(algo1, algo2, algo3, algo4, algo5, dir1, dir2, dir3, dir4, dir5, game_num):
     F1 = open(dir1 + "/" + str(game_num) + ".pickle", 'wb')
     pickle.dump(algo1, F1)
     F1.close()
@@ -89,10 +91,16 @@ def recordSteps(algo1, algo2, algo3, algo4, dir1, dir2, dir3, dir4, game_num):
     pickle.dump(algo4, F4)
     F4.close()
 
+    F5 = open(dir5 + "/" + str(game_num) + ".pickle", 'wb')
+    pickle.dump(algo5, F5)
+    F5.close()
+
+
 def globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_plus,
                best_first_search_plus_food, SA5, random_search_plus, random_search_plus_food, SA4, almighty_move,
-               almighty_move_food):
+               almighty_move_food, SA2, a_star_dynamic, a_star_dynamic_food):
     updateSnake(SA3, a_star, a_star_food, squareSizeSide)
+    updateSnake(SA2, a_star_dynamic, a_star_dynamic_food, squareSizeSide)
     updateSnake(SA1, best_first_search_plus, best_first_search_plus_food, squareSizeSide)
     updateSnake(SA5, random_search_plus, random_search_plus_food, squareSizeSide)
     updateSnake(SA4, almighty_move, almighty_move_food, squareSizeSide)
@@ -108,6 +116,7 @@ class LearningScreen:
 
         random_defeat = 0
         a_star_defeat = 0
+        a_star_dynamic_defeat = 0
         almighty_defeat = 0
         best_first_defeat = 0
 
@@ -123,6 +132,7 @@ class LearningScreen:
         squareSizeSide = PixelSize.get_block_size(boardSideSize, SQUARE_AMOUNT)
 
         SA1 = pg.Surface((boardSideSize, boardSideSize))
+        SA2 = pg.Surface((boardSideSize, boardSideSize))
         SA3 = pg.Surface((boardSideSize, boardSideSize))
         SA4 = pg.Surface((boardSideSize, boardSideSize))
         SA5 = pg.Surface((boardSideSize, boardSideSize))
@@ -131,51 +141,59 @@ class LearningScreen:
         a_star = AStar()
         a_star_food = Food(a_star.body)
 
+        a_star_dynamic = AStar()
         best_first_search_plus = BestFirstSearchPlus()
         random_search_plus = RandomSearchPlus()
         almighty_move = AlmightyMove()
 
-        updateOtherAlgo(a_star, best_first_search_plus, random_search_plus, almighty_move)
+        updateOtherAlgo(a_star, best_first_search_plus, random_search_plus, almighty_move, a_star_dynamic)
 
         best_first_search_plus_food = Food(best_first_search_plus.body)
+        a_star_dynamic_food = Food(a_star_dynamic.body)
         random_search_plus_food = Food(random_search_plus.body)
         almighty_move_food = Food(almighty_move.body)
 
-        updateOtherFood(a_star_food, almighty_move_food, best_first_search_plus_food, random_search_plus_food)
+        updateOtherFood(a_star_food, almighty_move_food, best_first_search_plus_food, random_search_plus_food,
+                        a_star_dynamic_food)
 
         a_star_body_moves = []
+        a_star_body_dynamic_moves = []
         best_first_search_plus_body_moves = []
         random_search_plus_body_moves = []
         almighty_move_body_moves = []
 
         # this is to store the images
         a_star_file_dir_image = os.path.join(IMAGE_SAVE_FOLDER, a_star.name)
+        a_star_dynamic_file_dir_image = os.path.join(IMAGE_SAVE_FOLDER, a_star_dynamic.name + "Dynamic")
         best_first_search_plus_dir_image = os.path.join(IMAGE_SAVE_FOLDER, best_first_search_plus.name)
         random_search_plus_dir_image = os.path.join(IMAGE_SAVE_FOLDER, random_search_plus.name)
         almighty_move_dir_image = os.path.join(IMAGE_SAVE_FOLDER, almighty_move.name)
 
         os.mkdir(a_star_file_dir_image)
+        os.mkdir(a_star_dynamic_file_dir_image)
         os.mkdir(best_first_search_plus_dir_image)
         os.mkdir(random_search_plus_dir_image)
         os.mkdir(almighty_move_dir_image)
 
-        a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW = updateDirectory(
+        a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW, a_star_dynamic_file_dirW = updateDirectory(
             a_star_file_dir_image, best_first_search_plus_dir_image, random_search_plus_dir_image,
-            almighty_move_dir_image, num_game)
+            almighty_move_dir_image, a_star_dynamic_file_dir_image, num_game)
 
         # this is to store the steps
         a_star_file_dir_steps = os.path.join(STEPS_SAVE_FOLDER, a_star.name)
+        a_star_dynamic_file_dir_steps = os.path.join(STEPS_SAVE_FOLDER, a_star_dynamic.name + "Dynamic")
         best_first_search_plus_dir_steps = os.path.join(STEPS_SAVE_FOLDER, best_first_search_plus.name)
         random_search_plus_dir_steps = os.path.join(STEPS_SAVE_FOLDER, random_search_plus.name)
         almighty_move_dir_steps = os.path.join(STEPS_SAVE_FOLDER, almighty_move.name)
 
         os.mkdir(a_star_file_dir_steps)
+        os.mkdir(a_star_dynamic_file_dir_steps)
         os.mkdir(best_first_search_plus_dir_steps)
         os.mkdir(random_search_plus_dir_steps)
         os.mkdir(almighty_move_dir_steps)
 
         done = False
-        while not done:
+        while not done and num_game <= 1000:
             try:
                 found_solution = False
                 for event in pg.event.get():
@@ -185,6 +203,7 @@ class LearningScreen:
                         quit()
 
                 SA1.fill(gameBoardColour)
+                SA2.fill(gameBoardColour)
                 SA3.fill(gameBoardColour)
                 SA4.fill(gameBoardColour)
                 SA5.fill(gameBoardColour)
@@ -205,35 +224,38 @@ class LearningScreen:
 
                     if updateSnake(SA3, a_star, a_star_food, squareSizeSide):
                         found_solution = True
-                        updateOtherAlgo(a_star, best_first_search_plus, random_search_plus, almighty_move)
-                        recordSteps(best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves,
-                                    a_star_body_moves, best_first_search_plus_dir_steps, almighty_move_dir_steps,
+                        updateOtherAlgo(a_star, best_first_search_plus, random_search_plus, almighty_move,
+                                        a_star_dynamic)
+                        recordSteps(a_star_body_dynamic_moves, best_first_search_plus_body_moves,
+                                    almighty_move_body_moves, random_search_plus_body_moves,
+                                    a_star_body_moves, a_star_dynamic_file_dir_steps, best_first_search_plus_dir_steps,
+                                    almighty_move_dir_steps,
                                     random_search_plus_dir_steps, a_star_file_dir_steps, num_game)
-                        best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves, a_star_body_moves = clearSteps()
+                        a_star_body_dynamic_moves, best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves, a_star_body_moves = clearSteps()
 
                         screen.blit(SA3, (50 + (boardSideSize * 2), 5))
                         pg.image.save(SA3, os.path.join(a_star_file_dirW, str(num_game) + "_" + str(step) + ".jpeg"))
 
                         drawFood(SA3, True, a_star, a_star_food, squareSizeSide)
                         updateOtherFood(a_star_food, best_first_search_plus_food, random_search_plus_food,
-                                        almighty_move_food)
+                                        almighty_move_food, a_star_dynamic_food)
 
                         print(a_star.name, accumulationEvaluation(a_star, a_star_food))
                         recordWinner(a_star.name)
 
-                        almighty_defeat, best_first_defeat, random_defeat, a_star_defeat = resetDefeat()
+                        almighty_defeat, best_first_defeat, random_defeat, a_star_defeat, a_star_dynamic_defeat = resetDefeat()
                         globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_plus,
                                    best_first_search_plus_food, SA5, random_search_plus, random_search_plus_food,
-                                   SA4,
-                                   almighty_move, almighty_move_food)
+                                   SA4, almighty_move, almighty_move_food, SA2, a_star_dynamic, a_star_dynamic_food)
 
                         num_game += 1
                         step = 0
-                        a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW = updateDirectory(
+                        a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW, a_star_dynamic_file_dirW = updateDirectory(
                             a_star_file_dir_image, best_first_search_plus_dir_image, random_search_plus_dir_image,
-                            almighty_move_dir_image,
-                            num_game)
+                            almighty_move_dir_image, a_star_dynamic_file_dir_image,
+                        num_game)
                         a_star.path = []
+                        a_star_dynamic.path = []
 
                 if not best_first_defeat and not found_solution:
                     body = best_first_search_plus.body.copy()
@@ -243,11 +265,14 @@ class LearningScreen:
 
                     if updateSnake(SA1, best_first_search_plus, best_first_search_plus_food, squareSizeSide):
                         found_solution = True
-                        updateOtherAlgo(best_first_search_plus, a_star, random_search_plus, almighty_move)
-                        recordSteps(best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves,
-                                    a_star_body_moves, best_first_search_plus_dir_steps, almighty_move_dir_steps,
+                        updateOtherAlgo(best_first_search_plus, a_star, random_search_plus, almighty_move,
+                                        a_star_dynamic)
+                        recordSteps(a_star_body_dynamic_moves, best_first_search_plus_body_moves,
+                                    almighty_move_body_moves, random_search_plus_body_moves,
+                                    a_star_body_moves, a_star_dynamic_file_dir_steps, best_first_search_plus_dir_steps,
+                                    almighty_move_dir_steps,
                                     random_search_plus_dir_steps, a_star_file_dir_steps, num_game)
-                        best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves, a_star_body_moves = clearSteps()
+                        a_star_body_dynamic_moves, best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves, a_star_body_moves = clearSteps()
 
                         screen.blit(SA1, (10, 5))
                         pg.image.save(SA1, os.path.join(best_first_search_plus_dirW,
@@ -255,24 +280,25 @@ class LearningScreen:
 
                         drawFood(SA1, True, best_first_search_plus, best_first_search_plus_food, squareSizeSide)
                         updateOtherFood(best_first_search_plus_food, a_star_food, random_search_plus_food,
-                                        almighty_move_food)
+                                        almighty_move_food, a_star_dynamic_food)
 
                         print(best_first_search_plus.name,
                               accumulationEvaluation(best_first_search_plus, best_first_search_plus_food))
                         recordWinner(best_first_search_plus.name)
 
-                        almighty_defeat, best_first_defeat, random_defeat, a_star_defeat = resetDefeat()
+                        almighty_defeat, best_first_defeat, random_defeat, a_star_defeat, a_star_dynamic_defeat = resetDefeat()
                         globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_plus,
                                    best_first_search_plus_food, SA5, random_search_plus, random_search_plus_food,
-                                   SA4,
-                                   almighty_move, almighty_move_food)
+                                   SA4, almighty_move, almighty_move_food, SA2, a_star_dynamic, a_star_dynamic_food)
+
                         num_game += 1
                         step = 0
-                        a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW = updateDirectory(
+                        a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW, a_star_dynamic_file_dirW = updateDirectory(
                             a_star_file_dir_image, best_first_search_plus_dir_image, random_search_plus_dir_image,
-                            almighty_move_dir_image,
-                            num_game)
+                            almighty_move_dir_image, a_star_dynamic_file_dir_image,
+                        num_game)
                         a_star.path = []
+                        a_star_dynamic.path = []
 
                 if not random_defeat and not found_solution:
                     body = random_search_plus.body.copy()
@@ -282,11 +308,14 @@ class LearningScreen:
 
                     if updateSnake(SA5, random_search_plus, random_search_plus_food, squareSizeSide):
                         found_solution = True
-                        updateOtherAlgo(random_search_plus, best_first_search_plus, a_star, almighty_move)
-                        recordSteps(best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves,
-                                    a_star_body_moves, best_first_search_plus_dir_steps, almighty_move_dir_steps,
+                        updateOtherAlgo(random_search_plus, best_first_search_plus, a_star, almighty_move,
+                                        a_star_dynamic)
+                        recordSteps(a_star_body_dynamic_moves, best_first_search_plus_body_moves,
+                                    almighty_move_body_moves, random_search_plus_body_moves,
+                                    a_star_body_moves, a_star_dynamic_file_dir_steps, best_first_search_plus_dir_steps,
+                                    almighty_move_dir_steps,
                                     random_search_plus_dir_steps, a_star_file_dir_steps, num_game)
-                        best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves, a_star_body_moves = clearSteps()
+                        a_star_body_dynamic_moves, best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves, a_star_body_moves = clearSteps()
 
                         screen.blit(SA5, (50 + (boardSideSize * 2), boardSideSize + 10))
                         pg.image.save(SA5,
@@ -294,24 +323,25 @@ class LearningScreen:
 
                         drawFood(SA5, True, random_search_plus, random_search_plus_food, squareSizeSide)
                         updateOtherFood(random_search_plus_food, best_first_search_plus_food, a_star_food,
-                                        almighty_move_food)
+                                        almighty_move_food, a_star_dynamic_food)
 
                         print(random_search_plus.name,
                               accumulationEvaluation(random_search_plus, random_search_plus_food))
                         recordWinner(random_search_plus.name)
 
-                        almighty_defeat, best_first_defeat, random_defeat, a_star_defeat = resetDefeat()
+                        almighty_defeat, best_first_defeat, random_defeat, a_star_defeat, a_star_dynamic_defeat = resetDefeat()
                         globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_plus,
                                    best_first_search_plus_food, SA5, random_search_plus, random_search_plus_food,
-                                   SA4,
-                                   almighty_move, almighty_move_food)
+                                   SA4, almighty_move, almighty_move_food, SA2, a_star_dynamic, a_star_dynamic_food)
+
                         num_game += 1
                         step = 0
-                        a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW = updateDirectory(
+                        a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW, a_star_dynamic_file_dirW = updateDirectory(
                             a_star_file_dir_image, best_first_search_plus_dir_image, random_search_plus_dir_image,
-                            almighty_move_dir_image,
-                            num_game)
+                            almighty_move_dir_image, a_star_dynamic_file_dir_image,
+                        num_game)
                         a_star.path = []
+                        a_star_dynamic.path = []
 
                 if not almighty_defeat and not found_solution:
                     body = almighty_move.body.copy()
@@ -320,61 +350,116 @@ class LearningScreen:
                         almighty_move_body_moves.append([body, move])
 
                     if updateSnake(SA4, almighty_move, almighty_move_food, squareSizeSide):
-                        updateOtherAlgo(almighty_move, best_first_search_plus, random_search_plus, a_star)
-                        recordSteps(best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves,
-                                    a_star_body_moves, best_first_search_plus_dir_steps, almighty_move_dir_steps,
+                        updateOtherAlgo(almighty_move, best_first_search_plus, random_search_plus, a_star,
+                                        a_star_dynamic)
+                        recordSteps(a_star_body_dynamic_moves, best_first_search_plus_body_moves,
+                                    almighty_move_body_moves, random_search_plus_body_moves,
+                                    a_star_body_moves, a_star_dynamic_file_dir_steps, best_first_search_plus_dir_steps,
+                                    almighty_move_dir_steps,
                                     random_search_plus_dir_steps, a_star_file_dir_steps, num_game)
-                        best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves, a_star_body_moves = clearSteps()
+                        a_star_body_dynamic_moves, best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves, a_star_body_moves = clearSteps()
 
                         screen.blit(SA4, (10, boardSideSize + 10))
                         pg.image.save(SA4, os.path.join(almighty_move_dirW, str(num_game) + "_" + str(step) + ".jpeg"))
 
                         drawFood(SA4, True, almighty_move, almighty_move_food, squareSizeSide)
                         updateOtherFood(almighty_move_food, best_first_search_plus_food, random_search_plus_food,
-                                        a_star_food)
+                                        a_star_food, a_star_dynamic_food)
 
                         print(almighty_move.name, accumulationEvaluation(almighty_move, almighty_move_food))
                         recordWinner(almighty_move.name)
 
-                        almighty_defeat, best_first_defeat, random_defeat, a_star_defeat = resetDefeat()
+                        almighty_defeat, best_first_defeat, random_defeat, a_star_defeat, a_star_dynamic_defeat = resetDefeat()
                         globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_plus,
                                    best_first_search_plus_food, SA5, random_search_plus, random_search_plus_food,
-                                   SA4, almighty_move, almighty_move_food)
+                                   SA4, almighty_move, almighty_move_food, SA2, a_star_dynamic, a_star_dynamic_food)
+
                         num_game += 1
                         step = 0
-                        a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW = updateDirectory(
+                        a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW, a_star_dynamic_file_dirW = updateDirectory(
                             a_star_file_dir_image, best_first_search_plus_dir_image, random_search_plus_dir_image,
-                            almighty_move_dir_image,
-                            num_game)
+                            almighty_move_dir_image, a_star_dynamic_file_dir_image,
+                        num_game)
                         a_star.path = []
+                        a_star_dynamic.path = []
+
+                if not a_star_dynamic_defeat and not found_solution:
+                    if not a_star_dynamic.path:
+                        a_star_dynamic.getPath(a_star_food)
+
+                    if a_star_dynamic.path:
+                        body = a_star_dynamic.body.copy()
+                        a_star_body_dynamic_moves.append([body, a_star_dynamic.move(a_star_food)])
+
+                    if updateSnake(SA2, a_star_dynamic, a_star_dynamic_food, squareSizeSide):
+                        found_solution = True
+                        updateOtherAlgo(a_star_dynamic, a_star, best_first_search_plus, random_search_plus,
+                                        almighty_move)
+                        recordSteps(a_star_body_dynamic_moves, best_first_search_plus_body_moves,
+                                    almighty_move_body_moves, random_search_plus_body_moves,
+                                    a_star_body_moves, a_star_dynamic_file_dir_steps, best_first_search_plus_dir_steps,
+                                    almighty_move_dir_steps,
+                                    random_search_plus_dir_steps, a_star_file_dir_steps, num_game)
+                        a_star_body_dynamic_moves, best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves, a_star_body_moves = clearSteps()
+
+                        screen.blit(SA2, (boardSideSize + 30, 5))
+                        pg.image.save(SA2,
+                                      os.path.join(a_star_dynamic_file_dirW, str(num_game) + "_" + str(step) + ".jpeg"))
+
+                        drawFood(SA2, True, a_star_dynamic, a_star_dynamic_food, squareSizeSide)
+                        updateOtherFood(a_star_dynamic_food, best_first_search_plus_food, random_search_plus_food,
+                                        almighty_move_food, a_star_food)
+
+                        print(a_star.name + "Dynamic", accumulationEvaluation(a_star_dynamic, a_star_dynamic_food))
+                        recordWinner(a_star.name + "Dynamic")
+
+                        almighty_defeat, best_first_defeat, random_defeat, a_star_defeat, a_star_dynamic_defeat = resetDefeat()
+                        globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_plus,
+                                   best_first_search_plus_food, SA5, random_search_plus, random_search_plus_food,
+                                   SA4, almighty_move, almighty_move_food, SA2, a_star_dynamic, a_star_dynamic_food)
+
+                        num_game += 1
+                        step = 0
+                        a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW, a_star_dynamic_file_dirW = updateDirectory(
+                            a_star_file_dir_image, best_first_search_plus_dir_image, random_search_plus_dir_image,
+                            almighty_move_dir_image, a_star_dynamic_file_dir_image,
+                        num_game)
+                        a_star.path = []
+                        a_star_dynamic.path = []
 
                 if almighty_defeat and random_defeat and a_star_defeat and best_first_defeat:
-                    updateOtherAlgo(a_star, best_first_search_plus, random_search_plus, almighty_move)
+                    updateOtherAlgo(a_star, best_first_search_plus, random_search_plus, almighty_move, a_star_dynamic)
                     drawFood(SA3, True, a_star, a_star_food, squareSizeSide)
                     updateOtherFood(a_star_food, best_first_search_plus_food, random_search_plus_food,
-                                    almighty_move_food)
-                    recordSteps(best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves,
-                                a_star_body_moves, best_first_search_plus_dir_steps, almighty_move_dir_steps,
+                                    almighty_move_food, a_star_dynamic_food)
+                    recordSteps(a_star_body_dynamic_moves, best_first_search_plus_body_moves,
+                                almighty_move_body_moves, random_search_plus_body_moves,
+                                a_star_body_moves, a_star_dynamic_file_dir_steps, best_first_search_plus_dir_steps,
+                                almighty_move_dir_steps,
                                 random_search_plus_dir_steps, a_star_file_dir_steps, num_game)
-                    best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves, a_star_body_moves = clearSteps()
+                    a_star_body_dynamic_moves, best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves, a_star_body_moves = clearSteps()
 
-                    almighty_defeat, best_first_defeat, random_defeat, a_star_defeat = resetDefeat()
                     print("no victor")
                     recordWinner("None")
 
+                    almighty_defeat, best_first_defeat, random_defeat, a_star_defeat, a_star_dynamic_defeat = resetDefeat()
                     globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_plus,
-                               best_first_search_plus_food, SA5, random_search_plus, random_search_plus_food, SA4,
-                               almighty_move, almighty_move_food)
-                    step = 0
+                               best_first_search_plus_food, SA5, random_search_plus, random_search_plus_food,
+                               SA4, almighty_move, almighty_move_food, SA2, a_star_dynamic, a_star_dynamic_food)
+
                     num_game += 1
-                    a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW = updateDirectory(
+                    step = 0
+                    a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW, a_star_dynamic_file_dirW = updateDirectory(
                         a_star_file_dir_image, best_first_search_plus_dir_image, random_search_plus_dir_image,
-                        almighty_move_dir_image,
-                        num_game)
+                        almighty_move_dir_image, a_star_dynamic_file_dir_image,
+                    num_game)
+                    a_star.path = []
+                    a_star_dynamic.path = []
 
                 random_defeat = random_search_plus.defeated
                 almighty_defeat = almighty_move.defeated
                 a_star_defeat = a_star.defeated
+                a_star_dynamic_defeat = a_star_dynamic.defeated
                 best_first_defeat = best_first_search_plus.defeated
 
                 if not best_first_defeat:
@@ -387,6 +472,11 @@ class LearningScreen:
                     drawFood(SA3, False, a_star, a_star_food, squareSizeSide)
                     screen.blit(SA3, (50 + (boardSideSize * 2), 5))
                     pg.image.save(SA3, os.path.join(a_star_file_dirW, str(num_game) + "_" + str(step) + ".jpeg"))
+
+                if not a_star_dynamic_defeat:
+                    drawFood(SA2, False, a_star_dynamic, a_star_dynamic_food, squareSizeSide)
+                    screen.blit(SA2, (boardSideSize + 30, 5))
+                    pg.image.save(SA2, os.path.join(a_star_dynamic_file_dirW, str(num_game) + "_" + str(step) + ".jpeg"))
 
                 if not almighty_defeat:
                     drawFood(SA4, False, almighty_move, almighty_move_food, squareSizeSide)
