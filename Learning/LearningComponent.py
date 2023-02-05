@@ -385,8 +385,7 @@ class LearningScreen:
                         a_star_dynamic.path = []
 
                 if not a_star_dynamic_defeat and not found_solution:
-                    if not a_star_dynamic.path:
-                        a_star_dynamic.getPath(a_star_food)
+                    a_star_dynamic.getPath(a_star_food)
 
                     if a_star_dynamic.path:
                         body = a_star_dynamic.body.copy()
