@@ -164,7 +164,7 @@ class LearningScreen:
 
         # this is to store the images
         a_star_file_dir_image = os.path.join(IMAGE_SAVE_FOLDER, a_star.name)
-        a_star_dynamic_file_dir_image = os.path.join(IMAGE_SAVE_FOLDER, a_star_dynamic.name + "Dynamic")
+        a_star_dynamic_file_dir_image = os.path.join(IMAGE_SAVE_FOLDER, a_star_dynamic.name + " Dynamic")
         best_first_search_plus_dir_image = os.path.join(IMAGE_SAVE_FOLDER, best_first_search_plus.name)
         random_search_plus_dir_image = os.path.join(IMAGE_SAVE_FOLDER, random_search_plus.name)
         almighty_move_dir_image = os.path.join(IMAGE_SAVE_FOLDER, almighty_move.name)
@@ -181,7 +181,7 @@ class LearningScreen:
 
         # this is to store the steps
         a_star_file_dir_steps = os.path.join(STEPS_SAVE_FOLDER, a_star.name)
-        a_star_dynamic_file_dir_steps = os.path.join(STEPS_SAVE_FOLDER, a_star_dynamic.name + "Dynamic")
+        a_star_dynamic_file_dir_steps = os.path.join(STEPS_SAVE_FOLDER, a_star_dynamic.name + " Dynamic")
         best_first_search_plus_dir_steps = os.path.join(STEPS_SAVE_FOLDER, best_first_search_plus.name)
         random_search_plus_dir_steps = os.path.join(STEPS_SAVE_FOLDER, random_search_plus.name)
         almighty_move_dir_steps = os.path.join(STEPS_SAVE_FOLDER, almighty_move.name)
@@ -410,8 +410,8 @@ class LearningScreen:
                         updateOtherFood(a_star_dynamic_food, best_first_search_plus_food, random_search_plus_food,
                                         almighty_move_food, a_star_food)
 
-                        print(a_star.name + "Dynamic", accumulationEvaluation(a_star_dynamic, a_star_dynamic_food))
-                        recordWinner(a_star.name + "Dynamic")
+                        print(a_star.name + " Dynamic", accumulationEvaluation(a_star_dynamic, a_star_dynamic_food))
+                        recordWinner(a_star.name + " Dynamic")
 
                         almighty_defeat, best_first_defeat, random_defeat, a_star_defeat, a_star_dynamic_defeat = resetDefeat()
                         globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_plus,
