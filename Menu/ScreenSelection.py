@@ -5,7 +5,7 @@ import tkinter as tk
 import tkinter.font as tkFont
 
 import Game
-import Learning.LearningComponent
+import Learning.GeneratingData
 
 
 def main():
