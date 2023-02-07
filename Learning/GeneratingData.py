@@ -260,6 +260,7 @@ class LearningScreen:
                                         almighty_move_food, a_star_dynamic_food)
 
                         print(a_star.name)
+                        recordWinner(a_star.name)
 
                         almighty_defeat, best_first_defeat, random_defeat, a_star_defeat, a_star_dynamic_defeat = resetDefeat()
                         globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_plus,
