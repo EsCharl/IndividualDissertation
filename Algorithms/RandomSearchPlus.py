@@ -4,8 +4,8 @@ from SnakeLogic import SnakeLogic
 
 
 class RandomSearchPlus(SnakeLogic):
-    def __init__(self):
-        super().__init__("Random Search")
+    def __init__(self, name="Random Search"):
+        super().__init__(name)
         self.reset()
         self.defeated = False
 

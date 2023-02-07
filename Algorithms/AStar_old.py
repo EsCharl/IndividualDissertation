@@ -3,8 +3,8 @@ from SnakeLogic import SnakeLogic
 
 
 class AStar(SnakeLogic):
-    def __init__(self):
-        super().__init__("A-Star")
+    def __init__(self, name="A-Star"):
+        super().__init__(name)
         self.face_direction = 0
         self.reset()
         self.defeated = False

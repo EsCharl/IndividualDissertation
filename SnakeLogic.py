@@ -4,7 +4,7 @@ import Constants
 
 
 class SnakeLogic:
-    def __init__(self, name):
+    def __init__(self, name = None):
         self.name = name
 
     def generateAllPotentialSteps(self, check=None):
@@ -53,6 +53,8 @@ class SnakeLogic:
     def checkAte(self, food, body):
         if not body[0] == [food.foodX, food.foodY]:
             self.body.pop()
+            return False
+        return True
 
     # this is to get the direction where it is going (adapter method)
     def getAISnakeDirection(self, body, next_step):

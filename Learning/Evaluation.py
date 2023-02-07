@@ -1,7 +1,7 @@
 import Constants
 
 # this is the weight for the training (might have different implementation down the line)
-training_weight = [4, 2, 4, 2, 4, 2]
+# training_weight = [4, 2, 4, 2, 4, 2]
 
 
 # this function is used for evaluation of the move.
@@ -20,7 +20,7 @@ def foodMoveEvaluation(space_value, space_list, food, possible_head):
 
 
 # this will generate and select the best evaluation based on the available move (Left, Forward, Right)
-def accumulationEvaluation(snake, food):
+def accumulationEvaluation(snake, food, weight):
     final_scores = []
 
     # the move_list is a list with 3 array inside. (Left, Forward, Right moves)
@@ -59,8 +59,8 @@ def accumulationEvaluation(snake, food):
         # this section is used to multiply and finalise the score for each direction.
         sum = 0
         for index, score in enumerate(final_score_list):
-            sum += score * (training_weight[(index + 1) * 2 - 2] + (
-                    training_weight[(index + 1) * 2 - 1] * len(snake.body) / (
+            sum += score * (weight[(index + 1) * 2 - 2] + (
+                    weight[(index + 1) * 2 - 1] * len(snake.body) / (
                     Constants.SQUARE_AMOUNT * Constants.SQUARE_AMOUNT)))
 
         final_scores.append(sum)

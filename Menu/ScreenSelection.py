@@ -58,7 +58,7 @@ def main():
 
         options.destroy()
 
-        Learning.LearningComponent.LearningScreen(x_display_dim, y_display_dim)
+        Learning.GeneratingData.LearningScreen(x_display_dim, y_display_dim)
 
     def GameOption():
         index = displayListBox.curselection()

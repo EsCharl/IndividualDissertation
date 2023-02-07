@@ -2,8 +2,8 @@ from SnakeLogic import SnakeLogic
 
 
 class BestFirstSearch(SnakeLogic):
-    def __init__(self):
-        super().__init__("Best First Search")
+    def __init__(self, name="Best First Search"):
+        super().__init__(name)
         self.reset()
 
     def move(self, food):
