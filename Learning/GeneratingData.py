@@ -8,7 +8,7 @@ import DrawSnake
 import GameBoardSize
 import PixelSize
 from Algorithms.AlmightyMove import AlmightyMove
-from Algorithms.AStar_old import AStar
+from Algorithms.AStar import AStar
 from Algorithms.BestFirstSearchPlus import BestFirstSearchPlus
 from Algorithms.RandomSearchPlus import RandomSearchPlus
 from Constants import SQUARE_AMOUNT
