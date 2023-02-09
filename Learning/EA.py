@@ -1,14 +1,22 @@
+import os
 import pickle
 import random
 
 from deap import creator, base, tools
 
+import sys
+sys.path.insert(0, os.getcwd())
+
 import Food
-from Learning import model
+from Learning import model, Plot
 
 # extract information from the files
-FILE_DIR = "F:/test/05_02_2023 17_55_57/"
+FILE_DIR = "F:/test/08_02_2023 17_13_58/"
 WINNER_FILE = FILE_DIR + "winners.txt"
+
+CROSS_OVER_PROB = 0.5
+MUTATION_PROB = 0.2
+TOUR_SIZE = 3
 
 f = open(WINNER_FILE, "r")
 winners_list = f.read().split("\n")
@@ -20,8 +28,9 @@ class EA():
     def __init__(self):
         IND_SIZE = 6
         FIXED_RANGE_VALUE = 15
+        POPULATION_SIZE = 5
 
-        creator.create("FitnessMax", base.Fitness, weights=(2.0, 1.0, 2.0, 1.0, 2.0, 1.0))
+        creator.create("FitnessMax", base.Fitness, weights=(1.0,))
         creator.create("Individual", list, fitness=creator.FitnessMax)
 
         # this part is the framework to create new instances (individual or a whole pop (random))
@@ -30,7 +39,7 @@ class EA():
         self.toolbox.register("individual", tools.initRepeat, creator.Individual, self.toolbox.attr_float, n=IND_SIZE)
         self.toolbox.register("population", tools.initRepeat, list, self.toolbox.individual)
 
-        self.population = self.toolbox.population(10)
+        self.population = self.toolbox.population(POPULATION_SIZE)
 
         def evaluate(x):
             none_winner = "A-Star"
@@ -76,34 +85,74 @@ class EA():
 
                 print(index)
 
-            return score
+            return score,
 
+        # sigma and indpb should be a hyperparam (take note)
         self.toolbox.register("mate", tools.cxTwoPoint)
         self.toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=1, indpb=0.2)
-        self.toolbox.register("select", tools.selTournament, tournsize=3)
+        self.toolbox.register("select", tools.selTournament, tournsize=TOUR_SIZE)
         self.toolbox.register("evaluate", evaluate)
-
-    # generate new population and have some mutation on it (sigma and indpb should be a hyperparam (take note))
-    def repopulate(self, selected):
-        self.population = selected
-        for i in range(len(selected)):
-            mutant = self.toolbox.clone(selected[i])
-            ind2, = tools.mutGaussian(mutant, mu=0.0, sigma=0.2, indpb=0.2)
-
-            del mutant.fitness.values
-
-            self.population.append(ind2)
-        return self.population
 
 
 if __name__ == '__main__':
+    generation_limit = 5
+    random.seed(1)
 
     # create the stuff
     ea = EA()
 
-    # possible fix here for the error (use the toolsbox)
+    plotting_component = Plot.Plotting()
+
     fitness = list(map(ea.toolbox.evaluate, ea.population))
+
+    print(fitness)
+    print(type(fitness))
+
     for ind, fit in zip(ea.population, fitness):
         ind.fitness.values = fit
-    test = [ind.fitness.values[0] for ind in ea.population]
-    print(test)
+
+    scores = [ind.fitness.values[0] for ind in ea.population]
+    print(scores)
+
+    best_ind = tools.selBest(ea.population, 1)[0]
+    print("Best individual is %s, %s" % (best_ind, best_ind.fitness.values))
+
+    plotting_component.ConPlot(scores)
+
+    for i in range(generation_limit - 1):
+        offspring = ea.toolbox.select(ea.population, len(ea.population))
+
+        offspring = list(map(ea.toolbox.clone, offspring))
+
+        for child1, child2 in zip(offspring[::2], offspring[1::2]):
+            if random.random() < CROSS_OVER_PROB:
+                ea.toolbox.mate(child1, child2)
+
+                del child1.fitness.values
+                del child2.fitness.values
+
+        for child in offspring:
+            if random.random() < MUTATION_PROB:
+                ea.toolbox.mutate(child)
+                del child.fitness.values
+
+        # this part is used to get all the missing scores based on the mutation and crossovers
+        invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
+
+        fitness = list(map(ea.toolbox.evaluate, invalid_ind))
+
+        for ind, fit in zip(invalid_ind, fitness):
+            ind.fitness.values = fit
+
+        ea.population[:] = offspring
+
+        # this part is just to see the score of all individual (deletable)
+        scores = [ind.fitness.values[0] for ind in ea.population]
+        print(scores)
+
+        # this part is just for aesthetic (deletable)
+        best_ind = tools.selBest(ea.population, 1)[0]
+        print("Best individual is %s, %s" % (best_ind, best_ind.fitness.values))
+
+        # show plot
+        plotting_component.ConPlot(scores)

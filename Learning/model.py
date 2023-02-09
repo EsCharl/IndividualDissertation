@@ -92,7 +92,6 @@ class Agent(SnakeLogic):
             step = Evaluation.accumulationEvaluation(snake, food, self.weights)
             move_coord = self.getCoordinate(step[0])
 
-            # might need to check if the snake gone into the body / walls (future improvability (penalisation))
             self.body.insert(0, move_coord)
             steps.append(move_coord)
             ate = self.checkAte(food, self.body)
