@@ -1,8 +1,12 @@
+import os.path
+import sys
 from tkinter import END
 
 import pygame
 import tkinter as tk
 import tkinter.font as tkFont
+
+sys.path.insert(0, os.path.abspath("../"))
 
 import Game
 import Learning.GeneratingData

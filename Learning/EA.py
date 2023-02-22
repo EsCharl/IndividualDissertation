@@ -5,13 +5,13 @@ import random
 from deap import creator, base, tools
 
 import sys
-sys.path.insert(0, os.getcwd())
+sys.path.insert(0, os.path.abspath("../"))
 
 import Food
 from Learning import model, Plot
 
 # extract information from the files
-FILE_DIR = "F:/test/08_02_2023 17_13_58/"
+FILE_DIR = "E:/test/08_02_2023 17_13_58/"
 WINNER_FILE = FILE_DIR + "winners.txt"
 
 CROSS_OVER_PROB = 0.5

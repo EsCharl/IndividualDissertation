@@ -20,7 +20,7 @@ gameBoardColour = (100, 50, 90)
 SPEED = 50
 now = datetime.now()
 
-FOLDER = "F:/test/" + now.strftime("%d_%m_%Y %H_%M_%S")
+FOLDER = "E:/test/" + now.strftime("%d_%m_%Y %H_%M_%S")
 
 os.mkdir(FOLDER)
 
