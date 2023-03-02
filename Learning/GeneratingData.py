@@ -466,7 +466,7 @@ class LearningScreen:
                 quit()
 
         # after it is finish generating
-        EA.EA(FOLDER)
+        EA.main(FOLDER)
 
 
 if __name__ == '__main__':

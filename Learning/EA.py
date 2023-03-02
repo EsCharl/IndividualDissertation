@@ -1,6 +1,7 @@
 import os
 import pickle
 import random
+import sys
 
 from deap import creator, base, tools
 
@@ -95,13 +96,12 @@ class EA:
         self.toolbox.register("evaluate", evaluate)
 
 
-if __name__ == '__main__':
+def main(folder):
     generation_limit = 5
     random.seed(1)
 
-    FILE_DIR = "../result/02_03_2023 19_32_05"
     # create the stuff
-    ea = EA(FILE_DIR)
+    ea = EA(folder)
 
     plotting_component = Plot.Plotting()
 
