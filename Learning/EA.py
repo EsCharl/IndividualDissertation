@@ -99,7 +99,7 @@ if __name__ == '__main__':
     generation_limit = 5
     random.seed(1)
 
-    FILE_DIR = "E:/test/22_02_2023 21_45_49"
+    FILE_DIR = "../result/02_03_2023 19_32_05"
     # create the stuff
     ea = EA(FILE_DIR)
 
