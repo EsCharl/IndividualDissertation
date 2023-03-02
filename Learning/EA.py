@@ -5,30 +5,29 @@ import random
 from deap import creator, base, tools
 
 import sys
-sys.path.insert(0, os.path.abspath("../"))
 
 import Food
 from Learning import model, Plot
 
-# extract information from the files
-FILE_DIR = "E:/test/08_02_2023 17_13_58/"
-WINNER_FILE = FILE_DIR + "winners.txt"
-
 CROSS_OVER_PROB = 0.5
 MUTATION_PROB = 0.2
-TOUR_SIZE = 3
-
-f = open(WINNER_FILE, "r")
-winners_list = f.read().split("\n")
-
-while "" in winners_list:
-    winners_list.remove("")
+TOUR_SIZE = 150
 
 class EA():
-    def __init__(self):
+    def __init__(self, folder):
+
+        # extract information from the files
+        WINNER_FILE = folder + "/winners.txt"
+
+        f = open(WINNER_FILE, "r")
+        winners_list = f.read().split("\n")
+
+        while "" in winners_list:
+            winners_list.remove("")
+
         IND_SIZE = 6
         FIXED_RANGE_VALUE = 15
-        POPULATION_SIZE = 5
+        POPULATION_SIZE = 300
 
         creator.create("FitnessMax", base.Fitness, weights=(1.0,))
         creator.create("Individual", list, fitness=creator.FitnessMax)
@@ -49,9 +48,9 @@ class EA():
             score = 0
             for index, win in enumerate(winners_list):
                 if win == "None":
-                    pickle_file = FILE_DIR + "/Steps/" + none_winner + "/" + str(index) + ".pickle"
+                    pickle_file = folder + "/Steps/" + none_winner + "/" + str(index) + ".pickle"
                 else:
-                    pickle_file = FILE_DIR + "/Steps/" + win + "/" + str(index) + ".pickle"
+                    pickle_file = folder + "/Steps/" + win + "/" + str(index) + ".pickle"
                 file_data = open(pickle_file, 'rb')
 
                 extracted_data = pickle.load(file_data)
@@ -83,8 +82,6 @@ class EA():
                     # this is for if the winner data is not random search or no victor and didn't manage to get to a victor
                     score -= winner_step_num
 
-                print(index)
-
             return score,
 
         # sigma and indpb should be a hyperparam (take note)
@@ -94,12 +91,12 @@ class EA():
         self.toolbox.register("evaluate", evaluate)
 
 
-if __name__ == '__main__':
-    generation_limit = 5
+def main(folder):
+    generation_limit = 100
     random.seed(1)
 
     # create the stuff
-    ea = EA()
+    ea = EA(folder)
 
     plotting_component = Plot.Plotting()
 
@@ -115,6 +112,11 @@ if __name__ == '__main__':
     print(scores)
 
     best_ind = tools.selBest(ea.population, 1)[0]
+
+    f = open("data.txt", "a")
+    f.write("Best individual is %s, %s" % (best_ind, best_ind.fitness.values) + '\n' + ", ".join(scores) + "\n")
+    f.close()
+
     print("Best individual is %s, %s" % (best_ind, best_ind.fitness.values))
 
     plotting_component.ConPlot(scores)
@@ -152,6 +154,11 @@ if __name__ == '__main__':
 
         # this part is just for aesthetic (deletable)
         best_ind = tools.selBest(ea.population, 1)[0]
+
+        f = open("data.txt", "a")
+        f.write("Best individual is %s, %s" % (best_ind, best_ind.fitness.values) + '\n' + ", ".join(scores) + "\n")
+        f.close()
+
         print("Best individual is %s, %s" % (best_ind, best_ind.fitness.values))
 
         # show plot

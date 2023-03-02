@@ -102,7 +102,7 @@ class GameScreen:
         best_first_search = BestFirstSearchPlus()
         best_first_search_food = Food(best_first_search.body)
 
-        a_star = AStar()
+        a_star = AStar("A-Star dynamic")
         a_star_food = Food(a_star.body)
 
         almighty_move = AlmightyMove()
