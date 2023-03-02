@@ -206,7 +206,7 @@ class LearningScreen:
                         body = a_star.body.copy()
                         a_star_body_moves.append([body, a_star.move(a_star_food)])
 
-                    if updateSnake(a_star, a_star_food, squareSizeSide):
+                    if updateSnake(a_star, a_star_food):
                         found_solution = True
                         updateOtherAlgo(a_star, best_first_search_plus, random_search_plus, almighty_move,
                                         a_star_dynamic)
@@ -265,7 +265,7 @@ class LearningScreen:
                         recordWinner(best_first_search_plus.name, FOLDER)
 
                         almighty_defeat, best_first_defeat, random_defeat, a_star_defeat, a_star_dynamic_defeat = resetDefeat()
-                        globalDraw(a_star, a_star_food, squareSizeSide, best_first_search_plus,
+                        globalDraw(a_star, a_star_food, best_first_search_plus,
                                    best_first_search_plus_food, random_search_plus, random_search_plus_food,
                                    almighty_move, almighty_move_food, a_star_dynamic, a_star_dynamic_food)
 
