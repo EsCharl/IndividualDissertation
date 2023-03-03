@@ -11,7 +11,7 @@ from Learning import model, Plot
 
 CROSS_OVER_PROB = 0.5
 MUTATION_PROB = 0.2
-TOUR_SIZE = 3
+TOUR_SIZE = 150
 
 
 class EA():
@@ -28,7 +28,7 @@ class EA():
 
         IND_SIZE = 6
         FIXED_RANGE_VALUE = 15
-        POPULATION_SIZE = 10
+        POPULATION_SIZE = 300
 
         creator.create("FitnessMax", base.Fitness, weights=(1.0,))
         creator.create("Individual", list, fitness=creator.FitnessMax)
@@ -93,7 +93,7 @@ class EA():
 
 
 def main(folder):
-    generation_limit = 2
+    generation_limit = 10
     random.seed(1)
 
     # create the stuff
