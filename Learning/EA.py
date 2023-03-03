@@ -43,7 +43,7 @@ class EA:
         self.population = self.toolbox.population(POPULATION_SIZE)
 
         def evaluate(x):
-            none_winner = "A-Star"
+            none_winner = "A-Star Static"
 
             # the x is a list with list in float (need to make it to list with float (individualism))
             agent = model.Agent(x)
