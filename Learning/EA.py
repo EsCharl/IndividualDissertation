@@ -85,8 +85,6 @@ class EA:
                     # this is for if the winner data is not random search or no victor and didn't manage to get to a victor
                     score -= winner_step_num
 
-                print(index)
-
             return score,
 
         # sigma and indpb should be a hyperparam (take note)
@@ -97,7 +95,7 @@ class EA:
 
 
 def main(folder):
-    generation_limit = 5
+    generation_limit = 10
     random.seed(1)
 
     # create the stuff
@@ -177,3 +175,7 @@ def main(folder):
 
         # show plot
         plotting_component.ConPlot(scores)
+
+
+if __name__ == '__main__':
+    main(sys.argv[1])
