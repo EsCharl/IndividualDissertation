@@ -119,11 +119,15 @@ def main(folder):
     best_ind = tools.selBest(ea.population, 1)[0]
 
     f = open("result.txt", "a")
-    f.write("Best individual is %s, %s" % (best_ind, best_ind.fitness.values) + '\n' + ", ".join(scores) + "\n")
+    f.write("Best individual is %s at %s" % (",".join(map(str, best_ind)),
+                                             str(best_ind.fitness.values[0])) + '\n' +
+            ", ".join(map(str, scores)) + "\n")
     f.close()
 
     best_ind = tools.selBest(ea.population, 1)[0]
-    print("Best individual is %s, %s" % (best_ind, best_ind.fitness.values))
+    print("Best individual is %s at %s" % (",".join(map(str, best_ind)),
+                                             str(best_ind.fitness.values[0])) + '\n' +
+            ", ".join(map(str, scores)) + "\n")
 
     plotting_component.ConPlot(scores)
 
@@ -162,10 +166,14 @@ def main(folder):
         best_ind = tools.selBest(ea.population, 1)[0]
 
         f = open("result.txt", "a")
-        f.write("Best individual is %s, %s" % (best_ind, best_ind.fitness.values) + '\n' + ", ".join(scores) + "\n")
+        f.write("Best individual is %s at %s" % (",".join(map(str, best_ind)),
+                                             str(best_ind.fitness.values[0])) + '\n' +
+            ", ".join(map(str, scores)) + "\n")
         f.close()
 
-        print("Best individual is %s, %s" % (best_ind, best_ind.fitness.values))
+        print("Best individual is %s at %s" % (",".join(map(str, best_ind)),
+                                             str(best_ind.fitness.values[0])) + '\n' +
+            ", ".join(map(str, scores)) + "\n")
 
         # show plot
         plotting_component.ConPlot(scores)
