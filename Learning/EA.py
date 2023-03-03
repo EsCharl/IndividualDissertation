@@ -11,7 +11,7 @@ from Learning import model, Plot
 
 CROSS_OVER_PROB = 0.5
 MUTATION_PROB = 0.2
-TOUR_SIZE = 150
+TOUR_SIZE = 3
 
 
 class EA():
@@ -28,7 +28,7 @@ class EA():
 
         IND_SIZE = 6
         FIXED_RANGE_VALUE = 15
-        POPULATION_SIZE = 300
+        POPULATION_SIZE = 10
 
         creator.create("FitnessMax", base.Fitness, weights=(1.0,))
         creator.create("Individual", list, fitness=creator.FitnessMax)
@@ -93,7 +93,7 @@ class EA():
 
 
 def main(folder):
-    generation_limit = 100
+    generation_limit = 2
     random.seed(1)
 
     # create the stuff
@@ -114,11 +114,18 @@ def main(folder):
 
     best_ind = tools.selBest(ea.population, 1)[0]
 
+    print(type(best_ind), type(best_ind.fitness.values))
+    print(type(str(best_ind)), type(str(best_ind.fitness.values)))
+    print(best_ind, best_ind.fitness.values)
     f = open("data.txt", "a")
-    f.write("Best individual is %s, %s" % (best_ind, best_ind.fitness.values) + '\n' + ", ".join(scores) + "\n")
+    f.write("Best individual is %s at %s" % (",".join(map(str, best_ind)),
+                                             str(best_ind.fitness.values[0])) + '\n' +
+            ", ".join(map(str, scores)) + "\n")
     f.close()
 
-    print("Best individual is %s, %s" % (best_ind, best_ind.fitness.values))
+    print("Best individual is %s at %s" % (",".join(map(str, best_ind)),
+                                                                                        str(best_ind.fitness.values[0])) + '\n' +
+                      ", ".join(map(str, scores)) + "\n")
 
     plotting_component.ConPlot(scores)
 
@@ -157,10 +164,14 @@ def main(folder):
         best_ind = tools.selBest(ea.population, 1)[0]
 
         f = open("data.txt", "a")
-        f.write("Best individual is %s, %s" % (best_ind, best_ind.fitness.values) + '\n' + ", ".join(scores) + "\n")
+        f.write("Best individual is %s at %s" % (",".join(map(str, best_ind)),
+                                             str(best_ind.fitness.values[0])) + '\n' +
+            ", ".join(map(str, scores)) + "\n")
         f.close()
 
-        print("Best individual is %s, %s" % (best_ind, best_ind.fitness.values))
+        print("Best individual is %s at %s" % (",".join(map(str, best_ind)),
+                                             str(best_ind.fitness.values[0])) + '\n' +
+            ", ".join(map(str, scores)) + "\n")
 
         # show plot
         plotting_component.ConPlot(scores)
