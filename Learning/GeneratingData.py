@@ -3,6 +3,9 @@ import pickle
 from datetime import datetime
 
 import pygame as pg
+import sys
+
+sys.path.insert(0, os.path.abspath("../"))
 
 import DrawSnake
 import GameBoardSize
@@ -13,7 +16,7 @@ from Algorithms.BestFirstSearchPlus import BestFirstSearchPlus
 from Algorithms.RandomSearchPlus import RandomSearchPlus
 from Constants import SQUARE_AMOUNT
 from Food import Food
-import EA
+from Learning import EA
 
 from Learning.UpdateValues import updateOtherFood, updateOtherAlgo, resetDefeat, clearSteps
 
@@ -179,7 +182,7 @@ class LearningScreen:
 
         # this is to store the images
         a_star_file_dir_image = os.path.join(IMAGE_SAVE_FOLDER, a_star.name)
-        a_star_dynamic_file_dir_image = os.path.join(IMAGE_SAVE_FOLDER, a_star_dynamic.name + " Dynamic")
+        a_star_dynamic_file_dir_image = os.path.join(IMAGE_SAVE_FOLDER, a_star_dynamic.name)
         best_first_search_plus_dir_image = os.path.join(IMAGE_SAVE_FOLDER, best_first_search_plus.name)
         random_search_plus_dir_image = os.path.join(IMAGE_SAVE_FOLDER, random_search_plus.name)
         almighty_move_dir_image = os.path.join(IMAGE_SAVE_FOLDER, almighty_move.name)
@@ -196,7 +199,7 @@ class LearningScreen:
 
         # this is to store the steps
         a_star_file_dir_steps = os.path.join(STEPS_SAVE_FOLDER, a_star.name)
-        a_star_dynamic_file_dir_steps = os.path.join(STEPS_SAVE_FOLDER, a_star_dynamic.name + " Dynamic")
+        a_star_dynamic_file_dir_steps = os.path.join(STEPS_SAVE_FOLDER, a_star_dynamic.name)
         best_first_search_plus_dir_steps = os.path.join(STEPS_SAVE_FOLDER, best_first_search_plus.name)
         random_search_plus_dir_steps = os.path.join(STEPS_SAVE_FOLDER, random_search_plus.name)
         almighty_move_dir_steps = os.path.join(STEPS_SAVE_FOLDER, almighty_move.name)
@@ -433,8 +436,8 @@ class LearningScreen:
                         updateOtherFood(a_star_dynamic_food, best_first_search_plus_food, random_search_plus_food,
                                         almighty_move_food, a_star_food)
 
-                        print(a_star.name + " Dynamic")
-                        recordWinner(a_star.name + " Dynamic", FOLDER)
+                        print(a_star_dynamic.name)
+                        recordWinner(a_star_dynamic.name, FOLDER)
 
                         almighty_defeat, best_first_defeat, random_defeat, a_star_defeat, a_star_dynamic_defeat = resetDefeat()
                         globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_plus,
@@ -534,3 +537,6 @@ class LearningScreen:
                 quit()
 
         EA.main(FOLDER)
+
+if __name__ == '__main__':
+    LearningScreen()

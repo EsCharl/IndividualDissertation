@@ -5,6 +5,7 @@ import random
 from deap import creator, base, tools
 
 import sys
+sys.path.insert(0, os.path.abspath("../"))
 
 import Food
 from Learning import model, Plot
@@ -14,7 +15,7 @@ MUTATION_PROB = 0.2
 TOUR_SIZE = 150
 
 
-class EA():
+class EA:
     def __init__(self, folder):
 
         # extract information from the files
