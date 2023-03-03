@@ -13,6 +13,7 @@ CROSS_OVER_PROB = 0.5
 MUTATION_PROB = 0.2
 TOUR_SIZE = 150
 
+
 class EA():
     def __init__(self, folder):
 
@@ -163,3 +164,8 @@ def main(folder):
 
         # show plot
         plotting_component.ConPlot(scores)
+
+
+if __name__ == '__main__':
+    FOLDER = "../data/22_02_2023 21_45_49"
+    main(FOLDER)
