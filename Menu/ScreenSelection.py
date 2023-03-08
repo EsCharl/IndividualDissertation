@@ -50,19 +50,51 @@ def main():
         options = tk.Tk()
         options.title("Learning Options")
 
-        frame = tk.Frame(options)
-        frame.pack()
+        number_population = tk.Spinbox(options, from_=150, to=450, textvariable=tk.StringVar(value="300"))
+        number_population.grid(row=0, column=2, sticky=tk.NS)
 
-        startLearningButton = tk.Button(frame)
+        number_population_text = tk.Message(options)
+        number_population_text.configure(font=textFont, text="Pop in each gen")
+        number_population_text.grid(row=0, column=0)
+
+        generation = tk.Spinbox(options, from_=5, to=50, textvariable=tk.StringVar(value="10"))
+        generation.grid(row=2, column=2, sticky=tk.NS)
+
+        generation_text = tk.Message(options)
+        generation_text.configure(font=textFont, text="total gen")
+        generation_text.grid(row=2, column=0)
+
+        cross_over_prob = tk.Spinbox(options, from_=0.1, to=1.0, increment=0.05, textvariable=tk.StringVar(value="0.5"))
+        cross_over_prob.grid(row=4, column=2, sticky=tk.NS)
+
+        cross_over_prob_text = tk.Message(options)
+        cross_over_prob_text.configure(font=textFont, text="Cross over prob")
+        cross_over_prob_text.grid(row=4, column=0)
+
+        mutation_prob = tk.Spinbox(options, from_=0.1, to=1.0, increment=0.05, textvariable=tk.StringVar(value="0.2"))
+        mutation_prob.grid(row=6, column=2, sticky=tk.NS)
+
+        mutation_prob_text = tk.Message(options)
+        mutation_prob_text.configure(font=textFont, text="Mutation prob")
+        mutation_prob_text.grid(row=6, column=0)
+
+        startLearningButton = tk.Button(options)
+        startLearningButton.grid(row=8, column=1, sticky=tk.NS)
+
+        def ActivateLearning():
+            pop = int(number_population.get())
+            gen = int(generation.get())
+            cross = float(cross_over_prob.get())
+            mutation = float(mutation_prob.get())
+
+            options.quit()
+            options.destroy()
+            Learning.GeneratingData.LearningScreen(pop, gen, cross, mutation, x_display_dim, y_display_dim)
+
         startLearningButton.configure(font=textFont, justify="center", text="Learn Game",
-                                      command=lambda: options.quit())
-        startLearningButton.pack(side="bottom")
+                                      command=ActivateLearning)
 
         options.mainloop()
-
-        options.destroy()
-
-        Learning.GeneratingData.LearningScreen(x_display_dim, y_display_dim)
 
     def GameOption():
         index = displayListBox.curselection()

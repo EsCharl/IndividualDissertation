@@ -5,18 +5,16 @@ import random
 from deap import creator, base, tools
 
 import sys
+
 sys.path.insert(0, os.path.abspath("../"))
 
 import Food
 from Learning import model, Plot
 
-CROSS_OVER_PROB = 0.5
-MUTATION_PROB = 0.2
-TOUR_SIZE = 150
-
 
 class EA:
-    def __init__(self, folder):
+    def __init__(self, folder, pop_size):
+        TOUR_SIZE = pop_size / 2
 
         # extract information from the files
         WINNER_FILE = folder + "/winners.txt"
@@ -93,12 +91,11 @@ class EA:
         self.toolbox.register("evaluate", evaluate)
 
 
-def main(folder):
-    generation_limit = 10
-    random.seed(1)
+def main(folder, pop_size=300, generation_limit=10, cross_over_prob=0.5, mutation_prob=0.2):
+    # random.seed(1)
 
     # create the stuff
-    ea = EA(folder)
+    ea = EA(folder, pop_size)
 
     plotting_component = Plot.Plotting()
 
@@ -118,15 +115,15 @@ def main(folder):
     print(type(best_ind), type(best_ind.fitness.values))
     print(type(str(best_ind)), type(str(best_ind.fitness.values)))
     print(best_ind, best_ind.fitness.values)
-    f = open("data.txt", "a")
+    f = open("data.txt", "w")
     f.write("Best individual is %s at %s" % (",".join(map(str, best_ind)),
                                              str(best_ind.fitness.values[0])) + '\n' +
             ", ".join(map(str, scores)) + "\n")
     f.close()
 
     print("Best individual is %s at %s" % (",".join(map(str, best_ind)),
-                                                                                        str(best_ind.fitness.values[0])) + '\n' +
-                      ", ".join(map(str, scores)) + "\n")
+                                           str(best_ind.fitness.values[0])) + '\n' +
+          ", ".join(map(str, scores)) + "\n")
 
     plotting_component.ConPlot(scores)
 
@@ -136,14 +133,14 @@ def main(folder):
         offspring = list(map(ea.toolbox.clone, offspring))
 
         for child1, child2 in zip(offspring[::2], offspring[1::2]):
-            if random.random() < CROSS_OVER_PROB:
+            if random.random() < cross_over_prob:
                 ea.toolbox.mate(child1, child2)
 
                 del child1.fitness.values
                 del child2.fitness.values
 
         for child in offspring:
-            if random.random() < MUTATION_PROB:
+            if random.random() < mutation_prob:
                 ea.toolbox.mutate(child)
                 del child.fitness.values
 
@@ -166,18 +163,18 @@ def main(folder):
 
         f = open("data.txt", "a")
         f.write("Best individual is %s at %s" % (",".join(map(str, best_ind)),
-                                             str(best_ind.fitness.values[0])) + '\n' +
-            ", ".join(map(str, scores)) + "\n")
+                                                 str(best_ind.fitness.values[0])) + '\n' +
+                ", ".join(map(str, scores)) + "\n")
         f.close()
 
         print("Best individual is %s at %s" % (",".join(map(str, best_ind)),
-                                             str(best_ind.fitness.values[0])) + '\n' +
-            ", ".join(map(str, scores)) + "\n")
+                                               str(best_ind.fitness.values[0])) + '\n' +
+              ", ".join(map(str, scores)) + "\n")
 
         # show plot
         plotting_component.ConPlot(scores)
 
 
 if __name__ == '__main__':
-    FOLDER = "../data/22_02_2023 21_45_49"
+    FOLDER = "../data/03_03_2023 21_45_23"
     main(FOLDER)

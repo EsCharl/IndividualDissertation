@@ -97,7 +97,6 @@ def recordSteps(algo1, algo2, algo3, algo4, algo5, dir1, dir2, dir3, dir4, dir5,
 def globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_plus,
                best_first_search_plus_food, SA5, random_search_plus, random_search_plus_food, SA4, almighty_move,
                almighty_move_food, SA2, a_star_dynamic, a_star_dynamic_food):
-
     # to reset the canvas once a victor is selected
     SA1.fill(gameBoardColour)
     SA2.fill(gameBoardColour)
@@ -114,7 +113,10 @@ def globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_
 
 class LearningScreen:
 
-    def __init__(self, w=640, h=480):
+    def __init__(self, pop_size=300, generation_limit=10, cross_over_prob=0.5, mutation_prob=0.2, w=640, h=480):
+        if pop_size % 2:
+            pop_size += 1
+
         now = datetime.now()
 
         FOLDER = "../data/" + now.strftime("%d_%m_%Y %H_%M_%S")
@@ -277,7 +279,7 @@ class LearningScreen:
                         a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW, a_star_dynamic_file_dirW = updateDirectory(
                             a_star_file_dir_image, best_first_search_plus_dir_image, random_search_plus_dir_image,
                             almighty_move_dir_image, a_star_dynamic_file_dir_image,
-                        num_game)
+                            num_game)
                         a_star.path = []
                         a_star_dynamic.path = []
                         init_body = []
@@ -296,7 +298,8 @@ class LearningScreen:
                                     almighty_move_body_moves, random_search_plus_body_moves,
                                     a_star_body_moves, a_star_dynamic_file_dir_steps, best_first_search_plus_dir_steps,
                                     almighty_move_dir_steps,
-                                    random_search_plus_dir_steps, a_star_file_dir_steps, num_game, best_first_search_plus_food)
+                                    random_search_plus_dir_steps, a_star_file_dir_steps, num_game,
+                                    best_first_search_plus_food)
                         a_star_body_dynamic_moves, best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves, a_star_body_moves = clearSteps()
 
                         screen.blit(SA1, (10, 5))
@@ -320,7 +323,7 @@ class LearningScreen:
                         a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW, a_star_dynamic_file_dirW = updateDirectory(
                             a_star_file_dir_image, best_first_search_plus_dir_image, random_search_plus_dir_image,
                             almighty_move_dir_image, a_star_dynamic_file_dir_image,
-                        num_game)
+                            num_game)
                         a_star.path = []
                         a_star_dynamic.path = []
                         init_body = []
@@ -339,7 +342,8 @@ class LearningScreen:
                                     almighty_move_body_moves, random_search_plus_body_moves,
                                     a_star_body_moves, a_star_dynamic_file_dir_steps, best_first_search_plus_dir_steps,
                                     almighty_move_dir_steps,
-                                    random_search_plus_dir_steps, a_star_file_dir_steps, num_game, random_search_plus_food)
+                                    random_search_plus_dir_steps, a_star_file_dir_steps, num_game,
+                                    random_search_plus_food)
                         a_star_body_dynamic_moves, best_first_search_plus_body_moves, almighty_move_body_moves, random_search_plus_body_moves, a_star_body_moves = clearSteps()
 
                         screen.blit(SA5, (50 + (boardSideSize * 2), boardSideSize + 10))
@@ -363,7 +367,7 @@ class LearningScreen:
                         a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW, a_star_dynamic_file_dirW = updateDirectory(
                             a_star_file_dir_image, best_first_search_plus_dir_image, random_search_plus_dir_image,
                             almighty_move_dir_image, a_star_dynamic_file_dir_image,
-                        num_game)
+                            num_game)
                         a_star.path = []
                         a_star_dynamic.path = []
                         init_body = []
@@ -405,7 +409,7 @@ class LearningScreen:
                         a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW, a_star_dynamic_file_dirW = updateDirectory(
                             a_star_file_dir_image, best_first_search_plus_dir_image, random_search_plus_dir_image,
                             almighty_move_dir_image, a_star_dynamic_file_dir_image,
-                        num_game)
+                            num_game)
                         a_star.path = []
                         a_star_dynamic.path = []
                         init_body = []
@@ -449,7 +453,7 @@ class LearningScreen:
                         a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW, a_star_dynamic_file_dirW = updateDirectory(
                             a_star_file_dir_image, best_first_search_plus_dir_image, random_search_plus_dir_image,
                             almighty_move_dir_image, a_star_dynamic_file_dir_image,
-                        num_game)
+                            num_game)
                         a_star.path = []
                         a_star_dynamic.path = []
                         init_body = []
@@ -492,7 +496,7 @@ class LearningScreen:
                     a_star_file_dirW, best_first_search_plus_dirW, random_search_plus_dirW, almighty_move_dirW, a_star_dynamic_file_dirW = updateDirectory(
                         a_star_file_dir_image, best_first_search_plus_dir_image, random_search_plus_dir_image,
                         almighty_move_dir_image, a_star_dynamic_file_dir_image,
-                    num_game)
+                        num_game)
                     a_star.path = []
                     a_star_dynamic.path = []
                     init_body = []
@@ -517,7 +521,8 @@ class LearningScreen:
                 if not a_star_dynamic_defeat:
                     drawFood(SA2, False, a_star_dynamic, a_star_dynamic_food, squareSizeSide)
                     screen.blit(SA2, (boardSideSize + 30, 5))
-                    pg.image.save(SA2, os.path.join(a_star_dynamic_file_dirW, str(num_game) + "_" + str(step) + ".jpeg"))
+                    pg.image.save(SA2,
+                                  os.path.join(a_star_dynamic_file_dirW, str(num_game) + "_" + str(step) + ".jpeg"))
 
                 if not almighty_defeat:
                     drawFood(SA4, False, almighty_move, almighty_move_food, squareSizeSide)
@@ -536,7 +541,8 @@ class LearningScreen:
             except KeyboardInterrupt:
                 quit()
 
-        EA.main(FOLDER)
+        EA.main(FOLDER, pop_size, generation_limit, cross_over_prob, mutation_prob)
+
 
 if __name__ == '__main__':
     LearningScreen()
