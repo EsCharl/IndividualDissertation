@@ -12,6 +12,7 @@ from Algorithms.AlmightyMove import AlmightyMove
 from Algorithms.AStar import AStar
 from Algorithms.BestFirstSearchPlus import BestFirstSearchPlus
 from Algorithms.RandomSearchPlus import RandomSearchPlus
+from Algorithms.Model import Model
 from Constants import SQUARE_AMOUNT
 from Food import Food
 from threading import Timer
@@ -108,8 +109,26 @@ class GameScreen:
         almighty_move = AlmightyMove()
         almighty_move_food = Food(almighty_move.body)
 
-        random_search_plus = RandomSearchPlus()
-        random_search_plus_food = Food(random_search_plus.body)
+        # get the model for the model
+        try:
+            file = open("../Learning/result.txt", "r")
+
+            text = file.read().split("\n")
+
+            temp = text[-3].split("is ")[1]
+            temp = temp.split(" at")[0]
+            values = temp.split(",")
+            final_values = []
+            for i in values:
+                final_values.append(float(i))
+
+            model_or_random = Model(final_values)
+            model_or_random_food = Food(model_or_random.body)
+
+        except FileNotFoundError:
+            # if failed use random algo
+            model_or_random = RandomSearchPlus()
+            model_or_random_food = Food(model_or_random.body)
 
         self.done = False
 
@@ -161,14 +180,14 @@ class GameScreen:
                     a_star.move(a_star_food)
 
                 best_first_search.move(best_first_search_food)
-                random_search_plus.move(random_search_plus_food)
+                model_or_random.move(model_or_random_food)
                 almighty_move.move(almighty_move_food)
 
                 A1Score += drawGame(SA1, best_first_search, best_first_search_food, squareSizeSide)
                 PScore += drawGame(SAP, player, player_food, squareSizeSide)
                 A3Score += drawGame(SA3, a_star, a_star_food, squareSizeSide)
                 A4Score += drawGame(SA4, almighty_move, almighty_move_food, squareSizeSide)
-                A5Score += drawGame(SA5, random_search_plus, random_search_plus_food, squareSizeSide)
+                A5Score += drawGame(SA5, model_or_random, model_or_random_food, squareSizeSide)
 
                 screen.blit(SA1, (10, 5))
                 screen.blit(SAP, (boardSideSize + 30, 5))
@@ -200,6 +219,6 @@ class GameScreen:
                 f.write(player.name+": " + str(PScore) + "\n")
                 f.write(a_star.name+": " + str(A3Score) + "\n")
                 f.write(almighty_move.name+": " + str(A4Score) + "\n")
-                f.write(random_search_plus.name+": " + str(A5Score) + "\n")
+                f.write(model_or_random.name+": " + str(A5Score) + "\n")
 
 
