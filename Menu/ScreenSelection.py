@@ -50,12 +50,19 @@ def main():
         options = tk.Tk()
         options.title("Learning Options")
 
+        number_data = tk.Spinbox(options, from_=500, to=100000, textvariable=tk.StringVar(value="1000"))
+        number_data.grid(row=0, column=2, sticky=tk.NS)
+
+        number_data_text = tk.Message(options)
+        number_data_text.configure(font=textFont, text="num data gen")
+        number_data_text.grid(row=0, column=0)
+
         number_population = tk.Spinbox(options, from_=150, to=450, textvariable=tk.StringVar(value="300"))
-        number_population.grid(row=0, column=2, sticky=tk.NS)
+        number_population.grid(row=1, column=2, sticky=tk.NS)
 
         number_population_text = tk.Message(options)
         number_population_text.configure(font=textFont, text="Pop in each gen")
-        number_population_text.grid(row=0, column=0)
+        number_population_text.grid(row=1, column=0)
 
         generation = tk.Spinbox(options, from_=5, to=50, textvariable=tk.StringVar(value="10"))
         generation.grid(row=2, column=2, sticky=tk.NS)
@@ -82,6 +89,7 @@ def main():
         startLearningButton.grid(row=8, column=1, sticky=tk.NS)
 
         def ActivateLearning():
+            data = int(number_data.get())
             pop = int(number_population.get())
             gen = int(generation.get())
             cross = float(cross_over_prob.get())
@@ -89,7 +97,7 @@ def main():
 
             options.quit()
             options.destroy()
-            Learning.GeneratingData.LearningScreen(pop, gen, cross, mutation, x_display_dim, y_display_dim)
+            Learning.GeneratingData.LearningScreen(data, pop, gen, cross, mutation, x_display_dim, y_display_dim)
 
         startLearningButton.configure(font=textFont, justify="center", text="Learn Game",
                                       command=ActivateLearning)
