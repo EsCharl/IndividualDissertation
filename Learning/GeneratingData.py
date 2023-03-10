@@ -541,6 +541,7 @@ class LearningScreen:
             except KeyboardInterrupt:
                 quit()
 
+        pg.quit()
         EA.main(FOLDER, pop_size, generation_limit, cross_over_prob, mutation_prob)
 
 
