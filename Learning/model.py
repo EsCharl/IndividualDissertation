@@ -1,6 +1,6 @@
 import Constants
 from SnakeLogic import SnakeLogic
-from Learning import Evaluation
+from Learning import EAEvaluation
 
 class Agent(SnakeLogic):
     def __init__(self, weights):

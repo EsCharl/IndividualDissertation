@@ -18,7 +18,7 @@ from Constants import SQUARE_AMOUNT
 from Food import Food
 from Learning import EA
 
-from Learning.UpdateValues import updateOtherFood, updateOtherAlgo, resetDefeat, clearSteps
+from UpdateValues import updateOtherFood, updateOtherAlgo, resetDefeat, clearSteps
 
 gameBoardColour = (100, 50, 90)
 SPEED = 5000
@@ -113,7 +113,7 @@ def globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_
 
 class LearningScreen:
 
-    def __init__(self, data=1000, pop_size=300, generation_limit=10, cross_over_prob=0.5, mutation_prob=0.2, w=640, h=480):
+    def __init__(self, data=1000, pop_size=300, generation_limit=10, cross_over_prob=0.5, mutation_prob=0.2, w=640, h=400):
         if pop_size % 2:
             pop_size += 1
 

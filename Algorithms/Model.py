@@ -1,4 +1,4 @@
-from Learning import Evaluation
+from Learning import EAEvaluation
 from SnakeLogic import SnakeLogic
 
 
@@ -58,7 +58,7 @@ class Model(SnakeLogic):
                 return [self.body[0][0], self.body[0][1] - 1]
 
     def move(self, food):
-        step = Evaluation.accumulationEvaluation(self, food, self.weights)
+        step = EAEvaluation.accumulationEvaluation(self, food, self.weights)
         move_coord = self.getCoordinate(step[0])
 
         # check if the step is going to the body or not

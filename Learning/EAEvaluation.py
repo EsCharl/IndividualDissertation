@@ -1,8 +1,5 @@
 import Constants
 
-# this is the weight for the training (might have different implementation down the line)
-# training_weight = [4, 2, 4, 2, 4, 2]
-
 
 # this function is used for evaluation of the move.
 # If the move made can reach the food then it will be considered (score > 0 else score = 0).

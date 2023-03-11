@@ -61,7 +61,7 @@ class GameScreen:
 
         canvas.blit(time, (game_board_size/2, game_board_size/2))
 
-    def __init__(self, w=640, h=480, time=3):
+    def __init__(self, w=640, h=400, time=3):
         pg.init()
 
         self.gamer1Font = pygame.font.SysFont('Arial', int(25 * h / 768), bold=True)
