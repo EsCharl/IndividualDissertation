@@ -105,7 +105,6 @@ class AccumulationAlgo(SnakeLogic):
 
                     if updateSnake(self.BFS, self.BFS_food):
                         print(self.BFS.name)
-                        print(self.BFS_moves)
 
                         self.found_solution = True
                         updateOtherAlgo(self.BFS, self.a_star_static, self.random, self.almighty, self.a_star_dynamic)

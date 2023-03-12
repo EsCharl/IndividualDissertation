@@ -1,3 +1,4 @@
+import Constants
 from Learning import EAEvaluation
 from SnakeLogic import SnakeLogic
 
@@ -60,6 +61,9 @@ class Model(SnakeLogic):
     def move(self, food):
         step = EAEvaluation.accumulationEvaluation(self, food, self.weights)
         move_coord = self.getCoordinate(step[0])
+
+        # if move_coord in self.body or move_coord[0] < 0 or move_coord[1] < 0 or move_coord[0] or \
+        #         move_coord[0] > Constants.SQUARE_AMOUNT - 1 or move_coord[1] > Constants.SQUARE_AMOUNT - 1:
 
         # check if the step is going to the body or not
         if move_coord in self.body:
