@@ -107,7 +107,7 @@ class AccumulationAlgo(SnakeLogic):
 
                     if updateSnake(self.BFS, self.BFS_food):
                         self.found_solution = True
-                        updateOtherAlgo(self.a_star_static, self.BFS, self.random, self.almighty, self.a_star_dynamic)
+                        updateOtherAlgo(self.BFS, self.a_star_static, self.random, self.almighty, self.a_star_dynamic)
 
                         self.completed = self.BFS_moves
 
@@ -126,7 +126,7 @@ class AccumulationAlgo(SnakeLogic):
 
                     if updateSnake(self.random, self.random_food):
                         self.found_solution = True
-                        updateOtherAlgo(self.a_star_static, self.BFS, self.random, self.almighty, self.a_star_dynamic)
+                        updateOtherAlgo(self.random, self.a_star_static, self.BFS, self.almighty, self.a_star_dynamic)
 
                         self.completed = self.random_moves
 
@@ -145,7 +145,7 @@ class AccumulationAlgo(SnakeLogic):
 
                     if updateSnake(self.almighty, self.almighty_food):
                         self.found_solution = True
-                        updateOtherAlgo(self.a_star_static, self.BFS, self.random, self.almighty, self.a_star_dynamic)
+                        updateOtherAlgo(self.almighty, self.a_star_static, self.BFS, self.random, self.a_star_dynamic)
 
                         self.completed = self.almighty_moves
 
@@ -164,7 +164,7 @@ class AccumulationAlgo(SnakeLogic):
 
                     if updateSnake(self.a_star_dynamic, self.a_star_dynamic_food):
                         self.found_solution = True
-                        updateOtherAlgo(self.a_star_static, self.BFS, self.random, self.almighty, self.a_star_dynamic)
+                        updateOtherAlgo(self.a_star_dynamic, self.a_star_static, self.BFS, self.random, self.almighty)
 
                         self.completed = self.a_star_dynamic_moves
 
