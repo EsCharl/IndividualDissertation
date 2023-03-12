@@ -1,6 +1,8 @@
 import os
 import sys
 
+sys.path.insert(0, os.path.abspath("../"))
+
 from datetime import datetime
 import pygame as pg
 
@@ -12,7 +14,6 @@ from threading import Timer
 from EvalBoardSize import get_size
 import PixelSize
 from Algorithms.Model import Model
-from Constants import SQUARE_AMOUNT
 from Evaluation.AccumulationAlgo import AccumulationAlgo
 from Food import Food
 
@@ -53,7 +54,7 @@ class Evaluation():
 
     def start(self, name, test_num):
         boardSideSize = get_size(self.h)
-        squareSizeSide = PixelSize.get_block_size(boardSideSize, SQUARE_AMOUNT)
+        squareSizeSide = PixelSize.get_block_size(boardSideSize, EvalConstants.SQUARE_AMOUNT)
 
         UI_position = [self.w - ((self.w - self.h) / 2), self.h / 2]
 
@@ -166,4 +167,4 @@ class Evaluation():
 if __name__ == '__main__':
     eval_project = Evaluation(3)
 
-    eval_project.start("model", 10)
+    eval_project.start("algo", 10)

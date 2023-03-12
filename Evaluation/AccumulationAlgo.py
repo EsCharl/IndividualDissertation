@@ -63,7 +63,8 @@ class AccumulationAlgo(SnakeLogic):
             self.BFS_food.foodY = food.foodY
 
         if self.found_solution:
-            self.body.insert(0, self.completed.pop(0))
+            if self.completed:
+                self.body.insert(0, self.completed.pop(0))
 
             if self.checkAte(food, self.body):
                 self.found_solution = False
