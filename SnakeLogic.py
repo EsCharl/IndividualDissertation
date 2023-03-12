@@ -4,7 +4,7 @@ import Constants
 
 
 class SnakeLogic:
-    def __init__(self, name = None):
+    def __init__(self, name=None):
         self.name = name
 
     def generateAllPotentialSteps(self, check=None):

@@ -13,6 +13,7 @@ from EvalBoardSize import get_size
 import PixelSize
 from Algorithms.Model import Model
 from Constants import SQUARE_AMOUNT
+from Evaluation.AccumulationAlgo import AccumulationAlgo
 from Food import Food
 
 gameBoardColour = (20, 50, 90)
@@ -86,7 +87,10 @@ class Evaluation():
                     final_values.append(float(i))
 
                 agent = Model(final_values)
-                agent_food = Food(agent.body)
+            else:
+                agent = AccumulationAlgo(name)
+
+            agent_food = Food(agent.body)
 
             SM = pg.Surface((boardSideSize, boardSideSize))
 
@@ -152,7 +156,7 @@ class Evaluation():
                 if not os.path.exists(game_score_saving):
                     os.makedirs(game_score_saving)
 
-                with open(game_score_saving + "/model.txt", 'a') as f:
+                with open(game_score_saving + "/" + name + ".txt", 'a') as f:
                     f.write(str(self.num_rounds)+", "+str(self.num_reset)+", "+str(self.num_food_gained) + "\n")
 
                 pg.quit()
@@ -162,4 +166,4 @@ class Evaluation():
 if __name__ == '__main__':
     eval_project = Evaluation(3)
 
-    eval_project.start("model", 10)
+    eval_project.start("algo", 10)
