@@ -1,4 +1,5 @@
 import os
+import random
 import sys
 
 from datetime import datetime
@@ -121,6 +122,11 @@ class Evaluation():
                     all_sprites.draw(screen)
 
                     agent.move(agent_food)
+                    test = agent.body[0]
+                    if test in agent.body[1:]:
+                        print("hit")
+                        print(agent.test)
+
                     all_sprites.draw(screen)
 
                     if agent.defeated:
@@ -164,6 +170,7 @@ class Evaluation():
 
 
 if __name__ == '__main__':
+    random.seed(1)
     eval_project = Evaluation(3)
 
     eval_project.start("algo", 10)

@@ -1,5 +1,6 @@
 import copy
 
+
 def updateOtherAlgo(main_algo, algo1, algo2, algo3, algo4):
     algo1.body = copy.copy(main_algo.body)
     algo2.body = copy.copy(main_algo.body)
@@ -26,9 +27,10 @@ def updateOtherFood(main_food, algo1food, algo2food, algo3food, algo4food):
     algo4food.foodX = main_food.foodX
     algo4food.foodY = main_food.foodY
 
+
 def clearSteps():
     return [], [], [], [], []
 
 
 def resetDefeat():
-    return 0, 0, 0, 0, 0
+    return False, False, False, False, False

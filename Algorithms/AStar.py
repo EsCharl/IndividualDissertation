@@ -14,6 +14,7 @@ class Node():
     def __eq__(self, other):
         return self.position == other.position
 
+
 class AStar(SnakeLogic):
     def __init__(self, name=None):
         super().__init__(name)
@@ -30,6 +31,7 @@ class AStar(SnakeLogic):
 
         adjacent = [[parent.position[0] + 1, parent.position[1]], [parent.position[0] - 1, parent.position[1]],
                     [parent.position[0], parent.position[1] + 1], [parent.position[0], parent.position[1] - 1]]
+
         for x in adjacent:
             found = False
             for closed in closed_list:
@@ -61,7 +63,9 @@ class AStar(SnakeLogic):
         start_node = Node(None, self.body[0])
         start_node.g = start_node.h = start_node.f = 0
         end_node = Node(None, [food.foodX, food.foodY])
-        end_node.g = end_node.h = end_node.f = 0
+        end_node.g = 0
+        end_node.h = 0
+        end_node.f = 0
 
         open_list = []
         closed_list = []
@@ -107,7 +111,6 @@ class AStar(SnakeLogic):
 
             if fixed_step:
                 self.path.append(fixed_step)
-
 
         if not self.path:
             self.reset()

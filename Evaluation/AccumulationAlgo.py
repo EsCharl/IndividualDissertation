@@ -22,6 +22,7 @@ def updateSnake(snake, snake_food):
 
 class AccumulationAlgo(SnakeLogic):
     def __init__(self, name="algo"):
+        self.test = []
         super().__init__(name)
 
         self.a_star_static = AStar("static")
@@ -49,12 +50,6 @@ class AccumulationAlgo(SnakeLogic):
         self.random_moves = []
         self.almighty_moves = []
 
-        self.almighty_defeat = False
-        self.BFS_defeat = False
-        self.random_defeat = False
-        self.a_star_static_defeat = False
-        self.a_star_dynamic_defeat = False
-
         self.completed = None
         self.found_solution = False
 
@@ -80,7 +75,7 @@ class AccumulationAlgo(SnakeLogic):
 
         else:
             while True:
-                if not self.a_star_static_defeat and not self.found_solution:
+                if not self.a_star_static.defeated and not self.found_solution:
                     if not self.a_star_static.path:
                         self.a_star_static.getPath(self.a_star_static_food)
 
@@ -88,6 +83,9 @@ class AccumulationAlgo(SnakeLogic):
                         self.a_star_static_moves.append(self.a_star_static.move(self.a_star_static_food))
 
                     if updateSnake(self.a_star_static, self.a_star_static_food):
+                        print(self.a_star_static.name)
+                        self.test = self.a_star_static_moves
+
                         self.found_solution = True
                         updateOtherAlgo(self.a_star_static, self.BFS, self.random, self.almighty, self.a_star_dynamic)
 
@@ -95,17 +93,20 @@ class AccumulationAlgo(SnakeLogic):
 
                         self.a_star_dynamic_moves, self.BFS_moves, self.almighty_moves, self.random_moves, self.a_star_static_moves = clearSteps()
 
-                        self.almighty_defeat, self.BFS_defeat, self.random_defeat, self.a_star_static_defeat, self.a_star_dynamic_defeat = resetDefeat()
+                        self.almighty.defeated, self.BFS.defeated, self.random.defeated, self.a_star_static.defeated, self.a_star_dynamic.defeated = resetDefeat()
                         self.a_star_static.path = []
                         self.a_star_dynamic.path = []
                         break
 
-                if not self.BFS_defeat and not self.found_solution:
+                if not self.BFS.defeated and not self.found_solution:
                     move = self.BFS.move(self.BFS_food)
                     if move:
                         self.BFS_moves.append(move)
 
                     if updateSnake(self.BFS, self.BFS_food):
+                        print(self.BFS.name)
+                        print(self.BFS_moves)
+
                         self.found_solution = True
                         updateOtherAlgo(self.BFS, self.a_star_static, self.random, self.almighty, self.a_star_dynamic)
 
@@ -113,18 +114,20 @@ class AccumulationAlgo(SnakeLogic):
 
                         self.a_star_dynamic_moves, self.BFS_moves, self.almighty_moves, self.random_moves, self.a_star_static_moves = clearSteps()
 
-                        self.almighty_defeat, self.BFS_defeat, self.random_defeat, self.a_star_static_defeat, self.a_star_dynamic_defeat = resetDefeat()
+                        self.almighty.defeated, self.BFS.defeated, self.random.defeated, self.a_star_static.defeated, self.a_star_dynamic.defeated = resetDefeat()
                         self.a_star_static.path = []
                         self.a_star_dynamic.path = []
                         break
 
-                if not self.random and not self.found_solution:
+                if not self.random.defeated and not self.found_solution:
                     move = self.random.move(self.random_food)
 
                     if move:
                         self.random_moves.append(move)
 
                     if updateSnake(self.random, self.random_food):
+                        print(self.random.name)
+
                         self.found_solution = True
                         updateOtherAlgo(self.random, self.a_star_static, self.BFS, self.almighty, self.a_star_dynamic)
 
@@ -132,18 +135,20 @@ class AccumulationAlgo(SnakeLogic):
 
                         self.a_star_dynamic_moves, self.BFS_moves, self.almighty_moves, self.random_moves, self.a_star_static_moves = clearSteps()
 
-                        self.almighty_defeat, self.BFS_defeat, self.random_defeat, self.a_star_static_defeat, self.a_star_dynamic_defeat = resetDefeat()
+                        self.almighty.defeated, self.BFS.defeated, self.random.defeated, self.a_star_static.defeated, self.a_star_dynamic.defeated = resetDefeat()
                         self.a_star_static.path = []
                         self.a_star_dynamic.path = []
                         break
 
-                if not self.almighty_defeat and not self.found_solution:
+                if not self.almighty.defeated and not self.found_solution:
                     move = self.almighty.move(self.almighty_food)
 
                     if move:
                         self.almighty_moves.append(move)
 
                     if updateSnake(self.almighty, self.almighty_food):
+                        print(self.almighty.name)
+
                         self.found_solution = True
                         updateOtherAlgo(self.almighty, self.a_star_static, self.BFS, self.random, self.a_star_dynamic)
 
@@ -151,18 +156,20 @@ class AccumulationAlgo(SnakeLogic):
 
                         self.a_star_dynamic_moves, self.BFS_moves, self.almighty_moves, self.random_moves, self.a_star_static_moves = clearSteps()
 
-                        self.almighty_defeat, self.BFS_defeat, self.random_defeat, self.a_star_static_defeat, self.a_star_dynamic_defeat = resetDefeat()
+                        self.almighty.defeated, self.BFS.defeated, self.random.defeated, self.a_star_static.defeated, self.a_star_dynamic.defeated = resetDefeat()
                         self.a_star_static.path = []
                         self.a_star_dynamic.path = []
                         break
 
-                if not self.a_star_dynamic_defeat and not self.found_solution:
+                if not self.a_star_dynamic.defeated and not self.found_solution:
                     self.a_star_dynamic.getPath(self.a_star_dynamic_food)
 
                     if self.a_star_dynamic.path:
                         self.a_star_dynamic_moves.append(self.a_star_dynamic.move(self.a_star_dynamic_food))
 
                     if updateSnake(self.a_star_dynamic, self.a_star_dynamic_food):
+                        print(self.a_star_dynamic.name)
+
                         self.found_solution = True
                         updateOtherAlgo(self.a_star_dynamic, self.a_star_static, self.BFS, self.random, self.almighty)
 
@@ -170,13 +177,14 @@ class AccumulationAlgo(SnakeLogic):
 
                         self.a_star_dynamic_moves, self.BFS_moves, self.almighty_moves, self.random_moves, self.a_star_static_moves = clearSteps()
 
-                        self.almighty_defeat, self.BFS_defeat, self.random_defeat, self.a_star_static_defeat, self.a_star_dynamic_defeat = resetDefeat()
+                        self.almighty.defeated, self.BFS.defeated, self.random.defeated, self.a_star_static.defeated, self.a_star_dynamic.defeated = resetDefeat()
 
                         self.a_star_static.path = []
                         self.a_star_dynamic.path = []
                         break
 
-                if self.almighty_defeat and self.BFS_defeat and self.random_defeat and self.a_star_static_defeat and self.a_star_dynamic_defeat:
+                if self.almighty.defeated and self.BFS.defeated and self.random.defeated and self.a_star_static.defeated and self.a_star_dynamic.defeated:
+                    print("none")
                     self.found_solution = True
                     updateOtherAlgo(self.a_star_static, self.BFS, self.random, self.almighty, self.a_star_dynamic)
 
@@ -201,7 +209,7 @@ class AccumulationAlgo(SnakeLogic):
 
                     self.a_star_dynamic_moves, self.BFS_moves, self.almighty_moves, self.random_moves, self.a_star_static_moves = clearSteps()
 
-                    self.almighty_defeat, self.BFS_defeat, self.random_defeat, self.a_star_static_defeat, self.a_star_dynamic_defeat = resetDefeat()
+                    self.almighty.defeated, self.BFS.defeated, self.random.defeated, self.a_star_static.defeated, self.a_star_dynamic.defeated = resetDefeat()
                     break
 
             if self.completed:
