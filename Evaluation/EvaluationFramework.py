@@ -13,7 +13,7 @@ from threading import Timer
 
 from EvalBoardSize import get_size
 import PixelSize
-from Algorithms.Model import Model
+from Evaluation.ModelEval import ModelEval
 from Evaluation.AccumulationAlgo import AccumulationAlgo
 from Food import Food
 
@@ -87,7 +87,7 @@ class Evaluation():
                 for i in values:
                     final_values.append(float(i))
 
-                agent = Model(final_values)
+                agent = ModelEval(final_values)
             else:
                 agent = AccumulationAlgo(name)
 
@@ -167,4 +167,4 @@ class Evaluation():
 if __name__ == '__main__':
     eval_project = Evaluation(3)
 
-    eval_project.start("algo", 10)
+    eval_project.start("model", 10)

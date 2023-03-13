@@ -69,7 +69,7 @@ class Agent(SnakeLogic):
         return False
 
     def move(self, snake, food):
-        step = Evaluation.accumulationEvaluation(snake, food, self.weights)
+        step = EAEvaluation.accumulationEvaluation(snake, food, self.weights)
 
         # step[0] is the index on where to go (left, forward, right)
         move_coord = self.getCoordinate(step[0])
@@ -78,7 +78,6 @@ class Agent(SnakeLogic):
         self.body.insert(0, move_coord)
         return move_coord
 
-
     def tunningWeights(self, snake, food):
         ate = False
         steps = []
@@ -86,7 +85,7 @@ class Agent(SnakeLogic):
 
         # this will loop until win or lose have reached (the step_taken is to prevent stuck in a loop forever)
         while not (ate or snake.checkSnake() or step_taken >= Constants.SQUARE_AMOUNT*Constants.SQUARE_AMOUNT):
-            step = Evaluation.accumulationEvaluation(snake, food, self.weights)
+            step = EAEvaluation.accumulationEvaluation(snake, food, self.weights)
             move_coord = self.getCoordinate(step[0])
 
             self.body.insert(0, move_coord)
