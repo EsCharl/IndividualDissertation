@@ -14,7 +14,7 @@ class Plotting:
         avg = []
         for i in self.y:
             std.append(numpy.std(i))
-            avg.append(sum(i) / len(self.y))
+            avg.append(sum(i) / len(i))
 
         fig, ax = plt.subplots()
         ax.errorbar(x, avg, yerr=std, capsize=3, capthick=3)
