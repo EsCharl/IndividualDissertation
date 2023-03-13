@@ -65,7 +65,6 @@ class ModelEval(SnakeLogic):
                     print("none")
                     self.found_solution = True
                     self.model.defeated = False
-                    
                     break
 
             if self.completed:
