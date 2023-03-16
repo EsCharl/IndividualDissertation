@@ -13,7 +13,7 @@ from Learning import model, Plot
 
 
 class EA:
-    def __init__(self, folder, pop_size):
+    def __init__(self, folder, pop_size, first_range_value, second_range_value):
         TOUR_SIZE = pop_size / 2
 
         # extract information from the files
@@ -26,19 +26,17 @@ class EA:
             winners_list.remove("")
 
         IND_SIZE = 6
-        FIXED_RANGE_VALUE = 15
-        POPULATION_SIZE = 300
 
         creator.create("FitnessMax", base.Fitness, weights=(1.0,))
         creator.create("Individual", list, fitness=creator.FitnessMax)
 
         # this part is the framework to create new instances (individual or a whole pop (random))
         self.toolbox = base.Toolbox()
-        self.toolbox.register("attr_float", random.uniform, -FIXED_RANGE_VALUE, FIXED_RANGE_VALUE)
+        self.toolbox.register("attr_float", random.uniform, first_range_value, second_range_value)
         self.toolbox.register("individual", tools.initRepeat, creator.Individual, self.toolbox.attr_float, n=IND_SIZE)
         self.toolbox.register("population", tools.initRepeat, list, self.toolbox.individual)
 
-        self.population = self.toolbox.population(POPULATION_SIZE)
+        self.population = self.toolbox.population(pop_size)
 
         def evaluate(x):
             none_winner = "A-Star Static"
@@ -91,11 +89,11 @@ class EA:
         self.toolbox.register("evaluate", evaluate)
 
 
-def main(folder, pop_size=300, generation_limit=10, cross_over_prob=0.5, mutation_prob=0.2):
+def main(folder, pop_size=300, generation_limit=10, cross_over_prob=0.5, mutation_prob=0.2, first_range_value=-15, second_range_value=15):
     # random.seed(1)
 
     # create the stuff
-    ea = EA(folder, pop_size)
+    ea = EA(folder, pop_size, first_range_value, second_range_value)
 
     plotting_component = Plot.Plotting()
 

@@ -85,8 +85,22 @@ def main():
         mutation_prob_text.configure(font=textFont, text="Mutation prob")
         mutation_prob_text.grid(row=6, column=0)
 
+        first_range_value = tk.Spinbox(options, from_=-100, to=100.0, textvariable=tk.StringVar(value="-15"))
+        first_range_value.grid(row=8, column=2, sticky=tk.NS)
+
+        first_range_value_text = tk.Message(options)
+        first_range_value_text.configure(font=textFont, text="first range value")
+        first_range_value_text.grid(row=8, column=0)
+
+        second_range_value = tk.Spinbox(options, from_=-100, to=100.0, textvariable=tk.StringVar(value="15"))
+        second_range_value.grid(row=10, column=2, sticky=tk.NS)
+
+        second_range_value_text = tk.Message(options)
+        second_range_value_text.configure(font=textFont, text="second range value")
+        second_range_value_text.grid(row=10, column=0)
+
         startLearningButton = tk.Button(options)
-        startLearningButton.grid(row=8, column=1, sticky=tk.NS)
+        startLearningButton.grid(row=12, column=1, sticky=tk.NS)
 
         def ActivateLearning():
             data = int(number_data.get())
@@ -94,10 +108,12 @@ def main():
             gen = int(generation.get())
             cross = float(cross_over_prob.get())
             mutation = float(mutation_prob.get())
+            first_val = int(first_range_value.get())
+            second_val = int(second_range_value.get())
 
             options.quit()
             options.destroy()
-            Learning.GeneratingData.LearningScreen(data, pop, gen, cross, mutation, x_display_dim, y_display_dim)
+            Learning.GeneratingData.LearningScreen(data, pop, gen, cross, mutation, first_val, second_val, x_display_dim, y_display_dim)
 
         startLearningButton.configure(font=textFont, justify="center", text="Learn Game",
                                       command=ActivateLearning)

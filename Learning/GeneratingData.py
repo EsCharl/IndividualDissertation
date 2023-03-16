@@ -113,7 +113,10 @@ def globalDraw(SA3, a_star, a_star_food, squareSizeSide, SA1, best_first_search_
 
 class LearningScreen:
 
-    def __init__(self, data=1000, pop_size=300, generation_limit=10, cross_over_prob=0.5, mutation_prob=0.2, w=640, h=400):
+    def __init__(self, data=1000, pop_size=300, generation_limit=10, cross_over_prob=0.5, mutation_prob=0.2,
+                 first_range_value=-15, second_range_value=15, w=640, h=400):
+
+        print(first_range_value, second_range_value)
         if pop_size % 2:
             pop_size += 1
 
@@ -542,7 +545,7 @@ class LearningScreen:
                 quit()
 
         pg.quit()
-        EA.main(FOLDER, pop_size, generation_limit, cross_over_prob, mutation_prob)
+        EA.main(FOLDER, pop_size, generation_limit, cross_over_prob, mutation_prob, first_range_value, second_range_value)
 
 
 if __name__ == '__main__':

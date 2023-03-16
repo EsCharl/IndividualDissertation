@@ -54,6 +54,7 @@ plt.boxplot(food_gained_nums)
 plt.title("number of food gained (100 tests), (higher the better)")
 plt.xticks([1, 2], ["Model", "Acc Algo"])
 
+print(np.array(model_food_gained) / np.array(model_resets))
 # show plot
 plt.show()
 ratio_final = [np.array(model_food_gained) / np.array(model_resets), np.array(acc_food_gained) / np.array(acc_resets)]
