@@ -1,4 +1,6 @@
 import Constants
+import Food
+from SnakeLogic import SnakeLogic
 
 
 # this function is used for evaluation of the move.
@@ -62,5 +64,19 @@ def accumulationEvaluation(snake, food, weight):
 
         final_scores.append(sum)
 
+    print(final_scores)
     final_score = max(final_scores)
     return final_scores.index(final_score), final_score
+
+
+# testing usage
+if __name__ == '__main__':
+    snake = SnakeLogic()
+    snake.body = [[0, 6], [1, 6], [1, 7], [1, 8], [0, 8], [0, 9], [0, 10], [1, 10], [2, 10], [3, 10], [4, 10], [5, 10],
+                  [5, 11], [5, 12], [5, 13]]
+    food = Food.Food(snake.body)
+    food.foodY = 0
+    food.foodX = 13
+    print(accumulationEvaluation(snake, food,
+                                 [-0.1475360615379714, 0.7858659806363856, 12.62634177312364, 13.549290286986086,
+                                  15.462902673772419, 14.931932756058783]))
