@@ -6,6 +6,8 @@ from deap import creator, base, tools
 
 import sys
 
+from matplotlib import pyplot as plt
+
 sys.path.insert(0, os.path.abspath("../"))
 
 import Food
@@ -14,7 +16,7 @@ from Learning import model, Plot
 
 class EA:
     def __init__(self, folder, pop_size, first_range_value, second_range_value):
-        TOUR_SIZE = pop_size / 2
+        TOUR_SIZE = int(pop_size / 2)
 
         # extract information from the files
         WINNER_FILE = folder + "/winners.txt"
@@ -171,6 +173,8 @@ def main(folder, pop_size=300, generation_limit=10, cross_over_prob=0.5, mutatio
 
         # show plot
         plotting_component.ConPlot(scores)
+
+    plt.show()
 
 
 if __name__ == '__main__':

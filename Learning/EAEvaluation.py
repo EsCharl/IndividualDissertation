@@ -64,7 +64,6 @@ def accumulationEvaluation(snake, food, weight):
 
         final_scores.append(sum)
 
-    print(final_scores)
     final_score = max(final_scores)
     return final_scores.index(final_score), final_score
 

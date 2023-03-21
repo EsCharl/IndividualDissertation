@@ -155,3 +155,6 @@ if __name__ == '__main__':
     graphing(round_nums, reset_nums, food_gained_nums, model_test_round_nums, model_test_resets, model_test_food_gained)
 
     print(t_test(np.array(model_food_gained) / np.array(model_resets), np.array(model_test_food_gained) / np.array(model_test_resets)))
+
+    print(t_test(np.array(model_food_gained) / np.array(model_resets), np.array(acc_food_gained) / np.array(acc_resets)))
+

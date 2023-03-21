@@ -22,5 +22,3 @@ class Plotting:
         ax.set_ylabel("score")
         plt.xlim(-1)
         plt.xticks(numpy.arange(0, len(self.y) + 1, step=1))
-
-        plt.show()
