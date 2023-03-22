@@ -167,4 +167,4 @@ class Evaluation():
 if __name__ == '__main__':
     eval_project = Evaluation(3)
 
-    eval_project.start("model", 10)
+    eval_project.start("model", 100)
