@@ -1,3 +1,4 @@
+import math
 import os
 import pickle
 
@@ -29,7 +30,11 @@ class EA:
 
         # the x is a list with list in float (need to make it to list with float (individualism))
         score = 0
+        total_score = 0
+        score_list = []
         for index, win in enumerate(self.winners_list):
+            predicted_score = 0
+            actual_score = 0
             if win == "None":
                 pickle_file = self.folder + "/Steps/" + none_winner + "/" + str(index) + ".pickle"
             else:
@@ -49,23 +54,22 @@ class EA:
 
             winner_step_num = len(extracted_data)
 
-            # if the agent manage to solve an impossible game
-            if win == "None" and state:
-                score += 30
-            elif win == "None" and not state:
-                pass
-            elif win == "Random Search" and not state:
-                pass
-            elif win == "Random Search" and state:
-                # might need to consider this reward (might be training to a garbage model (further thinking needed, or possible evaluation material))
-                score += 20
-            elif state:
-                score += (10 - (len(steps) - winner_step_num))
-            else:
+            # used to get the total expected score
+            if not win == "None":
+                total_score += 10
+                actual_score = 10
+
+            if state:
+                predicted_score = (10 - (len(steps) - winner_step_num))
+                score += predicted_score
+            elif not state and not win == "None":
                 # this is for if the winner data is not random search or no victor and didn't manage to get to a victor
                 score -= winner_step_num
+                predicted_score -= winner_step_num
 
-        return score
+            score_list.append(math.pow(actual_score - predicted_score, 2))
+
+        return [score, total_score, score_list]
 
 
 def main(folder, agent):
@@ -80,22 +84,37 @@ def main(folder, agent):
 
         score.append(ea.evaluate(agent))
 
-    print(score)
+    return score
 
 
 if __name__ == '__main__':
     file = open("../Learning/result.txt", "r")
 
     text = file.read().split("\n")
+    text.pop()
 
-    temp = text[-3].split("is ")[1]
-    temp = temp.split(" at")[0]
-    values = temp.split(",")
-    final_values = []
-    for i in values:
-        final_values.append(float(i))
+    ind = 0
 
-    agent = Agent(final_values)
+    for i in list(range(len(text))):
+        if i % 2 == 0:
+            temp = text[i].split("is ")[1]
+            temp = temp.split(" at")[0]
+            values = temp.split(",")
+            final_values = []
+            for i in values:
+                final_values.append(float(i))
 
-    FOLDER = "../data"
-    main(FOLDER, agent)
+            agent = Agent(final_values)
+
+            FOLDER = "../data"
+            val = main(FOLDER, agent)
+
+            file = open("(" + str(ind) + ") "+", ".join(list(map(str, final_values))) + ".txt", "w")
+            file.write(str(val) + "\n")
+
+            ind += 1
+
+            for y in val:
+                file.write(str(sum(y[2]) / len(y[2])) + "\n")
+
+            file.close()
