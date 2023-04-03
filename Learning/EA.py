@@ -101,21 +101,14 @@ def main(folder, pop_size=300, generation_limit=10, cross_over_prob=0.5, mutatio
 
     fitness = list(map(ea.toolbox.evaluate, ea.population))
 
-    print(fitness)
-    print(type(fitness))
-
     for ind, fit in zip(ea.population, fitness):
         ind.fitness.values = fit
 
     scores = [ind.fitness.values[0] for ind in ea.population]
-    print(scores)
 
     best_ind = tools.selBest(ea.population, 1)[0]
 
-    print(type(best_ind), type(best_ind.fitness.values))
-    print(type(str(best_ind)), type(str(best_ind.fitness.values)))
-    print(best_ind, best_ind.fitness.values)
-    f = open("data.txt", "w")
+    f = open("../Learning/result.txt", "w")
     f.write("Best individual is %s at %s" % (",".join(map(str, best_ind)),
                                              str(best_ind.fitness.values[0])) + '\n' +
             ", ".join(map(str, scores)) + "\n")
@@ -154,14 +147,13 @@ def main(folder, pop_size=300, generation_limit=10, cross_over_prob=0.5, mutatio
 
         ea.population[:] = offspring
 
-        # this part is just to see the score of all individual (deletable)
+        # this part is just to see the score of all individual
         scores = [ind.fitness.values[0] for ind in ea.population]
-        print(scores)
 
         # this part is just for aesthetic (deletable)
         best_ind = tools.selBest(ea.population, 1)[0]
 
-        f = open("data.txt", "a")
+        f = open("../Learning/result.txt", "a")
         f.write("Best individual is %s at %s" % (",".join(map(str, best_ind)),
                                                  str(best_ind.fitness.values[0])) + '\n' +
                 ", ".join(map(str, scores)) + "\n")
@@ -174,6 +166,7 @@ def main(folder, pop_size=300, generation_limit=10, cross_over_prob=0.5, mutatio
         # show plot
         plotting_component.ConPlot(scores)
 
+    plt.savefig("../Learning/graph.png")
     plt.show()
 
 

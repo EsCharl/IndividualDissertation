@@ -116,7 +116,6 @@ class LearningScreen:
     def __init__(self, data=1000, pop_size=300, generation_limit=10, cross_over_prob=0.5, mutation_prob=0.2,
                  first_range_value=-15, second_range_value=15, w=640, h=400):
 
-        print(first_range_value, second_range_value)
         if pop_size % 2:
             pop_size += 1
 
@@ -218,7 +217,7 @@ class LearningScreen:
         done = False
 
         init_body = []
-        while not done and num_game <= data:
+        while not done and num_game < data:
             try:
                 found_solution = False
                 for event in pg.event.get():
