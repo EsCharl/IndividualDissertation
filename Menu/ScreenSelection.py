@@ -113,7 +113,8 @@ def main():
 
             options.quit()
             options.destroy()
-            Learning.GeneratingData.LearningScreen(data, pop, gen, cross, mutation, first_val, second_val, x_display_dim, y_display_dim)
+            Learning.GeneratingData.LearningScreen(data, pop, gen, cross, mutation, first_val, second_val,
+                                                   x_display_dim, y_display_dim)
 
         startLearningButton.configure(font=textFont, justify="center", text="Learn Game",
                                       command=ActivateLearning)
@@ -128,22 +129,22 @@ def main():
 
         options = tk.Tk()
         options.title("Game Options")
-        options.geometry("200x250")
 
-        frame = tk.Frame(options)
-        frame.pack()
+        time_text = tk.Message(options)
+        time_text.configure(font=textFont, text="game time")
+        time_text.grid(row=0, column=0)
 
         time = (3, 5, 10)
 
-        timeListBox = tk.Listbox(frame)
+        timeListBox = tk.Listbox(options)
         for t in time: timeListBox.insert(END, t)
 
         timeListBox.configure(selectmode="single")
-        timeListBox.pack(side="top")
+        timeListBox.grid(row=0, column=2)
 
-        startGameButton = tk.Button(frame)
+        startGameButton = tk.Button(options)
         startGameButton.configure(font=textFont, justify="center", text="Start Game", command=lambda: options.quit())
-        startGameButton.pack(side="bottom")
+        startGameButton.grid(row=1, column=1, columnspan=2)
 
         options.mainloop()
 
