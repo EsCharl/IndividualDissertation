@@ -158,3 +158,5 @@ if __name__ == '__main__':
 
     print(t_test(np.array(model_food_gained) / np.array(model_resets), np.array(acc_food_gained) / np.array(acc_resets)))
 
+    print(t_test(np.array(model_test_food_gained) / np.array(model_test_resets), np.array(acc_food_gained) / np.array(acc_resets)))
+
