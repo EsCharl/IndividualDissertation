@@ -118,7 +118,7 @@ if __name__ == '__main__':
         acc_resets.append(int(i[1]))
         acc_food_gained.append(int(i[2]))
 
-    Model = open("Evaluation/Score/Model (2).txt", "r")
+    Model = open("Evaluation/Score/Model.txt", "r")
 
     model_result_list = Model.read().split("\n")
     model_result_list.pop()
