@@ -9,3 +9,7 @@ scipy == 1.10.1
 pygame == 2.1.3dev8
 matplotlib == 3.6.3
 numpy == 1.24.1
+
+### to start
+
+launch "ScreenSelection.py" in the folder Menu to begin.
