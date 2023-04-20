@@ -16,18 +16,20 @@ A Snake game environment with training enabled using evolutionary algorithm. A t
 
 ### to evaluate the performance of the trained model or the accumulated algorithm. 
 
-###### note: to evaluate the model parameter file (result.txt) must be present in the Learning folder.
+###### Note: to evaluate the model parameter file (result.txt) must be present in the Learning folder.
+
+###### Additionally: step 1 to 4 can be skipped if using the files provided in the supplimentary zip file titled "Score", to use the supplementary files just add all the files in the "Score" folder and place them into Evaluation/Score folder in the project folder.
 
 1. modify the input parameter in the "EvaluationFramework.py" in line 174 to switch between model or accumulate algorithm.
 2. if model is selected, to change between steps generated first or generated on demand by uncommenting line 92 and commenting line 93 for steps generated first. For steps generated on demand is by commenting 92 and uncommenting 93. 
 3. run the file "EvaluationFramework.py".
-4. to plot the graph, repeat for all the three evaluations (accumulated algorithm, model (moves generated first and generated on demand)). (a base file is already included in the folder if you do not wish to undergo this step)
+4. to plot the graph, repeat for all the three evaluations (accumulated algorithm, model (moves generated first and generated on demand). 
 5. modify lines 106, 121, and 140 in the file "StatisticalAnalysis.py" in the main folder to the file name specified in the evaluation made in the steps above. (the file names are in the folder Evalutaion/Score). 
 6. run the file "StatisticalAnalysis.py" for the graphs
 
 ### to see overfitting or underfitting of the model.
 
-###### note: the model parameter file (result.txt) must be present in the Learning folder.
+###### Note: the model parameter file (result.txt) must be present in the Learning folder.
 
 1. add the folders that are in the supplimentary zip file titled "data" into the folder of "data" in the project. (if wanted to add any additional files generate more instances use the "learn" feature of this project and stop the progress after the data generation stage has completed (the pygame screen closes)).
 2. run the python file "EvalOverfittingOrUnderfitting.py" in Learning folder. this will generate text files based on each generation best parameters given in the "result.txt" in the Learning folder.
