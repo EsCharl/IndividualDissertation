@@ -6,8 +6,10 @@ class Plotting:
     def __init__(self):
         self.y = []
 
-    def ConPlot(self, y):
+    def recordPlot(self, y):
         self.y.append(y)
+        
+    def finalisePlot(self):
         x = list(range(len(self.y)))
 
         std = []

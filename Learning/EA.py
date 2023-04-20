@@ -118,7 +118,7 @@ def main(folder, pop_size=300, generation_limit=10, cross_over_prob=0.5, mutatio
                                            str(best_ind.fitness.values[0])) + '\n' +
           ", ".join(map(str, scores)) + "\n")
 
-    plotting_component.ConPlot(scores)
+    plotting_component.recordPlot(scores)
 
     for i in range(generation_limit - 1):
         offspring = ea.toolbox.select(ea.population, len(ea.population))
@@ -164,8 +164,9 @@ def main(folder, pop_size=300, generation_limit=10, cross_over_prob=0.5, mutatio
               ", ".join(map(str, scores)) + "\n")
 
         # show plot
-        plotting_component.ConPlot(scores)
+        plotting_component.recordPlot(scores)
 
+    plotting_component.finalisePlot()
     plt.savefig("../Learning/graph.png")
     plt.show()
 
