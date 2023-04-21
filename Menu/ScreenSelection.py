@@ -146,7 +146,7 @@ def main():
 
         startGameButton = tk.Button(options)
         startGameButton.configure(font=textFont, justify="center", text="Start Game", command=lambda: options.quit())
-        startGameButton.grid(row=1, column=1, columnspan=2)
+        startGameButton.grid(row=1, column=0, columnspan=3)
 
         options.mainloop()
 
