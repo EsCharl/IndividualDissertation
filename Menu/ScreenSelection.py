@@ -49,58 +49,60 @@ def main():
 
         options = tk.Tk()
         options.title("Learning Options")
-
+        
+        learningTextFont = tkFont.Font(family='Times', size=8)
+        
         number_data = tk.Spinbox(options, from_=500, to=100000, textvariable=tk.StringVar(value="1000"))
         number_data.grid(row=0, column=2, sticky=tk.NS)
 
         number_data_text = tk.Message(options)
-        number_data_text.configure(font=textFont, text="num data gen")
-        number_data_text.grid(row=0, column=0)
+        number_data_text.configure(font=learningTextFont, text="Number of data generated")
+        number_data_text.grid(row=0, columnspan=2)
 
         number_population = tk.Spinbox(options, from_=150, to=450, textvariable=tk.StringVar(value="300"))
         number_population.grid(row=1, column=2, sticky=tk.NS)
 
         number_population_text = tk.Message(options)
-        number_population_text.configure(font=textFont, text="Pop in each gen")
-        number_population_text.grid(row=1, column=0)
+        number_population_text.configure(font=learningTextFont, text="Population in each generation")
+        number_population_text.grid(row=1, columnspan=2)
 
         generation = tk.Spinbox(options, from_=5, to=50, textvariable=tk.StringVar(value="10"))
         generation.grid(row=2, column=2, sticky=tk.NS)
 
         generation_text = tk.Message(options)
-        generation_text.configure(font=textFont, text="total gen")
-        generation_text.grid(row=2, column=0)
+        generation_text.configure(font=learningTextFont, text="Total generation")
+        generation_text.grid(row=2, columnspan=2)
 
         cross_over_prob = tk.Spinbox(options, from_=0.1, to=1.0, increment=0.05, textvariable=tk.StringVar(value="0.5"))
         cross_over_prob.grid(row=4, column=2, sticky=tk.NS)
 
         cross_over_prob_text = tk.Message(options)
-        cross_over_prob_text.configure(font=textFont, text="Cross over prob")
-        cross_over_prob_text.grid(row=4, column=0)
+        cross_over_prob_text.configure(font=learningTextFont, text="Cross-over probability")
+        cross_over_prob_text.grid(row=4, columnspan=2)
 
         mutation_prob = tk.Spinbox(options, from_=0.1, to=1.0, increment=0.05, textvariable=tk.StringVar(value="0.2"))
         mutation_prob.grid(row=6, column=2, sticky=tk.NS)
 
         mutation_prob_text = tk.Message(options)
-        mutation_prob_text.configure(font=textFont, text="Mutation prob")
-        mutation_prob_text.grid(row=6, column=0)
+        mutation_prob_text.configure(font=learningTextFont, text="Mutation probability")
+        mutation_prob_text.grid(row=6, columnspan=2)
 
         first_range_value = tk.Spinbox(options, from_=-100, to=100.0, textvariable=tk.StringVar(value="-15"))
         first_range_value.grid(row=8, column=2, sticky=tk.NS)
 
         first_range_value_text = tk.Message(options)
-        first_range_value_text.configure(font=textFont, text="first range value")
-        first_range_value_text.grid(row=8, column=0)
+        first_range_value_text.configure(font=learningTextFont, text="First range value")
+        first_range_value_text.grid(row=8, columnspan=2)
 
         second_range_value = tk.Spinbox(options, from_=-100, to=100.0, textvariable=tk.StringVar(value="15"))
         second_range_value.grid(row=10, column=2, sticky=tk.NS)
 
         second_range_value_text = tk.Message(options)
-        second_range_value_text.configure(font=textFont, text="second range value")
-        second_range_value_text.grid(row=10, column=0)
+        second_range_value_text.configure(font=learningTextFont, text="Second range value")
+        second_range_value_text.grid(row=10, columnspan=2)
 
         startLearningButton = tk.Button(options)
-        startLearningButton.grid(row=12, column=1, sticky=tk.NS)
+        startLearningButton.grid(row=12, columnspan=3, sticky=tk.NS)
 
         def ActivateLearning():
             data = int(number_data.get())
