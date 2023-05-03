@@ -7,67 +7,68 @@ def t_test(set0, set1):
 
 def graphing(round_nums, reset_nums, food_gained_nums, model_test_round_nums, model_test_resets, model_test_food_gained):
 
-    # Creating plot
-    plt.boxplot(round_nums)
-    plt.title("rounds per test (higher the better)")
-    plt.xticks([1, 2], ["Model", "Acc Algo"])
-
-    # show plot
-    plt.show()
-
-    plt.boxplot(reset_nums)
-    plt.title("number of resets (100 tests), (lower the better)")
-    plt.xticks([1, 2], ["Model", "Acc Algo"])
-
-    # show plot
-    plt.show()
-
-    plt.boxplot(food_gained_nums)
-    plt.title("number of food gained (100 tests), (higher the better)")
-    plt.xticks([1, 2], ["Model", "Acc Algo"])
-
-    # show plot
-    plt.show()
-    ratio_final = [np.array(model_food_gained) / np.array(model_resets), np.array(acc_food_gained) / np.array(acc_resets)]
-    plt.boxplot(ratio_final)
-    plt.title("ratio between food gained and reset (higher the better)")
-    plt.xticks([1, 2], ["Model", "Acc Algo"])
-
-    # show plot
-    plt.show()
+    # # Creating plot
+    # plt.boxplot(round_nums)
+    # plt.title("rounds per test (higher the better)")
+    # plt.xticks([1, 2], ["Model", "Acc Algo"])
+    #
+    # # show plot
+    # plt.show()
+    #
+    # plt.boxplot(reset_nums)
+    # plt.title("number of resets (100 tests), (lower the better)")
+    # plt.xticks([1, 2], ["Model", "Acc Algo"])
+    #
+    # # show plot
+    # plt.show()
+    #
+    # plt.boxplot(food_gained_nums)
+    # plt.title("number of food gained (100 tests), (higher the better)")
+    # plt.xticks([1, 2], ["Model", "Acc Algo"])
+    #
+    # # show plot
+    # plt.show()
+    # ratio_final = [np.array(model_food_gained) / np.array(model_resets), np.array(acc_food_gained) / np.array(acc_resets)]
+    # plt.boxplot(ratio_final)
+    # plt.title("ratio between food gained and reset (higher the better)")
+    # plt.xticks([1, 2], ["Model", "Acc Algo"])
+    #
+    # # show plot
+    # plt.show()
 
     round_nums = [np.array(model_round_nums), np.array(acc_round_nums)]
     reset_nums = [np.array(model_resets), np.array(acc_resets)]
     food_gained_nums = [np.array(model_food_gained), np.array(acc_food_gained)]
+    ratio_final = [np.array(model_food_gained) / np.array(model_resets),
+                   np.array(acc_food_gained) / np.array(acc_resets)]
 
-    # Creating plot
-    plt.boxplot(round_nums)
-    plt.title("rounds per test (higher the better)")
-    plt.xticks([1, 2], ["Model", "Acc Algo"])
-
-    # show plot
-    plt.show()
-
-    plt.boxplot(reset_nums)
-    plt.title("number of resets (100 tests), (lower the better)")
-    plt.xticks([1, 2], ["Model", "Acc Algo"])
-
-    # show plot
-    plt.show()
-
-    plt.boxplot(food_gained_nums)
-    plt.title("number of food gained (100 tests), (higher the better)")
-    plt.xticks([1, 2], ["Model", "Acc Algo"])
-
-    # show plot
-    plt.show()
-    ratio_final = [np.array(model_food_gained) / np.array(model_resets), np.array(acc_food_gained) / np.array(acc_resets)]
-    plt.boxplot(ratio_final)
-    plt.title("ratio between food gained and reset (higher the better)")
-    plt.xticks([1, 2], ["Model", "Acc Algo"])
-
-    # show plot
-    plt.show()
+    # # Creating plot
+    # plt.boxplot(round_nums)
+    # plt.title("rounds per test (higher the better)")
+    # plt.xticks([1, 2], ["Model", "Acc Algo"])
+    #
+    # # show plot
+    # plt.show()
+    #
+    # plt.boxplot(reset_nums)
+    # plt.title("number of resets (100 tests), (lower the better)")
+    # plt.xticks([1, 2], ["Model", "Acc Algo"])
+    #
+    # # show plot
+    # plt.show()
+    #
+    # plt.boxplot(food_gained_nums)
+    # plt.title("number of food gained (100 tests), (higher the better)")
+    # plt.xticks([1, 2], ["Model", "Acc Algo"])
+    #
+    # # show plot
+    # plt.show()
+    # plt.boxplot(ratio_final)
+    # plt.title("ratio between food gained and reset (higher the better)")
+    # plt.xticks([1, 2], ["Model", "Acc Algo"])
+    #
+    # # show plot
+    # plt.show()
 
     round_nums.append(np.array(model_test_round_nums))
     reset_nums.append(np.array(model_test_resets))

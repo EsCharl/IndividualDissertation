@@ -171,4 +171,4 @@ if __name__ == '__main__':
     eval_project = Evaluation(3)
 
     # for the first input parameter switch between "model" and "Accum Algo" to switch between modes
-    eval_project.start("model", 100)
+    eval_project.start("Accum Algo", 100)
