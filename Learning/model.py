@@ -1,61 +1,14 @@
 import Constants
-from SnakeLogic import SnakeLogic
 from Learning import EAEvaluation
+from SnakeLogicModel import SnakeLogicModel
 
-class Agent(SnakeLogic):
+
+class Agent(SnakeLogicModel):
     def __init__(self, weights):
         super().__init__("Generated model")
         self.score = 0
         self.reset()
         self.weights = weights
-
-    def getCoordinate(self, step):
-
-        forward_holder = [self.body[0][0] - self.body[1][0], self.body[0][1] - self.body[1][1]]
-        forward = [forward_holder[0] + self.body[0][0], self.body[0][1] + forward_holder[1]]
-
-        # if the forward is downwards
-        if forward_holder == [0, 1]:
-            # left
-            if step == 0:
-                return [self.body[0][0] + 1, self.body[0][1]]
-            elif step == 1:
-                return forward
-            else:
-                return [self.body[0][0] - 1, self.body[0][1]]
-
-        # if the forward is upwards.
-        elif forward_holder == [0, -1]:
-            # left
-            if step == 0:
-                return [self.body[0][0] - 1, self.body[0][1]]
-            elif step == 1:
-                return forward
-            # right
-            else:
-                return [self.body[0][0] + 1, self.body[0][1]]
-
-        # if the forward is rightwards.
-        elif forward_holder == [1, 0]:
-            # left
-            if step == 0:
-                return [self.body[0][0], self.body[0][1] - 1]
-            elif step == 1:
-                return forward
-            # right
-            else:
-                return [self.body[0][0], self.body[0][1] + 1]
-
-        # if the forward is leftwards.
-        elif forward_holder == [-1, 0]:
-            # left
-            if step == 0:
-                return [self.body[0][0], self.body[0][1] + 1]
-            elif step == 1:
-                return forward
-            # right
-            else:
-                return [self.body[0][0], self.body[0][1] - 1]
 
     def checkSnake(self):
         if self.body[0][0] < 0 or self.body[0][1] > Constants.SQUARE_AMOUNT - 1 or self.body[0][0] \

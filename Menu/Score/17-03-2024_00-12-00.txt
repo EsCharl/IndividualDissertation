@@ -1,0 +1,5 @@
+Best First Search: 243
+Player: 138
+A-Star dynamic: 230
+Almighty Move: 26
+Model: 215
